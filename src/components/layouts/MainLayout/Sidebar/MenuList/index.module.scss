@@ -1,0 +1,25 @@
+
+
+.container{
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 30px;
+  gap: 8px;
+  flex-direction: row; 
+  border-left: 4px solid transparent;
+  border-radius: 0px 7px 7px 0px;
+  color: white;
+}
+
+.container:hover, .active{
+  border-left: 4px solid rgba(246, 197, 23, 1);
+  background: rgba(246, 197, 23, 0.1);
+}
+
+
+.group_item {
+  &.selected {
+    background-color: rgba(246, 197, 23, 0.1) !important;
+    color: var(--mui-palette-primary-contrastText)  !important;;
+  }
+}

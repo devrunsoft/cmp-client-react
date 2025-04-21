@@ -22,23 +22,24 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "components/*": ["./components/*"],
-      "routes/*": ["./routes"],
-      "state/*": ["./common/state/*"],
-      "state": ["./common/state"],
-      "views/*": ["./views/*"],
-      "hooks/*": ["./hooks/*"],
-      "ui/*": ["./components/ui/*"],
-      "utils/*": ["./common/utils/*"],
-      "lib/*": ["./lib/*"],
-      "assets/*": ["./assets/*"],
-      "types/*": ["./types/*"],
-      "data/*": ["./common/data/*"],
-      "common/*": ["./common/*"]
+      "components/*": ["./src/components/*"],
+      "routes/*": ["./src/routes"],
+      "state/*": ["./src/common/state/*"],
+      "state": ["./src/common/state"],
+      "views/*": ["./src/views/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "ui/*": ["./src/components/ui/*"],
+      "utils/*": ["./src/common/utils/*"],
+      "lib/*": ["./src/lib/*"],
+      "assets/*": ["./src/assets/*"],
+      "types/*": ["./src/types/*"],
+      "data/*": ["./src/common/data/*"],
+      "common/*": ["./src/common/*"],
+      "cmp-core/*": ["../cmp-core-react/src/*"]
     },
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["src", "cmp-core"]
 }

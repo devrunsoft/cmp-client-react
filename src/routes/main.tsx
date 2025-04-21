@@ -3,11 +3,11 @@ import React, { lazy } from "react";
 import { Navigate } from "react-router-dom";
 
 import { getToken } from "core/src/utils/auth";
-// import { getPath, LinkEnum } from "../common/menu-items";
 import MainLayout from "components/layouts/MainLayout";
 import { getPath, LinkEnum } from "common/menu-items";
 
-// redirect if user is not logged in
+const Home = Loadable(lazy(() => import("views/Home")));
+
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
   if (!token) return <Navigate to="/login" />;
@@ -21,7 +21,12 @@ const MainRoutes = {
       <MainLayout />
     </ProtectWrapper>
   ),
-  children: [],
+  children: [
+    {
+      path: getPath(LinkEnum.Home),
+      element: <Home />,
+    },
+  ],
 };
 
 export default MainRoutes;
