@@ -54,7 +54,7 @@ export default function MainLayout() {
         <Sidebar open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         <Main isSmallScreen={isSmallScreen}>
           <Helmet>
-            <title>{info?.title || "PROVIDER PORTAL"}</title>
+            <title>{info?.title || "CLIENT PORTAL"}</title>
           </Helmet>
           {!!displayBreadcrumb && (
             <Breadcrumb

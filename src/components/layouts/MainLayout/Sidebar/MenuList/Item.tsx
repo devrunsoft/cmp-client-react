@@ -6,7 +6,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Badge from "@mui/material/Badge"; // Import Badge component
 
 import styles from "./index.module.scss";
-import useRoleAccess from "hooks/useRoleAccess";
 
 export default function ItemLink({
   item,
@@ -28,7 +27,7 @@ export default function ItemLink({
   const { pathname } = useLocation();
   const linkActive = isActiveLink(item, pathname);
   const selected = linkActive || groupSelect;
-  const { hasAccessMenu, checkCount } = useRoleAccess();
+  // const { hasAccessMenu, checkCount } = useRoleAccess();
 
   // if (!hasAccessMenu(item)) return null;
 
@@ -70,7 +69,7 @@ export default function ItemLink({
 
         {/* Badge for the item count */}
         <Badge
-          badgeContent={checkCount(item)} // Display count here
+          badgeContent={0} // Display count here
           color="primary"
           sx={{ ml: 1 }}
         >

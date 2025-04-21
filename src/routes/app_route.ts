@@ -1,0 +1,17 @@
+export const APP_ROUTES = {
+    Splash: "/",
+    Login: "/login",
+    SignUp: "/login/signUp",
+    Dashboard: "/dashboard",
+    Activation: "/activation",
+    EditProfile: "/dashboard/profileEdit",
+    ShoppingCard: "/dashboard/shoppingCart",
+    Invoices: "/dashboard/invoices",
+    Requests: "/dashboard/requests",
+    Service: "/dashboard/{oprAddress}/services",
+    ServiceItem: "/dashboard/serviceItem",
+    ServiceItemEmergency: "/dashboard/serviceItemEmergency",
+    Enrollservice: "/dashboard/{oprAddress}/enrollservice",
+    EnrollEmergencyService: "/dashboard/{oprAddress}/emergency",
+    Address: "/dashboard/newAddress",
+};

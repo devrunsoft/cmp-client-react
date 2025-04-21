@@ -1,5 +1,4 @@
 import { isActiveLink, LinkEnum, sidebarTree } from "common/menu-items";
-import useRoleAccess from "hooks/useRoleAccess";
 import { useEffect, useState, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import ItemLink from "components/layouts/MainLayout/Sidebar/MenuList/Item";
@@ -10,7 +9,6 @@ import Box from "@mui/material/Box";
 
 export default function Group() {
   const [selected, setSelected] = useState<number | null>(null);
-  const { hasAccessMenu } = useRoleAccess();
 
   const { pathname } = useLocation();
 
@@ -21,8 +19,7 @@ export default function Group() {
   const handleLinkSelection = () => {
     for (let idx = 0; idx < sidebarTree.length; idx++) {
       if (
-        isActiveLink(sidebarTree[idx].key, pathname) &&
-        hasAccessMenu(sidebarTree[idx].key)
+        isActiveLink(sidebarTree[idx].key, pathname) 
       ) {
         setSelected(idx);
         break;

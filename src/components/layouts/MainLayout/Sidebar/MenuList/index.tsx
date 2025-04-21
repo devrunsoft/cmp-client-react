@@ -1,19 +1,19 @@
-import { useAppDispatch, useAppSelector } from "state";
+// import { useAppDispatch, useAppSelector } from "state";
 import { useEffect } from "react";
-import { setMenu } from "state/slice/menu";
+// import { setMenu } from "state/slice/menu";
 import Skeleton from "@mui/material/Skeleton";
 
 import Group from "components/layouts/MainLayout/Sidebar/MenuList/Group";
 // import { useMenuAccess } from "data/repository/user";
-import { setRepresentation } from "state/slice/representation";
+// import { setRepresentation } from "state/slice/representation";
 // import { useRepresentationGet } from "data/repository/representation";
 
 export default function MenuList() {
   // const request = useMenuAccess();
   // const requestRep = useRepresentationGet();
 
-  const dispatch = useAppDispatch();
-  const refreshTrigger = useAppSelector((state) => state.representation);
+  // const dispatch = useAppDispatch();
+  // const refreshTrigger = useAppSelector((state) => state.representation);
 
   // useEffect(() => {
   //   loadData();

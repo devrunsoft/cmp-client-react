@@ -128,7 +128,7 @@ const components = (theme: Theme): Components => ({
   },
 
   MuiCheckbox: {
-    defaultProps: { color: "secondary" },
+    defaultProps: { color: "primary" },
     styleOverrides: {
       sizeSmall: {
         padding: "5px",
