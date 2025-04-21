@@ -1,0 +1,416 @@
+:root {
+  --main-content-width: calc(100vw - 142px - 85px);
+  --main-content-width-min: calc(1200px - 142px - 64px);
+  --contBg: rgba(245, 245, 245, 1);
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Regular.ttf") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Light.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Light.ttf") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Regular.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Regular.ttf") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Regular.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Regular.ttf") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Bold.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Bold.ttf") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/src/assets/fonts/lato/Lato-Bold.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Bold.ttf") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LaMyFontto";
+  src: url("/src/assets/fonts/lato/Lato-Black.ttf") format("woff2"),
+    url("/src/assets/fonts/lato/Lato-Black.ttf") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "MyFont", serif !important;
+}
+
+$app_version_height: 40px;
+
+body {
+  background: #212129 !important;
+  direction: ltr;
+  text-align: left;
+  min-height: 100vh;
+  // min-width: 1200px;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.main-color {
+  color: var(--mui-palette-primary-main) !important;
+}
+
+.h-screen {
+  height: calc(100vh - #{$app_version_height});
+}
+
+.mainPadding {
+  padding: 32px 40px;
+}
+
+.pagePadding {
+  padding: 40px;
+}
+
+.registerPadding {
+  padding: 80px 100px;
+}
+
+@media (max-width: 1200px) {
+  .registerPadding {
+    padding: 60px 80px;
+  }
+}
+
+@media (max-width: 950px) {
+  .registerPadding {
+    padding: 0px;
+  }
+}
+@media (max-width: 900px) {
+  .form {
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 7px;
+  }
+  .formPadding {
+    padding: 0px !important;
+  }
+  .formFlex {
+    display: flex;
+    flex-direction: column !important;
+    overflow: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  h1 {
+    font-size: 20px;
+    line-height: normal;
+  }
+}
+
+.formPadding {
+  padding: 30px 140px 0px 140px;
+}
+
+.flex {
+  display: flex;
+}
+.formFlex {
+  display: flex;
+  flex-direction: row;
+}
+
+.formButton {
+  border-radius: 50px;
+}
+
+.simple-outline-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.simple-outline-btn:hover {
+  background-color: black;
+  color: white;
+}
+
+.appButton {
+  border-radius: 10px;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  font-weight: 500;
+}
+
+.ps__thumb-y {
+  left: 2px;
+  right: unset;
+}
+
+.resizer {
+  position: absolute;
+  top: 12px;
+  height: 20px;
+  left: 0;
+  width: 5px;
+  background: var(--mui-palette-grey-500);
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  opacity: 0.5;
+  visibility: hidden;
+  border-radius: 0 8px 8px 0;
+}
+
+.resizer.isResizing {
+  background: var(--mui-palette-primary-main);
+  opacity: 1;
+  visibility: visible !important;
+}
+
+.svg_animation:hover .svg {
+  animation: shake_movement 0.8s forwards cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.main_content_height {
+  height: calc(100vh - 220px);
+}
+
+@keyframes shake_movement {
+  0% {
+    transform: rotateZ(0);
+  }
+  25% {
+    transform: rotateZ(20deg);
+  }
+  50% {
+    transform: rotateZ(-20deg);
+  }
+  75% {
+    transform: rotateZ(20deg);
+  }
+  100% {
+    transform: rotateZ(0);
+  }
+}
+
+.hover_display .display_item {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.hover_display:hover .display_item,
+.hover_display:focus .display_item {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  position: relative;
+}
+
+.fr-second-toolbar {
+  height: 40px;
+  & #fr-logo {
+    display: none;
+  }
+}
+
+.fr-toolbar {
+  color: var(--mui-palette-grey-500) !important;
+  .fr-btn,
+  svg,
+  path {
+    color: var(--mui-palette-grey-500) !important;
+    fill: var(--mui-palette-grey-500) !important;
+  }
+  & .fr-active {
+    & svg,
+    path {
+      fill: var(--mui-palette-primary-main) !important;
+    }
+  }
+}
+
+.fr-input-line input {
+  border-color: var(--mui-palette-grey-300) !important;
+  color: var(--mui-palette-grey-500) !important;
+  &:focus {
+    border-color: var(--mui-palette-primary-main) !important;
+  }
+}
+
+.simplebar-track {
+  &.simplebar-hover {
+    background-color: var(--mui-palette-grey-300);
+  }
+  & .simplebar-scrollbar::before {
+    background-color: var(--mui-palette-grey-400);
+  }
+  & .simplebar-hover::before {
+    background-color: var(--mui-palette-grey-500);
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 7px;
+}
+
+.MuiLoadingButton-root {
+  // border: 0px !important;
+  // color: #fff;
+  display: flex;
+  align-items: center;
+  // border-radius: 50px;
+  font-size: 14px;
+  // line-height: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  // background-color: #fff;
+  // border: 1px solid rgba(228, 228, 228, 1);
+}
+
+// .MuiLoadingButton-root:hover {
+//   background-color: var(--mui-palette-primary-light) !important;
+// }
+
+/* General styles for DateTimePicker */
+.react-datetime-picker {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 16px;
+  background: white;
+  transition: border 0.3s ease-in-out;
+}
+
+/* Input field styling */
+.react-datetime-picker__inputGroup {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.react-calendar {
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.react-calendar__tile {
+  padding: 10px;
+  border-radius: 6px;
+}
+.react-datepicker-wrapper {
+  height: 0 !important;
+}
+
+.react-datetime-picker__wrapper {
+  border: none !important;
+}
