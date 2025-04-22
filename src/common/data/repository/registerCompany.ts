@@ -2,6 +2,7 @@ import useApi, { UseApiOutputType } from "core/src/hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { Api_URL } from "core/src/utils/url";
 import { SignUpCommand } from "common/domain/command/signUpCommand";
+import { TokenEntity } from "core/src/types/api";
 
 enum AuthApiType {
   signUp = "RegisterCompany",
@@ -23,9 +24,10 @@ const getConfig = (type: AuthApiType): AxiosRequestConfig => {
   };
 };
 
-export function useSignUpApi(): UseApiOutputType<boolean, SignUpCommand> {
+export function useSignUpApi(): UseApiOutputType<TokenEntity, SignUpCommand> {
   const config = getConfig(AuthApiType.signUp);
-  return useApi<boolean, SignUpCommand>({
+  return useApi<TokenEntity, SignUpCommand>({
     ...config,
+    tokenRequired: false,
   });
 }

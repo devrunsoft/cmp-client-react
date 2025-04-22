@@ -14,6 +14,8 @@ import { PiEye, PiEyeClosed } from "react-icons/pi";
 import FormHookInput from "uikit/src/FormHookInput";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { StepIndicator } from "..";
+import Gap from "uikit/src/Gap";
+import { header, saveToken, tokenheader } from "core/src/utils/auth";
 
 export default function SwitcherAndCompanyInfo({
   setIndex,
@@ -43,6 +45,7 @@ export default function SwitcherAndCompanyInfo({
         console.log(d);
       },
       onSuccess: (res) => {
+        saveToken(res.data);
         setIndex!(1);
       },
     });
@@ -358,6 +361,7 @@ export default function SwitcherAndCompanyInfo({
           fullWidth
         />
       </Box>
+      <Gap/>
       <Box className="flex justify-end">
         <ActiveLoadingButton
           loading={isLoading}

@@ -18,6 +18,7 @@ import { mapLocationCompanyEntityToCommand } from "common/domain/mapper/location
 import { NextButton } from "components/button/next/next";
 import AddPointMap, { mcenter } from "components/map/addPointMap";
 import AddAddressMap from "components/map/AddAddressMap";
+import Gap from "uikit/src/Gap";
 
 export default function OperationalAddress({
   setIndex,
@@ -388,6 +389,7 @@ export default function OperationalAddress({
             )}
           </div>
         </div>
+
         <div className={styles.buttonLine}>
           {/* <button type="button" onClick={onBack}>
             Back

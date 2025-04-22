@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
 
 import Route from "./routes";
-import getTheme from "./theme/index";
+import getTheme from "./theme";
 
 function App() {
   return (
