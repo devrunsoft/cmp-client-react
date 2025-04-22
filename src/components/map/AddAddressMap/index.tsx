@@ -44,6 +44,7 @@ import { addOperationalAddress } from "data/api/register/operationalAddress/add"
 import { editOperationalAddress } from "data/api/register/operationalAddress/edit";
 import { SearchBox } from "cmp-core/src/Component/SearchBox";
 import CustomSelector from "components/dropDown/customSelect";
+import { GOOGLE_MAPS_API_KEY } from "core/src/utils/url";
 
 const libraries = ["places"];
 const containerStyle = {
@@ -101,7 +102,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
   const latitude = watch("latitude");
   const longitude = watch("longitude");
   const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
+    apiKey: GOOGLE_MAPS_API_KEY ?? "",
     version: "weekly",
     libraries: ["places"],
     id: "google-map-script",
@@ -322,7 +323,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
           </button>
         </div>
         <div className={styles.mapSection}>
-         <SearchBox 
+          <SearchBox
             onSelectAddress={(address, latitude, longitude, county, city) => {
               setValue("address", address);
               setValue("latitude", latitude);
@@ -342,8 +343,8 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
             {!isNaN(latitude!) && !isNaN(longitude!) && (
               <OverlayView
                 position={{
-                  lat: latitude??mcenter.lat,
-                  lng: longitude??mcenter.lng,
+                  lat: latitude ?? mcenter.lat,
+                  lng: longitude ?? mcenter.lng,
                 }}
                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
               >

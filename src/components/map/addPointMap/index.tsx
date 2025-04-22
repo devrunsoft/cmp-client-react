@@ -22,6 +22,7 @@ import { addOtherCompanyLocation } from "data/api/register/otherCompanyLocation/
 import { editOtherCompanyLocation } from "data/api/register/otherCompanyLocation/edit";
 import { getAddressFromCoordsApi } from "data/api/map/reverse_id";
 import { DropDown } from "components/dropDown";
+import { GOOGLE_MAPS_API_KEY } from "core/src/utils/url";
 
 const containerStyle = {
   width: "100%",
@@ -74,7 +75,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
   });
 
   const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
+    apiKey: GOOGLE_MAPS_API_KEY ?? "",
     version: "weekly",
     libraries: ["places"],
     id: "google-map-script",
