@@ -1,0 +1,162 @@
+.dialogForm{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 16px;
+}
+
+.mapSection{
+    position: relative;
+}
+
+.title{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.title button{
+    border: none;
+    background-color: transparent;
+}
+
+.search{
+    padding: 10px 20px 10px 20px !important;
+    position: absolute !important;
+    z-index: 4;
+    width: 100%;
+}
+.searchForm{
+    width: 100%;
+}
+
+.dialogForm .search{
+    position: sticky !important;
+    padding: 0px !important;
+}
+
+.dialogForm .searchBar{
+    padding: 12px 16px 12px 16px;
+    border: 1px solid rgba(228, 228, 228, 1);
+    box-shadow: none;
+    font-size: 16px;
+    line-height: 24px;
+    
+}
+.searchBar{
+    padding: 12px 16px 12px 16px;
+    border: 1px solid rgba(228, 228, 228, 1) !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    border-radius: 10px;
+    justify-content: space-between;
+    background: white;
+}
+
+.dialogForm label{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: left;
+    color: black;
+}
+
+.formInput, 
+.dialogForm textarea, 
+.numberInput input,
+.fakeInput{
+    padding: 12px 16px 12px 16px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.fakeInput{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.fakeInput button{
+    border: 0;
+    background-color: transparent;
+}
+
+.inputError{
+    box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+    outline: 1px solid rgba(196, 39, 39, 1) !important;
+    border-radius: 10px;
+}
+
+.numberInputError input{
+    outline: 1px solid rgba(196, 39, 39, 1) !important;
+    font-size: 16px;
+    padding: 12px 16px 12px 16px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+}
+
+
+.personInput{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.personInput input{
+    width: 100%;
+}
+
+.formInput:focus-within,
+.dialogForm textarea:focus-within,
+.numberInput input:focus-within,
+.dialogForm .searchBar:focus-within{
+    outline: 1px solid rgba(76, 142, 59, 1)
+}
+
+.submitButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: flex-end;
+    
+}
+.submitButtons button, .cancel{
+    font-size: 14px;
+    padding: 15px 36px 15px 36px;
+    gap: 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    background: #4C8E3B80;
+    color: white;
+    border: 0px;
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+}
+
+.cancel{
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #E4E4E4 !important;
+}
+
+.submitButtons button:hover{
+    background: #4C8E3B;
+}
+
+.cancel:hover{
+    background-color: rgb(210, 210, 210) !important;
+}
+

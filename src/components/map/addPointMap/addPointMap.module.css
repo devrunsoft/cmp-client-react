@@ -1,0 +1,101 @@
+.dialogForm{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+}
+.modalStyleClass{
+    border-radius: 50px;
+}
+
+.title{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title button{
+    border: none;
+    background-color: transparent;
+}
+
+.numberInput input, .selectAdress, .formInput, .textareaInput{
+    font-size: 16px;
+    padding: 12px 16px 12px 16px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+}
+
+.numberInputError input{
+    outline: 1px solid rgba(196, 39, 39, 1) !important;
+    font-size: 16px;
+    padding: 12px 16px 12px 16px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+}
+
+.personInput{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.personInput input{
+    width: 100%;
+}
+
+.dialogForm label{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: black;
+}
+
+.inputError{
+    box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+    outline: 1px solid rgba(196, 39, 39, 1) !important;
+    border-radius: 10px;
+}
+
+.formInput:focus-within,
+.textareaInput:focus-within,
+.numberInput input:focus-within{
+    outline: 1px solid rgba(76, 142, 59, 1)
+}
+.submitButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.submitButtons button{
+    font-size: 14px;
+    padding: 15px 36px 15px 36px;
+    gap: 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    background: #4C8E3B80;
+    color: white;
+    border: 0px;
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+}
+
+.cancel{
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #E4E4E4 !important;
+}
+
+.submitButtons button:hover{
+    background: #4C8E3B;
+}
+.cancel:hover{
+    background-color: rgb(210, 210, 210) !important;
+}

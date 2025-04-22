@@ -6,6 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { getToken } from "core/src/utils/auth";
 import { ProtectWrapper } from "./main";
+import SignUp from "views/Auth/SignUp";
 // import SignUp from "views/Auth/SignUp";
 
 const Login = Loadable(lazy(() => import("views/Auth/Login")));
@@ -44,6 +45,14 @@ const MainRoutes = {
       element: (
         <ProtectLoginWrapper>
           <Login />
+        </ProtectLoginWrapper>
+      ),
+    },
+    {
+      path: "/SignUpDetail/:step",
+      element: (
+        <ProtectLoginWrapper>
+          <SignUp />
         </ProtectLoginWrapper>
       ),
     },
