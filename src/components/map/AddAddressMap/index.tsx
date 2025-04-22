@@ -382,6 +382,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
               }`}
             >
               <SearchBox
+                isForm={true}
                 onSelectAddress={(address, latitude, longitude) => {
                   setValue("address", address);
                   setValue("latitude", latitude);

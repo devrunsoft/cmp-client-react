@@ -51,9 +51,7 @@ const MainRoutes = {
     {
       path: "/SignUpDetail/:step",
       element: (
-        <ProtectLoginWrapper>
           <SignUp />
-        </ProtectLoginWrapper>
       ),
     },
   ],

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SwitcherAndCompanyInfo from "./SwitcherAndCompanyInfo";
 import styles from "./signUp.module.css";
 import OperationalAddress from "./OperationalAddress";
+import { Box } from "@mui/material";
 // import { loginUser } from '@/app/utils/auth';
 
 const SignUp = () => {
@@ -18,7 +19,7 @@ const SignUp = () => {
       }, [index, navigate]);
 
   return (
-    <>
+    <Box className="registerPadding">
       {index === 1 && <SwitcherAndCompanyInfo setIndex={setIndex} />}
       {index === 2 && <OperationalAddress setIndex={setIndex} />}
 
@@ -26,7 +27,7 @@ const SignUp = () => {
       {index === 2 && <OperationalAddress setIndex={setIndex} />}
       {index === 3 && <DocumentSubmission setIndex={setIndex} />}
       {index === 4 && <SuccessScreen />} */}
-    </>
+      </Box>
   );
 };
 

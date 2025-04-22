@@ -8,7 +8,7 @@ import { OtherCompanyLocationCommand } from "common/domain/command/other_company
 import { deleteOperationalAddress } from "data/api/dashboard/operationalAddress/delete";
 import { deleteOtherAddressApi } from "data/api/dashboard/other_address/delete";
 import Title from "components/title/title";
-import { useFormContext } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import styles from "../signUp.module.css";
 import { FiTrash } from "react-icons/fi";
 import { LiaEdit } from "react-icons/lia";
@@ -101,7 +101,7 @@ export default function OperationalAddress({
   const {
     handleSubmit,
     formState: { errors },
-  } = useFormContext();
+  } = useForm();
   const [modalIsOpen, setModalIsOpen] = useState({
     operational: false,
     oilContainer: false,
@@ -166,7 +166,7 @@ export default function OperationalAddress({
   };
   const info = ["random", "infom"];
   const onSubmit = () => {
-    setIndex!(2);
+    setIndex!(3);
   };
 
   const operationalAddressCenter = operationalAddress

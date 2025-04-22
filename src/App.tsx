@@ -6,26 +6,31 @@ import { ToastContainer } from "react-toastify";
 
 import Route from "./routes";
 import getTheme from "./theme";
+import { LoadingProvider } from "components/loading/loading_context";
+import LoadingModal from "components/loading/loading_modal";
 
 function App() {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={getTheme("light")}>
-          <CssBaseline />
-          <Route />
-          {/* <AppVersion /> */}
-          <ToastContainer
-            position="bottom-center"
-            autoClose={2000}
-            hideProgressBar={true}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnHover
-            theme="colored"
-          />
-        </ThemeProvider>
+        <LoadingProvider>
+          <LoadingModal />
+          <ThemeProvider theme={getTheme("light")}>
+            <CssBaseline />
+            <Route />
+            {/* <AppVersion /> */}
+            <ToastContainer
+              position="bottom-center"
+              autoClose={2000}
+              hideProgressBar={true}
+              newestOnTop={true}
+              closeOnClick
+              rtl={false}
+              pauseOnHover
+              theme="colored"
+            />
+          </ThemeProvider>
+        </LoadingProvider>
       </StyledEngineProvider>
     </>
   );
