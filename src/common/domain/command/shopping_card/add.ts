@@ -2,7 +2,7 @@ export type AddShoppingCardCommand = {
   OperationalAddressId: number;
   // ServiceTypeId: string;
   ProductPriceId: number;
-  StartDate?: string;
+  StartDate?: Date;
   FrequencyType: string;
   ServiceKind: number;
   LocationCompanyIds: number[];

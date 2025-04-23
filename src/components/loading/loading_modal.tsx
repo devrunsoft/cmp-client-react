@@ -22,9 +22,9 @@ const LoadingModal = () => {
                     display: 'flex', // Enable flexbox
                     justifyContent: 'center', // Center horizontally
                     alignItems: 'center', // Center vertically
-                    zIndex: 1000, // Ensure it is above other content
+                    zIndex: 1500, // Ensure it is above other content
                 },
-                content: {
+                content: { 
                     border: 'none', // No border around the loader
                     background: 'transparent', // No background on the content area
                     position: 'static', // Reset default position styles

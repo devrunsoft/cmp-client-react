@@ -432,3 +432,10 @@ input[type="number"] {
 .pagecontent {
   padding: 40px;
 }
+
+.ReactModal__Overlay{
+  position: absolute !important;
+}
+.ReactModal__Content{
+  z-index: 1400 !important; /* MUI Dialog z-index is 1300+ */
+}

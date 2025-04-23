@@ -91,7 +91,7 @@ export function ButtonsForm(props: ButtonsFormProps) {
         <Link
           className={styles.cancel}
           href={`${APP_ROUTES.Service.replace(
-            "{oprAddress}",
+            ":oprAddress",
             selectedAddresses?.Id?.toString()??""
           )}`}
         >

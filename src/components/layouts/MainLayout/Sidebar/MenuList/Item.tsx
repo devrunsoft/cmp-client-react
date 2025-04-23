@@ -6,6 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Badge from "@mui/material/Badge"; // Import Badge component
 
 import styles from "./index.module.scss";
+import { useAddress } from "common/context/address_context";
 
 export default function ItemLink({
   item,
@@ -27,6 +28,7 @@ export default function ItemLink({
   const { pathname } = useLocation();
   const linkActive = isActiveLink(item, pathname);
   const selected = linkActive || groupSelect;
+  const { selectedAddresses } = useAddress();
   // const { hasAccessMenu, checkCount } = useRoleAccess();
 
   // if (!hasAccessMenu(item)) return null;
@@ -38,11 +40,17 @@ export default function ItemLink({
     : isGroup
     ? "grey.500"
     : "text.primary";
-
+  console.log(info.href);
   return (
     <ListItemButton
       {...(!isGroup || info.href === "/"
-        ? { to: info.href, component: Link }
+        ? {
+            to: info.href.replace(
+              ":oprAddress",
+              selectedAddresses?.Id?.toString() ?? "0"
+            ),
+            component: Link,
+          }
         : {})}
       onClick={onClick}
       className={`
@@ -65,7 +73,12 @@ export default function ItemLink({
           gap: "6px",
         }}
       >
-        {!!I && <I size={24} />}
+        {!!I &&
+          (typeof I === "string" ? (
+            <img src={I} width={24} height={24} alt="icon" />
+          ) : (
+            <I size={24} />
+          ))}
 
         {/* Badge for the item count */}
         <Badge

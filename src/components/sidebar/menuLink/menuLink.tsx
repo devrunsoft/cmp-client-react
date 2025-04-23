@@ -16,7 +16,7 @@ export default function MenuLinks({ item }) {
     <li className={styles.cat} key={item.index}>
       <Link
         href={item.path.replace(
-          "{oprAddress}",
+          ":oprAddress",
           selectedAddresses?.Id?.toString()??""
         )}
         className={`${styles.container} ${

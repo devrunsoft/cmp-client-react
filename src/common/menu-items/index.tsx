@@ -6,11 +6,14 @@ import { APP_ROUTES } from "../../routes/app_route";
 export enum LinkEnum {
   Home = 1,
   Address = 2,
+  AddAddress = 3,
+  Services= 4,
+  EnroolServices= 5
 }
 
 export type LinkInfo = {
   title: string;
-  icon: React.FunctionComponent<LucideProps> | null;
+  icon: React.FunctionComponent<LucideProps> | null | string;
   href: string;
   breadCrumb?: boolean;
   countKey?: string;
@@ -18,7 +21,7 @@ export type LinkInfo = {
 
 export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   [LinkEnum.Home]: {
-    title: "HOME",
+    title: "Home",
     icon: Home,
     href: "/",
   },
@@ -26,16 +29,30 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   [LinkEnum.Address]: {
     title: "ADDRESS",
     icon: Home,
-    href: APP_ROUTES.Address
+    href: `${APP_ROUTES.Address}/:oprAddress`,
   },
-
+  [LinkEnum.AddAddress]: {
+    title: "ADDRESS",
+    icon: Home,
+    href: `${APP_ROUTES.Address}`,
+  },
+  [LinkEnum.Services]: {
+    title: "Services",
+    icon: "/src/assets/sideIcons/white_services_icon.svg",
+    href: `${APP_ROUTES.Service}`,
+  },
+  [LinkEnum.EnroolServices]: {
+    title: "Services",
+    icon: "",
+    href: `${APP_ROUTES.Enrollservice}`,
+  },
 };
 
 export type SidebarGroupType = { key: LinkEnum; children: LinkEnum[] };
 
 export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Home, children: [] },
-
+  { key: LinkEnum.Services, children: [] },
 ];
 
 export function getSidebarChildrenFromParent(

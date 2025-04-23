@@ -8,6 +8,9 @@ import { getPath, LinkEnum } from "common/menu-items";
 
 const Home = Loadable(lazy(() => import("views/Home")));
 const Address = Loadable(lazy(() => import("views/Address")));
+const Services = Loadable(lazy(() => import("views/Services")));
+
+const Enrollservice = Loadable(lazy(() => import("views/Enrollservice")));
 
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
@@ -30,6 +33,18 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.Address),
       element: <Address />,
+    },
+    {
+      path: getPath(LinkEnum.AddAddress),
+      element: <Address />,
+    },
+    {
+      path: getPath(LinkEnum.Services),
+      element: <Services />,
+    },
+    {
+      path: getPath(LinkEnum.EnroolServices),
+      element: <Enrollservice />,
     },
   ],
 };

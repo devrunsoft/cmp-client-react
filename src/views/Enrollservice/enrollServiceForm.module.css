@@ -1,0 +1,308 @@
+.selectWrapper {
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  gap: 16px;
+
+  flex-direction: column;
+}
+
+.formSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.label,
+.formSection option {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: left;
+  color: black;
+  min-width: 150px;
+}
+
+.labelFont {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: left;
+  color: black;
+}
+
+.formSection option {
+  font-weight: 400;
+  padding: 4px 8px 4px 8px;
+}
+
+.formSection {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.selector {
+  width: 100%;
+}
+.labelTwoButtom {
+  display: flex;
+  align-items: flex-start;
+}
+.labelTwoButtom label {
+  padding-top: 15px;
+}
+
+.formSection select,
+.inputWithButton,
+.textarea,
+.addPointButton {
+  border: 1px solid rgba(228, 228, 228, 1) !important;
+  border-radius: 10px;
+  justify-content: space-between;
+
+  background: white;
+  font-size: 16px;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.fakeInput {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(228, 228, 228, 1);
+  background-color: #fff;
+  padding: 12px 16px 12px 16px;
+}
+
+.fakeInput input {
+  border: 0px !important;
+}
+.inputWithButton button,
+.fakeInput button {
+  border: 0px;
+  background-color: transparent;
+}
+
+.formSection select,
+.formSection input,
+.formSection textarea,
+.agreementText {
+  padding: 12px 16px 12px 16px;
+  border: 0px;
+  color: rgba(142, 142, 147, 1);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+  border-radius: 10px;
+  outline: none;
+}
+
+.inputWithButton input {
+  width: 100%;
+}
+
+.inputIconButton {
+  display: flex;
+  justify-content: center;
+  padding-right: 12px;
+  gap: 10px;
+}
+
+.DatainputError input {
+  outline: 1px solid rgb(34, 0, 255) !important;
+}
+.inputError {
+  box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+  outline: 1px solid rgba(196, 39, 39, 1) !important;
+  border-radius: 10px;
+}
+
+.boxClass {
+  color: rgba(142, 142, 147, 1);
+  border: 1px solid rgba(228, 228, 228, 1) !important;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boxClassLabel {
+  color: rgba(142, 142, 147, 1);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.textarea {
+  border: 1px solid rgba(228, 228, 228, 1) !important;
+  height: 100px;
+  resize: none;
+}
+
+.addPointButton {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px 12px 16px;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  align-items: center;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.inputWithButton:focus-within,
+.textarea:focus-within,
+.selectWrapper select:focus-within {
+  outline: 1px solid rgba(76, 142, 59, 1);
+}
+
+.agreementText {
+  color: rgba(102, 102, 102, 1);
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 166px;
+  gap: 8px;
+  justify-content: space-between; /* This pushes the price to the end */
+}
+
+.submitButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: flex-end;
+}
+.submitButtons button,
+.cancel {
+  font-size: 14px;
+  padding: 15px 36px 15px 36px;
+  gap: 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  background: #4c8e3b80;
+  color: white;
+  border: 0px;
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+}
+
+.cancel {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #e4e4e4 !important;
+}
+
+.submitButtons button:hover {
+  background: #4c8e3b;
+}
+
+.cancel:hover {
+  background-color: rgb(210, 210, 210) !important;
+}
+
+@media (max-width: 950px) {
+  .formSection {
+    flex-direction: column;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .agreementText {
+    padding-left: 0;
+  }
+}
+.textWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.price {
+  font-size: 17px;
+  font-weight: bold;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+}
+.currency {
+  margin-left: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.signUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 15px 36px 15px 36px;
+  border-radius: 50px;
+  background-color: rgba(76, 142, 59, 0.5);
+  gap: 8px;
+  border: 0px;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  border: 1px solid rgba(213, 115, 0, 0);
+}
+
+.signUp:hover {
+  background: rgba(76, 142, 59, 1);
+}
+
+.cancelService {
+  color: rgba(213, 115, 0, 1);
+  background: rgba(213, 115, 0, 0.1);
+  border: 1px solid rgba(213, 115, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 36px 15px 36px;
+  border-radius: 50px;
+  gap: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+}
+
+.cancelService:hover {
+  background-color: rgba(213, 115, 0, 1);
+  color: white;
+}
+.container {
+  font-size: 14px;
+  /* font-weight: 500; */
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 25px 0px 25px 0px;
+}

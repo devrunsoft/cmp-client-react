@@ -131,7 +131,7 @@ const ShoppingCard = () => {
             onClick={() => {
               navigate(
                 APP_ROUTES.Service.replace(
-                  "{oprAddress}",
+                  ":oprAddress",
                   selectedAddresses?.Id?.toString() ?? ""
                 ),
                 { replace: true }

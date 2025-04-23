@@ -8,10 +8,10 @@ export const APP_ROUTES = {
     ShoppingCard: "/dashboard/shoppingCart",
     Invoices: "/dashboard/invoices",
     Requests: "/dashboard/requests",
-    Service: "/dashboard/{oprAddress}/services",
+    Service: "/dashboard/:oprAddress/services",
     ServiceItem: "/dashboard/serviceItem",
     ServiceItemEmergency: "/dashboard/serviceItemEmergency",
-    Enrollservice: "/dashboard/{oprAddress}/enrollservice",
-    EnrollEmergencyService: "/dashboard/{oprAddress}/emergency",
+    Enrollservice: "/dashboard/:oprAddress/enrollservice",
+    EnrollEmergencyService: "/dashboard/:oprAddress/emergency",
     Address: "/dashboard/newAddress",
 };

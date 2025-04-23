@@ -17,12 +17,12 @@ export default function Dashboard() {
 
 
   const handleClick = (model: OperationalAddressEntity) => {
-    navigate(`${APP_ROUTES.Address}?Id=${(model.Id)}`, undefined);
+    navigate(`${APP_ROUTES.Address}/${model.Id}`, undefined);
   };
 
   const selectService = (model: OperationalAddressEntity) => {
     setSelectedAddresses(model);
-    navigate(`${APP_ROUTES.Service.replace("{oprAddress}", model.Id?.toString()??"") }`, undefined);
+    navigate(`${APP_ROUTES.Service.replace(":oprAddress", model.Id?.toString()??"") }`, undefined);
   };
   const addNewAdderss = () => {
     navigate(APP_ROUTES.Address, undefined);
