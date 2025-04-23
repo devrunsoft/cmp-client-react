@@ -8,7 +8,8 @@ export enum LinkEnum {
   Address = 2,
   AddAddress = 3,
   Services= 4,
-  EnroolServices= 5
+  EnroolServices= 5,
+  EmergencyServices= 6
 }
 
 export type LinkInfo = {
@@ -45,6 +46,11 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     title: "Services",
     icon: "",
     href: `${APP_ROUTES.Enrollservice}`,
+  },
+  [LinkEnum.EmergencyServices]: {
+    title: "Emergency Services",
+    icon: "",
+    href: `${APP_ROUTES.EnrollEmergencyService}`,
   },
 };
 

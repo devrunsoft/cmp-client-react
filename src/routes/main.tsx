@@ -11,6 +11,7 @@ const Address = Loadable(lazy(() => import("views/Address")));
 const Services = Loadable(lazy(() => import("views/Services")));
 
 const Enrollservice = Loadable(lazy(() => import("views/Enrollservice")));
+const EnrollserviceEmergency= Loadable(lazy(() => import("views/Emergency")));
 
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
@@ -45,6 +46,10 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.EnroolServices),
       element: <Enrollservice />,
+    },
+    {
+      path: getPath(LinkEnum.EmergencyServices),
+      element: <EnrollserviceEmergency />,
     },
   ],
 };

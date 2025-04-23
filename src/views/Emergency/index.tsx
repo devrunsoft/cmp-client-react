@@ -1,42 +1,38 @@
 import { useAddress } from "common/context/address_context";
 import FormFrameScroll from "components/formFrame/formFrameScroll";
 import TitleBack from "components/title/title_back";
-import { Suspense, useEffect } from "react";
-import React from "react";
-import { useLocation, useParams } from "react-router-dom";
-import EnrollServiceForm from "./enrollServiceForm";
+import { Suspense } from "react";
+import { useLocation } from "react-router-dom";
+import EmergencyServiceForm from "./emergencyServiceForm";
 
-export default function EnrollService() {
-  return (
-      <EnrollServiceCm />
-  );
+export default function emergencyService() {
+  return <EmergencyServiceChild />;
 }
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const EnrollServiceCm = () => {
+const EmergencyServiceChild = () => {
   const query = useQuery();
   const type = query.get("type");
   const data = query.get("data");
-  const serviceId = query.get("serviceId");
-  
   var id: number | null = null;
-  if (data) {
+
+  if (query) {
     if (data) id = JSON.parse(data);
   }
 
   const { selectedAddresses } = useAddress();
-  useEffect(() => {}, [selectedAddresses]);
-
   return (
     <div className="pagecontent">
       <TitleBack
-        title={`${type} - ${selectedAddresses ? selectedAddresses.Name : ""}`}
-        icon={"/src/assets/broom.svg"}
+        title={`Emergency Service - ${
+          selectedAddresses ? selectedAddresses.Name : ""
+        }`}
+        icon={"/src/assets/emergency_serc_icon.svg"}
       />
       <FormFrameScroll>
-        <EnrollServiceForm Id={id} serviceId={Number(serviceId)} />
+        <EmergencyServiceForm Id={id} />
       </FormFrameScroll>
     </div>
   );

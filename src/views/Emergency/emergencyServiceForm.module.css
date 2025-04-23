@@ -1,0 +1,146 @@
+.form {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+
+}
+
+.formSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.form label{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: left;
+    color: black;
+    min-width: 150px;
+}
+
+
+.labelTwoButtom {
+    display: flex;
+    align-items: flex-start;
+  }
+  .labelTwoButtom label{
+    padding-top: 15px;
+  }
+
+.fakeInput{
+    display: flex;
+    gap: 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+    background-color: #fff;
+    padding: 12px 16px 12px 16px;
+}
+
+.inputIconButton{
+    display: flex;
+    justify-content: center;
+    padding-right: 12px;
+    flex-direction: row;
+}
+
+.inputIconButton button{
+    border: none;
+    background-color: transparent;
+    padding-left: 10px;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+}
+
+.selector{
+    width: 100%;
+}
+
+
+.inputError{
+    box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+    outline: 1px solid rgba(196, 39, 39, 1) !important;
+    border-radius: 10px;
+}
+
+.addPointButton{
+    color: black !important;
+    display: flex;
+    justify-content: center !important;
+    gap: 8px;
+    font-size: 14px !important;
+    letter-spacing: 0.15em;
+    align-items: center;
+    width: 100%;
+  }
+
+.formSection select,
+.addPointButton{
+    padding: 12px 16px 12px 16px;
+    border: 1px solid rgba(228, 228, 228, 1) !important;
+    color: rgba(142, 142, 147, 1);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    border-radius: 10px;
+    justify-content: space-between;
+    background: white;
+}
+
+.agreementText{
+    color: rgba(102, 102, 102, 1);
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: inherit;
+    align-items: self-start;
+    padding-left: 166px;
+    gap: 8px;
+    padding-top: 24px;
+}
+.price {
+    font-size: 17px;
+    font-weight: bold;
+    color: #333;
+    margin-left: auto;
+    
+}
+
+.question{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    
+}
+
+.formSection select:focus-within {
+    outline: 1px solid rgba(76, 142, 59, 1)
+}
+
+
+.submitButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: flex-end;
+    
+}
+
+

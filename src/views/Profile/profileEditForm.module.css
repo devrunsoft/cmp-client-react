@@ -1,0 +1,176 @@
+.container{
+   padding-top: 24px;
+   border-top: 1px solid #E4E4E4;
+   display: flex;
+   gap: 24px;
+   flex-direction: column;
+}
+.container h3{
+   font-size: 20px;
+   color: #666666;
+   font-weight: 500;
+}
+
+.textContainer {
+   display: flex;
+   flex-direction: column; /* Stacks text vertically */
+   flex-grow: 1; /* Takes available horizontal space */
+}
+
+
+.addressInfo {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+   color: rgba(102, 102, 102, 1);
+}
+.form{
+   width: 100%;
+   display: flex;
+   gap: 16px;
+   flex-direction: column;
+   flex-wrap: nowrap;
+   /* align-items: center; */
+   /* height: 80vh; */
+}
+
+
+.formSection{
+   width: 100%;
+   display: flex;
+   align-items: center;
+   gap: 24px;    
+}
+
+.form p{
+   color: rgba(102, 102, 102, 1);
+   font-weight: 600;
+   padding: 8px 0px;
+}
+
+.form h3{
+   padding: 8px 0px;
+}
+ 
+.informSection{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.formSection label{
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+   text-align: left;
+   min-width: 210px;
+}
+
+.formSection p {
+   color: #666666;
+   font-size: 16px;
+}
+
+.numberInput{
+   width: 100% !important;
+}
+.numberInput input,
+.formInput,
+.addLocationButton{
+   font-size: 16px;
+   line-height: 24px;
+   width: 100% !important;
+   padding: 12px 16px 12px 16px;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: #fff;
+   
+   display: flex;
+   /* align-items: center; */
+   justify-content: center;
+   gap: 8px;
+}
+
+
+.disableInput{
+   font-size: 16px;
+   line-height: 24px;
+   width: 100% !important;
+   padding: 12px 16px 12px 16px;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: rgb(234, 232, 232);
+   
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+}
+.inputError{
+   box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+   outline: 1px solid rgba(196, 39, 39, 1) !important;
+}
+
+.addLocationButton{
+   font-size: 14px;
+}
+
+.personInput{
+   display: flex;
+   flex-direction: row;
+   gap: 16px;
+   width: 100%;
+}
+
+.personInput input{
+   width: 100%;
+}
+
+.formInput:focus-within, .numberInput input:focus-within{
+   outline: 1px solid rgba(76, 142, 59, 1) 
+}
+
+.numberInputError{
+   width: 100%;
+}
+
+.numberInputError input{
+   outline: 1px solid rgba(196, 39, 39, 1) !important;
+   font-size: 16px;
+   line-height: 24px;
+   padding: 12px 16px 12px 16px;
+   gap: 10px;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+}
+
+
+.fakeInput{
+   display: flex;
+   gap: 16px;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: #fff;
+   padding: 12px 16px 12px 16px;
+}
+
+.inputIconButton{
+   display: flex;
+   flex-direction: row;
+}
+.inputIconButton button{
+   border: none;
+   background-color: transparent;
+   padding-left: 10px;
+}
+
+.informSection{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
