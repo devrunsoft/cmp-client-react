@@ -42,7 +42,6 @@ export default function MainLayout() {
   useEffect(() => {
     request.call({});
   }, []);
-
   return (
     <HasAccess>
       <Box
@@ -63,7 +62,12 @@ export default function MainLayout() {
           )}
           <DataFetchingWrapper loading={request.loading}>
             {request.data && (
-              <AddressProvider address={request.data.data}>
+              <AddressProvider
+                address={request.data.data}
+                defaultAddress={
+                  request.data.data.length == 0 ? {} : request.data.data[0]
+                }
+              >
                 <Outlet />
               </AddressProvider>
             )}

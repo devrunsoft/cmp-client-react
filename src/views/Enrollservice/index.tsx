@@ -3,7 +3,7 @@ import FormFrameScroll from "components/formFrame/formFrameScroll";
 import TitleBack from "components/title/title_back";
 import { Suspense, useEffect } from "react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import EnrollServiceForm from "./enrollServiceForm";
 
 export default function EnrollService() {
@@ -13,9 +13,15 @@ export default function EnrollService() {
     </Suspense>
   );
 }
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const EnrollServiceCm = () => {
-  const { type, data, serviceId } = useParams();
+  const query = useQuery();
+  const type = query.get("type");
+  const data = query.get("data");
+  const serviceId = query.get("serviceId");
   
   var id: number | null = null;
   if (data) {

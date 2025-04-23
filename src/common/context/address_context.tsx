@@ -19,14 +19,13 @@ const AddressContext = createContext<AddressContextType | undefined>(undefined);
 
 export const AddressProvider: React.FC<{
   children: ReactNode;
+  defaultAddress: Partial<OperationalAddressEntity>;
   address: OperationalAddressEntity[];
-}> = ({ children, address }) => {
-  const [addresses, setAddresses] = React.useState<OperationalAddressEntity[]>(
-    address
-  );
-  const [selectedAddresses, setSelectedAddresses] = React.useState<
-    Partial<OperationalAddressEntity>
-  >({});
+}> = ({ children, address, defaultAddress }) => {
+  const [addresses, setAddresses] =
+    React.useState<OperationalAddressEntity[]>(address);
+  const [selectedAddresses, setSelectedAddresses] =
+    React.useState<Partial<OperationalAddressEntity>>(defaultAddress);
   const requestPrice = useGetAllOperationalAddress();
 
   async function refreshAdr() {

@@ -407,9 +407,9 @@ input[type="number"] {
   padding: 10px;
   border-radius: 6px;
 }
-.react-datepicker-wrapper {
-  height: 0 !important;
-}
+// .react-datepicker-wrapper {
+//   height: 0 !important;
+// }
 
 .react-datetime-picker__wrapper {
   border: none !important;
@@ -438,4 +438,13 @@ input[type="number"] {
 }
 .ReactModal__Content{
   z-index: 1400 !important; /* MUI Dialog z-index is 1300+ */
+}
+
+.react-time-picker__wrapper {
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(228, 228, 228, 1) !important;
+}
+.react-datepicker-wrapper{
+  width: 100%;
 }
