@@ -8,29 +8,41 @@ import Route from "./routes";
 import getTheme from "./theme";
 import { LoadingProvider } from "components/loading/loading_context";
 import LoadingModal from "components/loading/loading_modal";
+import { AddressProvider } from "common/context/address_context";
+import { SignableContractProvider } from "components/context_api/signable_contract_context";
+import { InvoicePayableProvider } from "components/context_api/payable_invoice_context";
+import { ShoppingCardProvider } from "components/context_api/shopping_card_context";
 
 function App() {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <LoadingProvider>
-          <LoadingModal />
-          <ThemeProvider theme={getTheme("light")}>
-            <CssBaseline />
-            <Route />
-            {/* <AppVersion /> */}
-            <ToastContainer
-              position="bottom-center"
-              autoClose={2000}
-              hideProgressBar={true}
-              newestOnTop={true}
-              closeOnClick
-              rtl={false}
-              pauseOnHover
-              theme="colored"
-            />
-          </ThemeProvider>
-        </LoadingProvider>
+        <AddressProvider address={[]}>
+          <LoadingProvider>
+            <SignableContractProvider>
+              <InvoicePayableProvider>
+                <ShoppingCardProvider>
+                  <LoadingModal />
+                  <ThemeProvider theme={getTheme("light")}>
+                    <CssBaseline />
+                    <Route />
+                    {/* <AppVersion /> */}
+                    <ToastContainer
+                      position="bottom-center"
+                      autoClose={2000}
+                      hideProgressBar={true}
+                      newestOnTop={true}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnHover
+                      theme="colored"
+                    />
+                  </ThemeProvider>
+                </ShoppingCardProvider>
+              </InvoicePayableProvider>
+            </SignableContractProvider>
+          </LoadingProvider>
+        </AddressProvider>
       </StyledEngineProvider>
     </>
   );

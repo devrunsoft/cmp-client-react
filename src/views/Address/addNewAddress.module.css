@@ -1,0 +1,422 @@
+.form{
+   width: 100%;
+   display: flex;
+   gap: 16px;
+   flex-direction: column;
+   flex-wrap: nowrap;
+   align-items: center;
+   margin-top: 32px;
+}
+
+.formSection{
+   width: 100%;
+   display: flex;
+   align-items: center;
+   gap: 24px;    
+}
+
+
+.informSection{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.formSection label{
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+   text-align: left;
+   min-width: 190px;
+}
+
+.fakeInput{
+   display: flex;
+   gap: 16px;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: #fff;
+   padding: 12px 16px 12px 16px;
+}
+
+.inputIconButton{
+   display: flex;
+   flex-direction: row;
+}
+.inputIconButton button{
+   border: none;
+   background-color: transparent;
+   padding-left: 10px;
+}
+
+.wrapper {
+    padding: 40px;
+    overflow-y: auto;
+    flex-grow: 1; 
+    flex-basis: 0;
+}
+
+.addLocationButton{
+    font-size: 16px;
+    line-height: 24px;
+    width: 100% !important;
+    padding: 12px 16px 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(228, 228, 228, 1);
+    background-color: #fff;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.buttonLine button{
+   display: flex;
+   align-items: center;
+   padding: 15px 36px;
+   border-radius: 50px;
+   font-size: 14px;
+   line-height: 14px;
+   letter-spacing: 0.15em;
+   text-transform: uppercase;
+   background: #4C8E3B80;
+  
+   color: #fff;
+   border: 1px solid rgba(228, 228, 228, 1)
+}
+
+.nextButton:hover{
+   background: #4C8E3B;
+}
+
+.buttonLine{
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+   gap: 16px;
+}
+
+.stepsContainer{
+   display: flex;
+   justify-content: center;
+   margin: 20px 0;
+   gap: 8px;
+   align-items: center;
+}
+
+.stepIndicator{
+   width: 32px;
+   height: 32px;
+   border-radius: 50px;
+   background: rgba(228, 228, 228, 1);
+   color: white;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.active{
+   background: rgba(76, 142, 59, 1);
+}
+
+.intermediate{
+   background-color: white;
+   color: rgba(76, 142, 59, 1);
+   border: 1px solid rgba(76, 142, 59, 1)
+}
+
+.spacer{
+   width: 24px;
+   height: 0px;
+   border:1px solid rgba(228, 228, 228, 1)
+}
+
+.spacerActive{
+   border: 1px solid rgba(76, 142, 59, 1);
+   
+
+}
+
+.companyTypeButtons{
+   display: flex;
+   flex-direction: row;
+   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+   width: fit-content;
+   padding: 4px;
+   border-radius: 8px;
+}
+
+.radioButton input[type="radio"] {
+   display: none;
+}
+ 
+.radioButtonText {
+   display: inline-block;
+   padding: 8px 16px;
+   border-radius: 5px;
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+   color: rgba(76, 142, 59, 1);
+}
+
+.radioButtonText:hover {
+   background-color: #f0f0f0;
+}
+
+.radioButton input[type="radio"]:checked + .radioButtonText {
+   background: rgba(76, 142, 59, 1);
+   color: white;
+}
+
+.form{
+   width: 100%;
+   display: flex;
+   gap: 16px;
+   flex-direction: column;
+   flex-wrap: nowrap;
+   align-items: center;
+   margin-top: 32px;
+   height: 80vh;
+}
+.inputWithButton:focus-within {
+   outline: 1px solid rgba(76, 142, 59, 1)
+}
+.inputPassword, .inputEmail{
+   border: 0px;
+   font-size: 16px;
+   font-weight: 400;
+   line-height: 24px;
+   color: rgba(142, 142, 147, 1);
+   width: 100%;
+   outline: none;
+}
+
+
+.inputWithButton{
+   border: 1px solid rgba(228, 228, 228, 1) !important;
+   padding: 12px 16px 12px 16px;
+   gap: 10px;
+   border-radius: 10px;
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.inputWithButton button{
+   border: 0px;
+   background-color: transparent;
+   padding: 0px;
+}
+
+.inputWithButton:focus-within,
+.inputEmail:focus-within {
+   outline: 1px solid rgba(76, 142, 59, 1)
+}
+
+
+.formSection{
+   width: 100%;
+   display: flex;
+   align-items: center;
+   gap: 24px;    
+}
+
+.form p{
+   color: rgba(102, 102, 102, 1);
+   font-weight: 600;
+}
+ 
+.informSection{
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.fakeInput{
+   display: flex;
+   gap: 16px;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: #fff;
+   padding: 12px 16px 12px 16px;
+}
+
+.inputIconButton{
+   display: flex;
+   flex-direction: row;
+}
+.inputIconButton button{
+   border: none;
+   background-color: transparent;
+   padding-left: 10px;
+}
+
+.formSection label{
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+   text-align: left;
+   min-width: 190px;
+}
+
+.numberInput{
+   width: 100% !important;
+}
+.numberInput input,
+.formInput,
+.addLocationButton,
+.fileContainer{
+   font-size: 16px;
+   line-height: 24px;
+   width: 100% !important;
+   padding: 12px 16px 12px 16px;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+   background-color: #fff;
+   
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+}
+
+.numberInputError{
+   width: 100%;
+}
+.errortext {
+   color: red !important; 
+   font-weight: bold; /* Optional: Makes the text bold */
+   font-size: 14px; /* Optional: Adjust the text size */
+}
+
+
+.numberInputError input{
+   outline: 1px solid rgba(196, 39, 39, 1) !important;
+   font-size: 16px;
+   line-height: 24px;
+   padding: 12px 16px 12px 16px;
+   gap: 10px;
+   border-radius: 10px;
+   border: 1px solid rgba(228, 228, 228, 1);
+}
+
+.personInput{
+   display: flex;
+   flex-direction: row;
+   gap: 16px;
+   width: 100%;
+}
+
+.personInput input{
+   width: 100%;
+}
+
+
+.formSection span{
+   color: rgba(196, 39, 39, 1);
+   font-size: 14px;
+   font-weight: 600;
+}
+
+.inputError{
+   box-shadow: 0px 0px 10px 0px rgba(194, 22, 22, 0.2);
+   outline: 1px solid rgba(196, 39, 39, 1) !important;
+}
+
+.addLocationButton{
+   font-size: 14px;
+}
+
+.formInput:focus-within, .numberInput input:focus-within{
+   outline: 1px solid rgba(76, 142, 59, 1) 
+}
+
+.nextButton{
+   background: rgba(76, 142, 59, 1) !important;
+   border: 0px !important;
+   color: #fff;
+}
+
+.buttonLine button{
+   display: flex;
+   align-items: center;
+   padding: 15px 36px;
+   border-radius: 50px;
+   font-size: 14px;
+   line-height: 14px;
+   letter-spacing: 0.15em;
+   text-transform: uppercase;
+   background-color: #fff;
+   border: 1px solid rgba(228, 228, 228, 1)
+}
+
+.buttonLine{
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+   gap: 16px;
+}
+
+
+
+.uploadButton {
+  width: 100%;
+   cursor: pointer;
+   justify-content: center;
+   position: relative;
+ }
+
+.isade{
+   outline: 2px dashed rgba(76, 142, 59, 1);
+   padding: 12px 24px;
+   width: auto;
+   border-radius: 8px;
+   display: flex;
+   gap: 8px;
+   justify-content: center;
+}
+
+.uploadButton a{
+   color: rgba(76, 142, 59, 1);
+}
+ 
+.hiddenInput {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   opacity: 0;
+   cursor: pointer;
+}
+
+.removeButton{
+   border: 0px;
+   background-color: initial;
+}
+
+
+@media (max-width: 600px) {
+   .formSection{
+       flex-direction: column;
+       gap: 7px;
+       align-items: flex-start;
+   }
+
+   .buttonLine{
+       flex-direction: column;
+   }
+}

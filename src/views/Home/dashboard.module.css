@@ -1,0 +1,100 @@
+
+.container{
+    flex-direction: column;
+    display: flex;
+}
+
+.bottom{
+    display: flex;
+    flex-direction: row;
+}
+
+.menu{
+    flex: 1;
+    
+}
+
+.content{
+    flex: 4.9;
+    background-color: white;
+    margin: 0px 40px 30px 40px;
+    border-radius: 10px;
+    padding: 40px;
+
+    width: 100%;
+    min-height: calc(100vh - 146px);
+    position: relative;
+}
+
+.wrapper {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.addressItem {
+    margin-bottom: 0.8em;
+    padding: 0.4em 1em;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: #000;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    flex-direction: column;
+  }
+
+.addressInfo {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: rgba(102, 102, 102, 1);
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.inputIconButton {
+    display: flex;
+    justify-content: space-between; /* Pushes the icon to the end */
+    align-items: center; /* Vertically aligns items */
+    gap: 8px;
+    width: 100%;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column; /* Stacks text vertically */
+    flex-grow: 1; /* Takes available horizontal space */
+}
+
+.inputIconButton .icon {
+    flex-shrink: 0; /* Prevents the icon from shrinking */
+}
+.newButtom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    padding: 15px 36px 15px 36px;
+    border-radius: 50px;
+    background: #4C8E3B;
+    gap: 8px;
+    border: 0px;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0.15em;
+}
+
+.newButtom:hover{
+  background: #335e28;
+}

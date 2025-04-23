@@ -7,6 +7,7 @@ import MainLayout from "components/layouts/MainLayout";
 import { getPath, LinkEnum } from "common/menu-items";
 
 const Home = Loadable(lazy(() => import("views/Home")));
+const Address = Loadable(lazy(() => import("views/Address")));
 
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
@@ -25,6 +26,10 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.Home),
       element: <Home />,
+    },
+    {
+      path: getPath(LinkEnum.Address),
+      element: <Address />,
     },
   ],
 };

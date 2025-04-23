@@ -1,0 +1,56 @@
+.container{
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 30px;
+    gap: 8px;
+    flex-direction: row; 
+    border-left: 4px solid transparent;
+    border-radius: 0px 7px 7px 0px;
+    color: white;
+}
+
+.container:hover, .active{
+    border-left: 4px solid rgba(246, 197, 23, 1);
+    background: rgba(246, 197, 23, 0.1);
+}
+
+.categoryText{
+    color: var(--text);
+    text-transform: uppercase;
+    /* margin: 5px 10px; */
+    font-family: var(--mainFont);
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.15em;
+    text-align: left;
+    margin-right: auto;
+     
+    
+}
+
+.statusCircle{
+    border-radius: 50%;
+    color: var(--bg);
+    min-width: 22px;
+    height: 22px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.message{
+    background: rgba(246, 197, 23, 1);
+}
+
+.warning{
+    color: white;
+    background: rgba(196, 39, 39, 1);
+}
+
+.container img{
+    min-width: 24px;
+    height: 24px;
+    color: white;
+}

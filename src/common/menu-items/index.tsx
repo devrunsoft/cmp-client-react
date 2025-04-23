@@ -1,12 +1,11 @@
 import React from "react";
 
 import { Home, LucideProps } from "lucide-react";
+import { APP_ROUTES } from "../../routes/app_route";
 
 export enum LinkEnum {
   Home = 1,
-  Profile = 2,
-  Invoice = 3,
-  Manifest = 4,
+  Address = 2,
 }
 
 export type LinkInfo = {
@@ -23,30 +22,20 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     icon: Home,
     href: "/",
   },
-  [LinkEnum.Profile]: {
-    title: "PROFILE",
+
+  [LinkEnum.Address]: {
+    title: "ADDRESS",
     icon: Home,
-    href: "/profile",
+    href: APP_ROUTES.Address
   },
-  [LinkEnum.Invoice]: {
-    title: "INVOICE",
-    icon: Home,
-    href: "/invoice",
-  },
-  [LinkEnum.Manifest]: {
-    title: "MANIFEST",
-    icon: Home,
-    href: "/manifest",
-  },
+
 };
 
 export type SidebarGroupType = { key: LinkEnum; children: LinkEnum[] };
 
 export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Home, children: [] },
-  { key: LinkEnum.Profile, children: [] },
-  // { key: LinkEnum.Invoice, children: [] },
-  { key: LinkEnum.Manifest, children: [] },
+
 ];
 
 export function getSidebarChildrenFromParent(
