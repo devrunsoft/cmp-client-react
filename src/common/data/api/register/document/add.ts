@@ -21,7 +21,9 @@ export async function addDcoument(command: DocumentCommand): Promise<Either<Erro
     try {
         var header = tokenheader();
         const formData = new FormData();
+        if(command.BusinessLicense)
         formData.append('BusinessLicense', command.BusinessLicense);
+        if(command.HealthDepartmentCertificate)
         formData.append('HealthDepartmentCertificate', command.HealthDepartmentCertificate);
         const response = await fetch(`${Api_URL}/Document`, {
             method: 'POST',

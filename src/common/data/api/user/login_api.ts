@@ -1,7 +1,7 @@
 import { String_Const } from "common/constants/string_constants";
 import { CusomerError, Either, left, right, UnAuthorize } from "common/core/either";
 import { BaseResponse } from "common/core/response/api_response";
-import { LoginCommand } from "common/domain/command/login_command";
+import { LoginCommand } from "common/domain/command/login";
 import { AddServiceAppointmentCommand } from "common/domain/command/service_appointment/add_service_appointment_command";
 import { SignCompanyContractCommand } from "common/domain/command/sign_contract_command";
 import { SignUpCommand } from "common/domain/command/signUpCommand";

@@ -17,7 +17,7 @@ function App() {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <AddressProvider address={[]}>
+        <AddressProvider address={[]} defaultAddress={{}}>
           <LoadingProvider>
             <SignableContractProvider>
               <InvoicePayableProvider>

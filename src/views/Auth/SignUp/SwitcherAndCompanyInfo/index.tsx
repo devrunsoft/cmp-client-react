@@ -267,7 +267,6 @@ export default function SwitcherAndCompanyInfo({
           type={showPassword ? "text" : "password"}
           validation={{
             required: "Password is required",
-            validate: (value) => value === password || "Passwords do not match",
             minLength: {
               value: 8,
               message: "Password must be at least 8 characters long",

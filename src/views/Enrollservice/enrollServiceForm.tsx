@@ -339,7 +339,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     <>
       {invoiceModel && (
         <ShowInvoice
-          isOpen={invoiceModalIsOpen}
+          open={invoiceModalIsOpen}
           onClose={() => {
             setInvoiceModalIsOpen(false);
           }}

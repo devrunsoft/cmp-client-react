@@ -139,7 +139,7 @@ export default function RequestServices() {
     <div className={styles.table_container}>
       {invoiceModel && (
         <ShowInvoice
-          isOpen={invoiceModalIsOpen}
+        open={invoiceModalIsOpen}
           onClose={() => {
             fetchInvoice();
             setInvoiceModalIsOpen(false);
