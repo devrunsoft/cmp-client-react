@@ -93,7 +93,7 @@ const PhotoUpload = () => {
               <img
                 width={24}
                 height={24}
-                src="/export_icon_dark.svg"
+                src="/src/assets/export_icon_dark.svg"
                 alt="Upload Icon"
               />
               <span>Upload Photo</span>

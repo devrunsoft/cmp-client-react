@@ -52,6 +52,19 @@ const components = (theme: Theme): Components => ({
       color: "secondary",
     },
   },
+  MuiLink: {
+    styleOverrides: {
+      root: {
+        textDecoration: "none",
+        "&:hover": {
+          textDecoration: "none",
+        },
+      },
+    },
+    defaultProps: {
+      underline: "none",
+    },
+  },
 
   MuiOutlinedInput: {
     styleOverrides: {

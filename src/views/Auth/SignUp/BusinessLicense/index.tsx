@@ -2,7 +2,6 @@
 import {
   useForm,
   FormProvider,
-  useFormContext,
   Controller,
 } from "react-hook-form";
 import { useState, useEffect } from "react";
@@ -50,7 +49,7 @@ export const BusinessLicense = ({
   const {
     handleSubmit,
     formState: { errors },
-  } = useFormContext();
+  } = useForm();
 
   const onSubmit = async (data) => {
     if (!file1 && !file2) {
@@ -108,7 +107,7 @@ export const BusinessLicense = ({
                 <img
                   width={24}
                   height={24}
-                  src="/download_icon_dark.svg"
+                  src="/src/assets/download_icon_dark.svg"
                   alt="Upload Icon"
                 />
                 <span>
@@ -148,7 +147,7 @@ export const BusinessLicense = ({
                 <img
                   width={24}
                   height={24}
-                  src="/download_icon_dark.svg"
+                  src="/src/assets/download_icon_dark.svg"
                   alt="Upload Icon"
                 />
                 <span>

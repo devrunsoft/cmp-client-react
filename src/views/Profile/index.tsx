@@ -6,7 +6,7 @@ import ProfileEditForm from "./profileEditForm";
 export default function ProfileEditPage() {
   return (
     <div className="pagecontent">
-      <Title title={"Edit client information"} icon={"/editProfile.svg"}></Title>
+      <Title title={"Edit client information"} icon={"/src/assets/editProfile.svg"}></Title>
       <ProfileEditForm />
     </div>
   );

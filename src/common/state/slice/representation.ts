@@ -1,20 +1,19 @@
-// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { AdminMenuRepresentation } from "common/domain/entity/adminMenuRepresentation";
-// import { MenuEntity } from "common/domain/entity/menu";
-// import { MenuItemType } from "types/user";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ClientRepresentationEntity } from "common/domain/entity/client_representation_response";
 
-// const Representationlice = createSlice({
-//   name: "representationlice",
-//   initialState: {} as AdminMenuRepresentation,
-//   reducers: {
-//     setRepresentation: (_, action: PayloadAction<AdminMenuRepresentation>) => {
-//       const payload = action.payload;
-//       return payload;
-//     },
-//     refreshMenu: (state) => state,
-//   },
-// });
 
-// export const { setRepresentation, refreshMenu } = Representationlice.actions;
+const Representationlice = createSlice({
+  name: "representationlice",
+  initialState: {} as ClientRepresentationEntity,
+  reducers: {
+    setRepresentation: (_, action: PayloadAction<ClientRepresentationEntity>) => {
+      const payload = action.payload;
+      return payload;
+    },
+    refreshMenu: (state) => state,
+  },
+});
 
-// export default Representationlice.reducer;
+export const { setRepresentation, refreshMenu } = Representationlice.actions;
+
+export default Representationlice.reducer;

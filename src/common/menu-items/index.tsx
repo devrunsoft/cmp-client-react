@@ -1,15 +1,24 @@
 import React from "react";
 
-import { Home, LucideProps } from "lucide-react";
+import { Home, Inbox, LucideProps } from "lucide-react";
 import { APP_ROUTES } from "../../routes/app_route";
 
 export enum LinkEnum {
   Home = 1,
   Address = 2,
   AddAddress = 3,
-  Services= 4,
-  EnroolServices= 5,
-  EmergencyServices= 6
+  Services = 4,
+  EnroolServices = 5,
+  EmergencyServices = 6,
+  Requestservice = 7,
+  invoices = 8,
+  Contract = 9,
+  Inbox = 10,
+  Statistics = 11,
+  Help = 12,
+  Profile = 13,
+  ShoppingCard = 14,
+  Activation = 15,
 }
 
 export type LinkInfo = {
@@ -26,7 +35,6 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     icon: Home,
     href: "/",
   },
-
   [LinkEnum.Address]: {
     title: "ADDRESS",
     icon: Home,
@@ -44,13 +52,61 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   },
   [LinkEnum.EnroolServices]: {
     title: "Services",
-    icon: "",
+    icon: "/src/assets/sideIcons/white_services_icon.svg",
     href: `${APP_ROUTES.Enrollservice}`,
   },
+  [LinkEnum.Requestservice]: {
+    title: "Request service",
+    icon: "/src/assets/sideIcons/request_icon.svg",
+    href: `${APP_ROUTES.Requests}`,
+    countKey: "Requests",
+  },
+  [LinkEnum.invoices]: {
+    title: "Invoices and Payments",
+    icon: "/src/assets/sideIcons/invoices_icon.svg",
+    href: `${APP_ROUTES.Invoices}`,
+    countKey: "Invoice",
+  },
   [LinkEnum.EmergencyServices]: {
-    title: "Emergency Services",
+    title: "Emergency service",
     icon: "",
     href: `${APP_ROUTES.EnrollEmergencyService}`,
+  },
+  [LinkEnum.Contract]: {
+    title: "Contract",
+    icon: "/src/assets/sideIcons/invoices_icon.svg",
+    href: "/dashboard/contract",
+    countKey: "Contract",
+  },
+  [LinkEnum.Inbox]: {
+    title: "Inbox",
+    icon: Inbox,
+    href: "/dashboard/inbox",
+  },
+  [LinkEnum.Statistics]: {
+    title: "Statistics",
+    icon: "/src/assets/sideIcons/statistic_icon.svg",
+    href: "/dashboard/statistics",
+  },
+  [LinkEnum.Help]: {
+    title: "Help",
+    icon: "/src/assets/sideIcons/chat_icon.svg",
+    href: "/dashboard/help",
+  },
+  [LinkEnum.Profile]: {
+    title: "Profile",
+    icon: "",
+    href: `${APP_ROUTES.EditProfile}`,
+  },
+  [LinkEnum.ShoppingCard]: {
+    title: "Shopping Card",
+    icon: "",
+    href: `${APP_ROUTES.ShoppingCard}`,
+  },
+  [LinkEnum.Activation]: {
+    title: "Activation",
+    icon: "",
+    href: `${APP_ROUTES.Activation}`,
   },
 };
 
@@ -59,6 +115,12 @@ export type SidebarGroupType = { key: LinkEnum; children: LinkEnum[] };
 export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Home, children: [] },
   { key: LinkEnum.Services, children: [] },
+  { key: LinkEnum.Requestservice, children: [] },
+  { key: LinkEnum.invoices, children: [] },
+  { key: LinkEnum.Contract, children: [] },
+  { key: LinkEnum.Inbox, children: [] },
+  { key: LinkEnum.Statistics, children: [] },
+  { key: LinkEnum.Help, children: [] },
 ];
 
 export function getSidebarChildrenFromParent(

@@ -1,0 +1,107 @@
+.sideBar {
+    width: auto;
+    height: 100%;
+    top: 0;
+    left: 0; 
+    background: rgba(31, 34, 41, 1);
+    transition: left 0.3s ease;
+    /* z-index: 11;  */
+    position: sticky; 
+    top: 0; 
+}
+  
+.open {
+    left: 0;
+}
+  
+.menuButton {
+    display: none; 
+}
+  
+.sideBar  nav {
+    padding-top: 20px;
+    z-index: 20;
+}
+
+.cover {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 9; /* Уменьшим z-index, чтобы cover был под nav */
+}
+
+.coverOpen {
+    display: block;
+}
+
+.mobileNavigation{
+    display: none;
+    gap: 20px;
+    margin: 0px 15px;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.navigSec{
+    gap: 14px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+}
+
+.notifiButton{
+    background-color: inherit;
+    border: none;
+}
+
+
+@media (max-width: 1200px) {
+    .sideBar {
+        width: 250px;
+        left: -250px;
+        background: rgba(31, 34, 41, 1);
+        z-index: 11;
+        position: fixed; 
+    }
+
+    .mobileNavigation{
+        display: flex;
+        margin: 0px 15px;
+    }
+
+    .open {
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        padding: 40px 0px;
+    }
+
+    .menuButton {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+    }
+}
+
+.badge {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.iconContainer {
+    position: relative;
+    display: inline-block;
+}

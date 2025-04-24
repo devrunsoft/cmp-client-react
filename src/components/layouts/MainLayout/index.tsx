@@ -42,6 +42,7 @@ export default function MainLayout() {
   useEffect(() => {
     request.call({});
   }, []);
+  
   return (
     <HasAccess>
       <Box

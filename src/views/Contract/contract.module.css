@@ -1,0 +1,169 @@
+.table_container {
+  border: 1px solid rgba(228, 228, 228, 1); /* Добавляем границу к контейнеру */
+  border-radius: 5px; /* Скругляем углы контейнера */
+  overflow: hidden; /* Обрезаем скругленные углы за пределами контейнера */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid rgba(228, 228, 228, 1);
+}
+
+.table,
+.table td,
+.sortButton,
+.buttonPay {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  padding: 12px;
+}
+
+.table th {
+  width: 25%;
+  color: rgba(102, 102, 102, 1);
+  background-color: rgba(245, 245, 245, 1);
+}
+
+.table td {
+  font-weight: 600;
+}
+.buttonsDraft {
+  gap: 16px;
+  display: flex;
+}
+
+.sortButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: initial;
+  color: rgba(102, 102, 102, 1);
+  border: 0px;
+}
+
+.statusPaid {
+  text-transform: capitalize;
+  display: flex;
+  color: rgba(76, 142, 59, 1);
+  gap: 4px;
+  justify-content: center;
+}
+
+.buttonDelete {
+  background: #d42d2d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+}
+.buttonPayable {
+  background: #d42d2d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  animation: blinkRedBackground 1s infinite;
+}
+@keyframes blinkRedBackground {
+  0%,
+  100% {
+    background: rgba(76, 142, 59, 1);
+  }
+  50% {
+    background: rgba(129, 199, 132, 1);
+  }
+}
+
+.statusPay {
+  padding: 4px !important;
+}
+
+.buttonPay {
+  background: rgba(76, 142, 59, 1);
+  color: white;
+  padding: 8px 16px 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border: 0px;
+}
+.signUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 15px 36px 15px 36px;
+  border-radius: 50px;
+  background-color: rgba(76, 142, 59, 0.5);
+  gap: 8px;
+  border: 0px;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  border: 1px solid rgba(213, 115, 0, 0);
+}
+
+.signUp:hover {
+  background: rgba(76, 142, 59, 1);
+}
+
+.cancelService {
+  color: rgba(213, 115, 0, 1);
+  background: rgba(213, 115, 0, 0.1);
+  border: 1px solid rgba(213, 115, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 36px 15px 36px;
+  border-radius: 50px;
+  gap: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+}
+
+.cancelService:hover {
+  background-color: rgba(213, 115, 0, 1);
+  color: white;
+}
+
+.container {
+  font-size: 14px;
+  /* font-weight: 500; */
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 25px 0px 25px 0px;
+}

@@ -36,6 +36,7 @@
     overflow-y: auto;
     flex-grow: 1; /* Allows wrapper to grow and take available space */
     flex-basis: 0;
+    padding-bottom: 200px;
 }
 
 

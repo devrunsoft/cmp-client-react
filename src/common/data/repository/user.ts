@@ -2,6 +2,7 @@ import useApi, { UseApiOutputType } from "core/src/hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { Api_URL } from "core/src/utils/url";
 import { LoginCommand } from "common/domain/command/login";
+import { TokenEntity } from "core/src/types/api";
 
 enum AuthApiType {
   login = "Login",
@@ -27,9 +28,10 @@ const getConfig = (type: AuthApiType): AxiosRequestConfig => {
   };
 };
 
-export function useLoginApi(): UseApiOutputType<boolean, LoginCommand> {
+export function useLoginApi(): UseApiOutputType<TokenEntity, LoginCommand> {
   const config = getConfig(AuthApiType.login);
-  return useApi<boolean, LoginCommand>({
+  return useApi<TokenEntity, LoginCommand>({
     ...config,
+    tokenRequired: false,
   });
 }

@@ -16,6 +16,8 @@ import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { StepIndicator } from "..";
 import Gap from "uikit/src/Gap";
 import { header, saveToken, tokenheader } from "core/src/utils/auth";
+import { APP_ROUTES } from "../../../../routes/app_route";
+import { useNavigate } from "react-router-dom";
 
 export default function SwitcherAndCompanyInfo({
   setIndex,
@@ -23,7 +25,7 @@ export default function SwitcherAndCompanyInfo({
   setIndex?: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [state, setState] = useState(null);
-
+  const navigate = useNavigate();
   const request = useSignUpApi();
 
   const isLoading = request.loading;
@@ -46,7 +48,7 @@ export default function SwitcherAndCompanyInfo({
       },
       onSuccess: (res) => {
         saveToken(res.data);
-        setIndex!(1);
+        navigate(APP_ROUTES.Activation);
       },
     });
   };
@@ -120,7 +122,7 @@ export default function SwitcherAndCompanyInfo({
   }, []);
 
   return (
-    <Box className="registerPadding">
+    <Box>
       <StepIndicator step={0} />
 
       <Typography variant="h5" sx={{ my: 3, textAlign: "center" }}>
@@ -361,7 +363,7 @@ export default function SwitcherAndCompanyInfo({
           fullWidth
         />
       </Box>
-      <Gap/>
+      <Gap />
       <Box className="flex justify-end">
         <ActiveLoadingButton
           loading={isLoading}
@@ -371,7 +373,7 @@ export default function SwitcherAndCompanyInfo({
           onClick={handleSubmit(onSubmit)}
           isActive={isValid}
         >
-          next step
+          submit
         </ActiveLoadingButton>
       </Box>
     </Box>

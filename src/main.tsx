@@ -12,11 +12,11 @@ import "simplebar-react/dist/simplebar.min.css";
 
 import { HelmetProvider } from "react-helmet-async";
 
-// import { store } from "state";
+import { store } from "state";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
     <BrowserRouter>
       <HelmetProvider>
         <ErrorBoundary fallback={<p>Exeption Occured</p>}>
@@ -24,6 +24,6 @@ createRoot(document.getElementById("root")!).render(
         </ErrorBoundary>
       </HelmetProvider>
     </BrowserRouter>
-    {/* </Provider> */}
+    </Provider>
   </StrictMode>
 );

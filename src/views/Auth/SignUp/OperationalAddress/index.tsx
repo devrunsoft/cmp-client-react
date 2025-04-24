@@ -8,7 +8,7 @@ import { OtherCompanyLocationCommand } from "common/domain/command/other_company
 import { deleteOperationalAddress } from "data/api/dashboard/operationalAddress/delete";
 import { deleteOtherAddressApi } from "data/api/dashboard/other_address/delete";
 import Title from "components/title/title";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import styles from "../signUp.module.css";
 import { FiTrash } from "react-icons/fi";
 import { LiaEdit } from "react-icons/lia";

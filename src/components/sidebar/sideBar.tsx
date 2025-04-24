@@ -99,14 +99,14 @@ export default function SideBar({ isOpen, toggleMenu }) {
           <div className={styles.navigSec}>
             <button className={styles.notifiButton}>
               <img
-                src="/heroicons_bell.svg"
+                src="/src/assets/heroicons_bell.svg"
                 alt="jsdnchusld"
                 width={"24"}
                 height={"24"}
               />
             </button>
             <img
-              src="/avatar.png"
+              src="/src/assets/avatar.png"
               alt="avatar"
               width={54}
               height={54}

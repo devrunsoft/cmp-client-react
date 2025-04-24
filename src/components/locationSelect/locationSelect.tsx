@@ -25,7 +25,7 @@ export default function LocationSelect() {
     <div className={styles.dropDownContainer}>
       <div className={styles.dropDownHeader} onClick={toggling}>
         <div>
-          <h1>Location - {selectedAddresses?.Name}</h1>
+          <h2>Location - {selectedAddresses?.Name}</h2>
           <p>{selectedAddresses?.Address}</p>
         </div>
         <svg width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -4,28 +4,31 @@ import { useEffect } from "react";
 import Skeleton from "@mui/material/Skeleton";
 
 import Group from "components/layouts/MainLayout/Sidebar/MenuList/Group";
+import { useGetCompanyRepresentationApi } from "data/repository/representation";
+import { useAppDispatch, useAppSelector } from "state/index";
+import { setRepresentation } from "state/slice/representation";
 // import { useMenuAccess } from "data/repository/user";
 // import { setRepresentation } from "state/slice/representation";
 // import { useRepresentationGet } from "data/repository/representation";
 
 export default function MenuList() {
   // const request = useMenuAccess();
-  // const requestRep = useRepresentationGet();
+  const requestRep = useGetCompanyRepresentationApi();
 
-  // const dispatch = useAppDispatch();
-  // const refreshTrigger = useAppSelector((state) => state.representation);
+  const dispatch = useAppDispatch();
+  const refreshTrigger = useAppSelector((state) => state.representation);
 
   // useEffect(() => {
   //   loadData();
   // }, []);
 
-  // useEffect(() => {
-  //   loadDataRep();
-  // }, [
-  //   refreshTrigger.ContractsCount,
-  //   refreshTrigger.InvoicesCount,
-  //   refreshTrigger.RequestsCount,
-  // ]);
+  useEffect(() => {
+    loadDataRep();
+  }, [
+    refreshTrigger.Contract,
+    refreshTrigger.Invoice,
+    refreshTrigger.Requests,
+  ]);
 
   // const loadData = () => {
   //   request.call({
@@ -35,15 +38,15 @@ export default function MenuList() {
   //   });
   // };
 
-  // const loadDataRep = () => {
-  //   requestRep.call({
-  //     onSuccess: (res) => {
-  //       dispatch(setRepresentation(res.data));
-  //     },
-  //   });
-  // };
+  const loadDataRep = () => {
+    requestRep.call({
+      onSuccess: (res) => {
+        dispatch(setRepresentation(res.data));
+      },
+    });
+  };
 
-  // if (request.error && !request.loading) return null;
+  // if (requestRep.error && !requestRep.loading) return null;
   return <Group />;
 }
 

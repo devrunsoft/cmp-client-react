@@ -10,18 +10,21 @@ import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 import { SendInvoiceApi } from "data/api/invoice/send_invoice_api";
 import { toast } from "react-toastify";
 import { CheckInvoiceApi } from "data/api/invoice/check_invoice_api";
-// import { InvoiceEnum } from "@/domain/enum/invoice_enum";
+import InvoiceComponent from "cmp-core/src/Component/Invoice/InvoiceComponent";
+import Gap from "uikit/src/Gap";
+import { Box } from "@mui/material";
+import Dialog, { DialogPropsType } from "uikit/src/Dialog";
 
-interface InvoiceModalProps {
-  isOpen: boolean;
+type InvoiceModalProps = Omit<DialogPropsType, "size"> & {
   onClose: () => void;
   model?: InvoiceEntity;
-}
+};
+
 const ShowInvoice: React.FC<InvoiceModalProps> = ({
-  isOpen,
   onClose,
   model,
-}) => {
+  ...props
+}: InvoiceModalProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(null);
   const [iframeKey, setIframeKey] = useState(0);
@@ -33,7 +36,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
   const [invoiceModel, setinvoiceModel] = useState<Partial<InvoiceEntity>>({});
 
   useEffect(() => {
-    if (isOpen) {
+    if (props.open) {
       setinvoiceModel(model as InvoiceEntity);
       // setLoading(true);
     }
@@ -41,7 +44,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
     //     setLoading(false);
     // }
     // setLoading(false);
-  }, [isOpen]);
+  }, [props.open]);
 
   const handleIframeLoad = () => {
     setLoading(false); // Hide loading spinner when iframe is loaded
@@ -88,50 +91,34 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
   }
 
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={onClose}
-        contentLabel="Invoice"
-        ariaHideApp={false}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(31, 34, 41, 0.8)",
-          },
-          content: {
-            borderRadius: "10px",
-            padding: "20px", // Add padding to the modal content
-            display: "flex",
-            flexDirection: "column", // Ensure column layout for the modal
-            justifyContent: "space-between", // Space out the content vertically
-          },
+    <Dialog
+      {...props}
+      size="lg"
+      title="Invoice"
+      fullHeight={true}
+      PaperProps={{}}
+      onClose={onClose}
+    >
+      {/* Iframe section */}
+      <Box
+        sx={{
+          margin: "auto",
+          p: 4,
+          height: "100%",
+          width: "100%",
+          background: "white",
+          borderRadius: 2,
+          boxShadow: 3,
         }}
       >
-        <div className={styles.title}>
-          <h2>Invoice</h2>
-          <button onClick={onClose}>
-            <IoClose size={34} />
-          </button>
-        </div>
+        {model && <InvoiceComponent invoice={model} />}
 
-        {/* Iframe section */}
-        {model && (
-          <div style={{ flexGrow: 1, overflow: "hidden" }}>
-            {" "}
-            {/* Make iframe flexible */}
-            <iframe
-              key={iframeKey}
-              src={`https://link.fastpaydirect.com/invoice/${model.InvoiceId}`}
-              width="100%"
-              height="100%" // Make iframe take full available height
-              onLoad={handleIframeLoad}
-              frameBorder="0"
-              style={{ border: "none" }}
-            />
-          </div>
-        )}
+        <Gap />
 
-        {/* {invoiceModel && (
+        <Box className="flex justify-end"></Box>
+      </Box>
+
+      {/* {invoiceModel && (
           <div className={styles.submitButtons} style={{ marginTop: "10px" }}>
             <button className={styles.cancel} type="button" onClick={onCancel}>
               Cancel
@@ -153,8 +140,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
             )}
           </div>
         )} */}
-      </Modal>
-    </>
+    </Dialog>
   );
 };
 

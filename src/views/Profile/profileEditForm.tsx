@@ -7,7 +7,7 @@ import { LiaEdit } from "react-icons/lia";
 import { GoPlusCircle } from "react-icons/go";
 
 import React, { useEffect, useState } from "react";
-import styles from "../profileEditForm/profileEditForm.module.css";
+import styles from "./profileEditForm.module.css";
 
 import { CgSpinner } from "react-icons/cg";
 import { RotatingLines, TailSpin } from "react-loader-spinner";
@@ -22,7 +22,7 @@ import { EditProfileCommand } from "common/domain/command/edit_profile_command";
 import { editCompany } from "data/api/register/company/edit";
 import { deleteOperationalAddress } from "data/api/dashboard/operationalAddress/delete";
 import { deleteOtherAddressApi } from "data/api/dashboard/other_address/delete";
-import PaymentAddressCm from "cmp-core/Component/PaymentAddress/PaymentAddress";
+import PaymentAddressCm from "cmp-core/src/Component/PaymentAddress/PaymentAddress";
 import AddAddressMap from "components/map/AddAddressMap";
 import { useLoading } from "components/loading/loading_context";
 import AddPointMap from "components/map/addPointMap";

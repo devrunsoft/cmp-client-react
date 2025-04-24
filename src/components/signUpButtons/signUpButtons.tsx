@@ -6,6 +6,7 @@ import { Link } from "@mui/material";
 import styles from "./signUpButtons.module.css";
 import { useAddress } from "common/context/address_context";
 import { APP_ROUTES } from "../../routes/app_route";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpButtons({
   nameOfButton,
@@ -46,11 +47,24 @@ export function EditProfileButtons({
   status,
   isActive,
 }) {
+  const { selectedAddresses } = useAddress();
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
-      <Link className={styles.cancel} href="/dashboard/services">
+      <button
+        className={styles.cancel}
+        onClick={() => {
+          navigate(
+            APP_ROUTES.Service.replace(
+              ":oprAddress",
+              selectedAddresses?.Id?.toString() ?? ""
+            ),
+            { replace: true }
+          );
+        }}
+      >
         cancel
-      </Link>
+      </button>
       <button
         type="submit"
         className={`${styles.signUp} ${isActive && styles.signUpBackground} ${
@@ -92,7 +106,7 @@ export function ButtonsForm(props: ButtonsFormProps) {
           className={styles.cancel}
           href={`${APP_ROUTES.Service.replace(
             ":oprAddress",
-            selectedAddresses?.Id?.toString()??""
+            selectedAddresses?.Id?.toString() ?? ""
           )}`}
         >
           cancel

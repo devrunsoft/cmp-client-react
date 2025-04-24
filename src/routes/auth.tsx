@@ -7,9 +7,12 @@ import { ThemeProvider } from "@emotion/react";
 import { getToken } from "core/src/utils/auth";
 import { ProtectWrapper } from "./main";
 import SignUp from "views/Auth/SignUp";
+import { getPath, LinkEnum } from "common/menu-items";
+import { APP_ROUTES } from "./app_route";
 // import SignUp from "views/Auth/SignUp";
 
 const Login = Loadable(lazy(() => import("views/Auth/Login")));
+const Activation = Loadable(lazy(() => import("views/Activation")));
 // const SignUp = Loadable(lazy(() => import("views/Auth/SignUp")));
 // const BillingDetails = Loadable(
 //   lazy(() => import("views/Auth/SignUp/BillingDetails"))
@@ -49,10 +52,14 @@ const MainRoutes = {
       ),
     },
     {
-      path: "/SignUpDetail/:step",
+      path: APP_ROUTES.SignUpDetail+"/:step",
       element: (
           <SignUp />
       ),
+    },
+    {
+      path: getPath(LinkEnum.Activation),
+      element: <Activation />,
     },
   ],
 };

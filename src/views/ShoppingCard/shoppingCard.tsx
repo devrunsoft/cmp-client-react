@@ -54,7 +54,7 @@ const ShoppingCard = () => {
         },
         async (data) => {
           refreshCard();
-          navigate(APP_ROUTES.Invoices);
+          navigate(APP_ROUTES.Requests);
         }
       );
     } finally {

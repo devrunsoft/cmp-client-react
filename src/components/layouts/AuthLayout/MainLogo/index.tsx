@@ -13,7 +13,7 @@ const MainLogo = () => {
 
   return (
     <div style={styles.logoText}>
-      <h1 style={styles.h1}>PROVIDER PORTAL</h1>
+      <h1 style={styles.h1}>CLIENT PORTAL</h1>
       <p style={styles.p}>{email}</p>
     </div>
   );

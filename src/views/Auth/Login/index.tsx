@@ -22,6 +22,7 @@ import FormHookInput from "uikit/src/FormHookInput";
 import { useRegistartionStatusLogin } from "data/repository/registartionStatus";
 import styles from "../Login/index.module.css";
 import ActiveLoadingButton from "uikit/src/Button";
+import { saveToken } from "core/src/utils/auth";
 
 const LoginForm = () => {
   const {
@@ -33,15 +34,16 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const request = useLoginApi();
   const requestStatus = useRegistartionStatusLogin();
-  const isLoading = request.loading;
+  const isLoading = request.loading || requestStatus.loading;
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const onSubmit = async (data: LoginCommand) => {
     request.call({
       data,
-      onSuccess: (registered) => {
-        if (registered) {
+      onSuccess: (data) => {
+        saveToken(data.data);
+        if (data.data.registered) {
           checkRegistration();
         } else {
           navigate(APP_ROUTES.Activation);
@@ -56,7 +58,7 @@ const LoginForm = () => {
         navigate(APP_ROUTES.Splash);
       },
       onSuccess: (status) => {
-        appNavigator(status);
+        appNavigator(status.data);
       },
     });
   };
@@ -64,19 +66,19 @@ const LoginForm = () => {
   const appNavigator = (status) => {
     switch (status) {
       case "NotRegistered":
-        navigate(`${APP_ROUTES.SignUp}?step=1`);
+        navigate(`${APP_ROUTES.SignUpDetail}/1`);
         toast.error("You are not registered");
         break;
       case "ProfessionalInformation":
-        navigate(`${APP_ROUTES.SignUp}?step=2`);
+        navigate(`${APP_ROUTES.SignUpDetail}/2`);
         toast.error("Please complete your registration!");
         break;
       case "DocumentSubmission":
-        navigate(`${APP_ROUTES.SignUp}?step=3`);
+        navigate(`${APP_ROUTES.SignUpDetail}/3`);
         toast.error("Please complete your registration!");
         break;
       case "BillingDetails":
-        navigate(`${APP_ROUTES.SignUp}?step=4`);
+        navigate(`${APP_ROUTES.SignUpDetail}/4`);
         toast.error("Please complete your registration!");
         break;
       case "NotActivate":
@@ -95,7 +97,7 @@ const LoginForm = () => {
         <Typography variant="h4">Welcome to Client Portal!</Typography>
         <Typography variant="body1">
           Already have an account?{" "}
-          <Button variant="text" onClick={() => navigate("/SignUpDetail/1")}>
+          <Button variant="text" onClick={() => navigate(`${APP_ROUTES.SignUpDetail}/1`)}>
             Sign up now
           </Button>
         </Typography>
@@ -160,6 +162,7 @@ const LoginForm = () => {
         </Box>
 
         <ActiveLoadingButton
+          loading={isLoading}
           isActive={isValid}
           onClick={handleSubmit(onSubmit)}
           variant="contained"

@@ -44,7 +44,7 @@ export default function Header({ toggleMenu }) {
           <ShoppingCardIcon />
           <button className={styles.notifiButton}>
             <img
-              src="/heroicons_bell.svg"
+              src="/src/assets/heroicons_bell.svg"
               alt="notifications"
               width={"24"}
               height={"24"}
@@ -53,7 +53,7 @@ export default function Header({ toggleMenu }) {
           <Link href={`${APP_ROUTES.EditProfile}`}>
             {profile == null ? (
               <img
-                src="/avatar.png"
+                src="/src/assets/avatar.png"
                 alt="avatar"
                 width={54}
                 height={54}

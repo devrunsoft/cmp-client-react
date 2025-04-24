@@ -16,7 +16,7 @@ import { NextButton } from "components/button/next/next";
 
 // import SignUpButtons from "../signUpButtons/signUpButtons";
 
-const PaymentForm = ({ onBack, onRegistrationSuccess }) => {
+const PaymentForm = ({ onRegistrationSuccess }) => {
   const {
     register,
     handleSubmit,
