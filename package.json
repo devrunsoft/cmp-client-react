@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode devlocal --port 3005",
-    "start": "vite --mode devlocal --port 8880",
+    "start": "vite --mode devlocal --port 8990",
     "buildStage": "tsc -b && vite build --mode stage",
     "buildTest": "tsc -b && vite build --mode test",
     "buildProduction": "tsc -b && vite build --mode production",
