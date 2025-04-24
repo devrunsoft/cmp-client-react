@@ -207,25 +207,25 @@ export default function InvoicesTable() {
                           {item.InvoiceStatus}
                         </div>
                       );
-                    // case "sent":
-                    //   return (
-                    //     <div className={styles.buttonsDraft}>
-                    //       <a
-                    //         onClick={() => confirmDelete(item)}
-                    //         className={styles.buttonDelete}
-                    //       >
-                    //         <IoTrash size={"24px"} />
-                    //         Cancel
-                    //       </a>
-                    //       <a
-                    //         onClick={() => invoiceHandler(item)}
-                    //         className={styles.buttonPayable}
-                    //       >
-                    //         <IoCardOutline size={"24px"} />
-                    //         {"pay"}
-                    //       </a>
-                    //     </div>
-                    //   );
+                    case "Send_Payment":
+                      return (
+                        <div className={styles.buttonsDraft}>
+                          {/* <a
+                            onClick={() => confirmDelete(item)}
+                            className={styles.buttonDelete}
+                          >
+                            <IoTrash size={"24px"} />
+                            Cancel
+                          </a> */}
+                          <a
+                            onClick={() => invoiceHandler(item)}
+                            className={styles.buttonPayable}
+                          >
+                            <IoCardOutline size={"24px"} />
+                            {"pay"}
+                          </a>
+                        </div>
+                      );
                     case "Draft":
                       return (
                         <div className={styles.buttonsDraft}>
