@@ -125,10 +125,20 @@ export default function SwitcherAndCompanyInfo({
     <Box>
       <StepIndicator step={0} />
 
-      <Typography variant="h5" sx={{ my: 3, textAlign: "center" }}>
+      <Typography variant="h5" sx={{ textAlign: "center" }}>
         Basic Information
       </Typography>
-
+      <Box textAlign="center">
+        <Typography variant="body1">
+          Already have an account?{" "}
+          <Button
+            variant="text"
+            onClick={() => navigate(`${APP_ROUTES.Login}`, { replace: true })}
+          >
+            Login
+          </Button>
+        </Typography>
+      </Box>
       <Box className="form">
         <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <ToggleButtonGroup
