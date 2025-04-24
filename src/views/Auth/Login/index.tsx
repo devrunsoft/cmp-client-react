@@ -169,7 +169,7 @@ const LoginForm = () => {
           fullWidth
           endIcon={<IoIosArrowRoundForward />}
         >
-          Continue
+          Login
         </ActiveLoadingButton>
       </Box>
     </Box>
