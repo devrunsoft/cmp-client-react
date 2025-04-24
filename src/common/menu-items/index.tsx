@@ -19,6 +19,7 @@ export enum LinkEnum {
   Profile = 13,
   ShoppingCard = 14,
   Activation = 15,
+  ForgotPassword = 16,
 }
 
 export type LinkInfo = {
@@ -107,6 +108,11 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     title: "Activation",
     icon: "",
     href: `${APP_ROUTES.Activation}`,
+  },
+  [LinkEnum.ForgotPassword]: {
+    title: "Activation",
+    icon: "",
+    href: `/login/forgotPassword`,
   },
 };
 

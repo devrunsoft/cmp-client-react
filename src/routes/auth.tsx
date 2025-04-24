@@ -13,6 +13,7 @@ import { APP_ROUTES } from "./app_route";
 
 const Login = Loadable(lazy(() => import("views/Auth/Login")));
 const Activation = Loadable(lazy(() => import("views/Activation")));
+const ForgotPassword = Loadable(lazy(() => import("views/ForgotPassword")));
 // const SignUp = Loadable(lazy(() => import("views/Auth/SignUp")));
 // const BillingDetails = Loadable(
 //   lazy(() => import("views/Auth/SignUp/BillingDetails"))
@@ -60,6 +61,10 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.Activation),
       element: <Activation />,
+    },
+    {
+      path: getPath(LinkEnum.ForgotPassword),
+      element: <ForgotPassword />,
     },
   ],
 };
