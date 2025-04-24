@@ -96,7 +96,7 @@ const LoginForm = () => {
       <Box textAlign="center">
         <Typography variant="h4">Welcome to Client Portal!</Typography>
         <Typography variant="body1">
-          Already have an account?{" "}
+           New to AppCMP?{" "}
           <Button variant="text" onClick={() => navigate(`${APP_ROUTES.SignUpDetail}/1`)}>
             Sign up now
           </Button>
