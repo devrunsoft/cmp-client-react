@@ -42,7 +42,7 @@ const PaymentForm = ({ onRegistrationSuccess }) => {
         data.billingAddress,
         data.city,
         data.state,
-        data.zipcode,
+        data.postalCode,
         selectedButton === "paypal"
       );
       var result = await addBilling(command);
