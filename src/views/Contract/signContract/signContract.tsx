@@ -88,7 +88,7 @@ const SignContract: React.FC<Props> = ({
           <form className={styles.dialogForm} onSubmit={() => {}}>
             <div
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(model.Content),
+                __html: model.Content,
               }}
             />
 
