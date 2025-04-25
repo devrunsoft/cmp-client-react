@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode devlocal --port 3005",
-    "start": "vite --mode devlocal --port 8990",
+    "start": "npx serve -s -l 8990 dist",
     "buildStage": "tsc -b && vite build --mode stage",
     "buildTest": "tsc -b && vite build --mode test",
     "buildProduction": "tsc -b && vite build --mode production",
     "buildDevelop": "tsc -b && vite build --mode develop",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --mode devlocal",
     "lint": "eslint .",
     "preview": "vite preview"
   },

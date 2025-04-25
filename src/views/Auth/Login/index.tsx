@@ -96,8 +96,11 @@ const LoginForm = () => {
       <Box textAlign="center">
         <Typography variant="h4">Welcome to Client Portal!</Typography>
         <Typography variant="body1">
-           Don't have an account yet?{" "}
-          <Button variant="text" onClick={() => navigate(`${APP_ROUTES.SignUpDetail}/1`)}>
+          Don't have an account yet?{" "}
+          <Button
+            variant="text"
+            onClick={() => navigate(`${APP_ROUTES.SignUpDetail}/1`)}
+          >
             Sign up now
           </Button>
         </Typography>
@@ -161,16 +164,17 @@ const LoginForm = () => {
           </Button>
         </Box>
 
-        <ActiveLoadingButton
-          loading={isLoading}
-          isActive={isValid}
-          onClick={handleSubmit(onSubmit)}
-          variant="contained"
-          fullWidth
-          endIcon={<IoIosArrowRoundForward />}
-        >
-          Login
-        </ActiveLoadingButton>
+        <Box className="flex justify-center">
+          <ActiveLoadingButton
+            loading={isLoading}
+            isActive={isValid}
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+            endIcon={<IoIosArrowRoundForward />}
+          >
+            Login
+          </ActiveLoadingButton>
+        </Box>
       </Box>
     </Box>
   );

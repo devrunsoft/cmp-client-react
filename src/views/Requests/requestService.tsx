@@ -95,7 +95,7 @@ export default function RequestServices() {
   const confirmDelete = (model: InvoiceEntity) => {
     confirmAlert({
       title: "Confirm to cancel",
-      message: "Are you sure you want to cancel this invoice?",
+      message: "Are you sure you want to cancel this request?",
       buttons: [
         {
           label: "Yes",
