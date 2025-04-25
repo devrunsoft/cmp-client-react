@@ -21,6 +21,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
 
   useEffect(() => {
     getProfile();
+    getEmail();
   }, []);
 
   async function getProfile() {
@@ -32,6 +33,14 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         var image = Site_URL + profile;
         setPtofile(image);
       }
+    } catch (error) {}
+  }
+  const [email, setEmail] = useState("");
+  async function getEmail() {
+    try {
+      var token = await getToken();
+      var decoded = jwtDecode(token?.token ?? "");
+      setEmail(decoded["businessEmail"]);
     } catch (error) {}
   }
 
@@ -50,27 +59,47 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         sx={{ height: APPBAR_HEIGHT + "px" }}
         className="flex items-center justify-between"
       >
-        <Box className="flex items-center">
-          {isSmallScreen && onMenuClick && (
-            <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Link href="/" className="flex items-center">
-            <Typography
-              color="text.tooltip"
-              variant="titleLg"
-              sx={{ mr: "24px" }}
-            >
-              CLIENT PORTAL
-            </Typography>
-          </Link>
+        <Box
+          className="flex items-center"
+          flexDirection="column"
+          alignItems="flex-start"
+        >
+          <Box className="flex items-center">
+            {isSmallScreen && onMenuClick && (
+              <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Link href="/" className="flex">
+              <Typography
+                color="text.tooltip"
+                variant="titleLg"
+                sx={{ mr: "24px" }}
+              >
+                CLIENT PORTAL
+              </Typography>
+            </Link>
+          </Box>
+
+          <Typography
+            sx={{
+              fontSize: "13px",
+              lineHeight: "15.6px",
+              letterSpacing: "0.08em",
+              textAlign: "left",
+              color: "rgba(255, 255, 255, 0.6)",
+              mt: "4px", // Optional: margin top for spacing
+              ml: isSmallScreen && onMenuClick ? "48px" : "0", // Align with text if menu icon exists
+            }}
+          >
+            {email}
+          </Typography>
         </Box>
+
         <div className={styles.navigSec}>
-        <ShoppingCardIcon />
+          <ShoppingCardIcon />
 
           <button className={styles.notifiButton}>
-            
             <img
               src="/assets/heroicons_bell.svg"
               alt="notifications"
