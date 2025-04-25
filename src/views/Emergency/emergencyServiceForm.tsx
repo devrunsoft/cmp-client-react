@@ -415,6 +415,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
           )}
 
         <MultiSelectProduct
+          label="Preferred Days"
           disable={true}
           refresh={(res) => {
             // setDayOfWeek(res);
