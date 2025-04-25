@@ -48,23 +48,23 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   },
   [LinkEnum.Services]: {
     title: "Services",
-    icon: "/src/assets/sideIcons/white_services_icon.svg",
+    icon: "/src/assets/images/white_services_icon.svg",
     href: `${APP_ROUTES.Service}`,
   },
   [LinkEnum.EnroolServices]: {
     title: "Services",
-    icon: "/src/assets/sideIcons/white_services_icon.svg",
+    icon: "/src/assets/images/white_services_icon.svg",
     href: `${APP_ROUTES.Enrollservice}`,
   },
   [LinkEnum.Requestservice]: {
     title: "Request service",
-    icon: "/src/assets/sideIcons/request_icon.svg",
+    icon: "/src/assets/images/request_icon.svg",
     href: `${APP_ROUTES.Requests}`,
     countKey: "Requests",
   },
   [LinkEnum.invoices]: {
     title: "Invoices and Payments",
-    icon: "/src/assets/sideIcons/invoices_icon.svg",
+    icon: "/src/assets/images/invoices_icon.svg",
     href: `${APP_ROUTES.Invoices}`,
     countKey: "Invoice",
   },
@@ -75,7 +75,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   },
   [LinkEnum.Contract]: {
     title: "Contract",
-    icon: "/src/assets/sideIcons/invoices_icon.svg",
+    icon: "/src/assets/images/invoices_icon.svg",
     href: "/dashboard/contract",
     countKey: "Contract",
   },
@@ -86,7 +86,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   },
   [LinkEnum.Statistics]: {
     title: "Statistics",
-    icon: "/src/assets/sideIcons/statistic_icon.svg",
+    icon: "/src/assets/images/statistic_icon.svg",
     href: "/dashboard/statistics",
   },
   [LinkEnum.Help]: {
