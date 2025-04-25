@@ -63,7 +63,7 @@ export function EditProfileButtons({
           );
         }}
       >
-        cancel
+        Cancel
       </button>
       <button
         type="submit"

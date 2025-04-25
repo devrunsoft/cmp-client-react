@@ -350,7 +350,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
         <div className={styles.form}>
           <div className={styles.formSection}>
             <label className={styles.label} htmlFor="frequency">
-              {!services ? "" : services.Type == 1 ? "Frequency:" : "Quantaty:"}
+              {!services ? "" : services.Type == 1 ? "Frequency:" : "Quantity:"}
             </label>
             <div
               className={`${styles.selector} ${
@@ -371,7 +371,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
                           ? ""
                           : services.Type == 1
                           ? "frequency"
-                          : "Quantaty"
+                          : "Quantity"
                       }
                       selectValue={(value) => {
                         setSelectedValue(value);
