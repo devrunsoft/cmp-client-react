@@ -40,6 +40,7 @@ import MultiSelectProduct from "components/dropDown/multi-select";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import Switch from "components/switch/switch";
 import { ProductType } from "common/domain/enum/product_type";
+import { useTerms } from "components/context_api/terms_and_conditions";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -335,7 +336,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   //         setLoading(false);
   //     }
   // }
-
+  const { setOpen , isOpen } = useTerms();
   return (
     <>
       {invoiceModel && (
@@ -463,7 +464,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
           />
           <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <label className={styles.label} htmlFor="DayOfWeek">
-              Time range:
+              Time Range:
             </label>
 
             <TimePicker
@@ -487,7 +488,20 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
                 <div>
                   <Switch active={true} onChange={() => {}} />{" "}
                   <span>
-                    I agree with Terms and Conditions for this service
+                    I agree with{" "}
+                    <span
+                      onClick={()=>{
+                        setOpen(!isOpen)
+                      }}
+                      style={{
+                        color: "blue",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Terms and Conditions
+                    </span>{" "}
+                    for this service
                   </span>
                 </div>
               )}

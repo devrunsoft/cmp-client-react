@@ -39,6 +39,7 @@ import LocationPointHandlerMap from "components/map/locationPointHandlerMap";
 import MultiSelectProduct from "components/dropDown/multi-select";
 import Switch from "components/switch/switch";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
+import { useTerms } from "components/context_api/terms_and_conditions";
 
 type EmergencyServiceFormProps = {
   Id?: number | null;
@@ -338,6 +339,8 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
     }
   }
 
+  const { setOpen , isOpen } = useTerms();
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -441,7 +444,22 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
         <div className={styles.agreementText}>
           <div className={styles.question}>
             <Switch active={true} onChange={() => {}} />{" "}
-            <span>I agree with Terms and Conditions for this service</span>
+            <span>
+              I agree with{" "}
+              <span
+                onClick={() => {
+                  setOpen(!isOpen);
+                }}
+                style={{
+                  color: "blue",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Terms and Conditions
+              </span>{" "}
+              for this service
+            </span>
             {/* {selectedPriceValue && <div className={styles.price}>
               <span className={styles.currency}> {"Total: "}</span>  ${selectedPriceValue.amount}
             </div>} */}

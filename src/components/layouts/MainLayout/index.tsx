@@ -14,6 +14,8 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { getBreadcrumbFromPath, LinkInfo } from "common/menu-items";
 import { useGetAllOperationalAddress } from "data/repository/operationalAddress";
 import { AddressProvider } from "common/context/address_context";
+import { TermsAndConditionProvider } from "components/context_api/terms_and_conditions";
+import TermConditionModal from "components/term";
 
 export default function MainLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,7 +44,7 @@ export default function MainLayout() {
   useEffect(() => {
     request.call({});
   }, []);
-  
+
   return (
     <HasAccess>
       <Box
@@ -69,7 +71,10 @@ export default function MainLayout() {
                   request.data.data.length == 0 ? {} : request.data.data[0]
                 }
               >
-                <Outlet />
+                <TermsAndConditionProvider>
+                  <Outlet />
+                  <TermConditionModal />
+                </TermsAndConditionProvider>
               </AddressProvider>
             )}
           </DataFetchingWrapper>

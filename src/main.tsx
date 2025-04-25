@@ -15,7 +15,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { store } from "state";
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
+  <StrictMode>
     <Provider store={store}>
     <BrowserRouter>
       <HelmetProvider>
@@ -25,5 +25,5 @@ createRoot(document.getElementById("root")!).render(
       </HelmetProvider>
     </BrowserRouter>
     </Provider>
-  // </StrictMode>
+</StrictMode>
 );
