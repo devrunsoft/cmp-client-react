@@ -21,7 +21,7 @@ const AddNewAddressFormCm = () => {
     <div className="pagecontent">
       <TitleBack
         title={"Add New Address"}
-        icon={"/src/assets/emergency_serc_icon.svg"}
+        icon={"/assets/emergency_serc_icon.svg"}
       ></TitleBack>
       <FormFrame>
         <AddNewAddressForm Id={Id} />

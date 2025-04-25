@@ -120,17 +120,17 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
             <th>
               <button className={styles.sortButton} onClick={handleClick}>
                 <p>Contract Number</p>
-                <img src="/src/assets/sort.svg" />
+                <img src="/assets/sort.svg" />
               </button>
             </th>
             <th>
               <button className={styles.sortButton}>
-                <p>Create At</p> <img src="/src/assets/sort.svg" />
+                <p>Create At</p> <img src="/assets/sort.svg" />
               </button>
             </th>
             <th>
               <button className={styles.sortButton}>
-                <p>Status</p> <img src="/src/assets/sort.svg" />
+                <p>Status</p> <img src="/assets/sort.svg" />
               </button>
             </th>
           </tr>

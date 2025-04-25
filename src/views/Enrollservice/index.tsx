@@ -33,7 +33,7 @@ const EnrollServiceCm = () => {
     <div className="pagecontent">
       <TitleBack
         title={`${type} - ${selectedAddresses ? selectedAddresses.Name : ""}`}
-        icon={"/src/assets/broom.svg"}
+        icon={"/assets/broom.svg"}
       />
       <FormFrameScroll>
         <EnrollServiceForm Id={id} serviceId={Number(serviceId)} />

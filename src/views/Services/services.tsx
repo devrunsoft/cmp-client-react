@@ -120,7 +120,7 @@ export default function Services() {
       <div className={styles.wrapper}>
         <div className={styles.sectLocation}>
           <img
-            src="/src/assets/fluent_location-regular.svg"
+            src="/assets/fluent_location-regular.svg"
             alt="location icon"
             width={36}
             height={36}
@@ -131,7 +131,7 @@ export default function Services() {
         <div className={styles.scrollStaff}>
           <div className={styles.mainText}>
             <img
-              src="/src/assets/services_icon.svg"
+              src="/assets/services_icon.svg"
               alt="group"
               width={36}
               height={36}
@@ -200,7 +200,7 @@ export default function Services() {
         <div className={styles.scrollStaff}>
           <div className={styles.mainText}>
             <img
-              src="/src/assets/services_icon.svg"
+              src="/assets/services_icon.svg"
               alt="group"
               width={36}
               height={36}
@@ -278,7 +278,7 @@ export default function Services() {
         >
           Emergency Service
           <img
-            src="/src/assets/emergency_serc_icon.svg"
+            src="/assets/emergency_serc_icon.svg"
             width={25}
             height={25}
             alt="emergency"

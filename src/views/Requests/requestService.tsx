@@ -153,24 +153,24 @@ export default function RequestServices() {
             <th>
               <button className={styles.sortButton} onClick={handleClick}>
                 <p>Number</p>
-                <img src="/src/assets/sort.svg" />
+                <img src="/assets/sort.svg" />
               </button>
             </th>
             <th>
               {" "}
               <button className={styles.sortButton}>
                 <p>Date</p>
-                <img src="/src/assets/sort.svg" />
+                <img src="/assets/sort.svg" />
               </button>
             </th>
             <th>
               <button className={styles.sortButton}>
-                <p>Amount</p> <img src="/src/assets/sort.svg" />
+                <p>Amount</p> <img src="/assets/sort.svg" />
               </button>
             </th>
             <th>
               <button className={styles.sortButton}>
-                <p>Status</p> <img src="/src/assets/sort.svg" />
+                <p>Status</p> <img src="/assets/sort.svg" />
               </button>
             </th>
             <th></th>
@@ -260,7 +260,7 @@ export default function RequestServices() {
               <td>
                 {item.InvoiceStatus === "paid" ? (
                   <img
-                    src="/src/assets/download_icon_dark.svg"
+                    src="/assets/download_icon_dark.svg"
                     onClick={() => openInvoice(item)}
                     width={"24"}
                     height={"24"}
@@ -268,7 +268,7 @@ export default function RequestServices() {
                   />
                 ) : (
                   <img
-                    src="/src/assets/download_icon_grey.svg"
+                    src="/assets/download_icon_grey.svg"
                     width={"24"}
                     height={"24"}
                     alt="download icon"

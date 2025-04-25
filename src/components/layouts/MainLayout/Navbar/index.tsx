@@ -72,7 +72,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           <button className={styles.notifiButton}>
             
             <img
-              src="/src/assets/heroicons_bell.svg"
+              src="/assets/heroicons_bell.svg"
               alt="notifications"
               width={"24"}
               height={"24"}
@@ -82,7 +82,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           <Link href={`${APP_ROUTES.EditProfile}`}>
             {profile == null ? (
               <img
-                src="/src/assets/avatar.png"
+                src="/assets/avatar.png"
                 alt="avatar"
                 width={45}
                 height={45}

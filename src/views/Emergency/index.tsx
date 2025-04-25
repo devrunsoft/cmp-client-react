@@ -29,7 +29,7 @@ const EmergencyServiceChild = () => {
         title={`Emergency Service - ${
           selectedAddresses ? selectedAddresses.Name : ""
         }`}
-        icon={"/src/assets/emergency_serc_icon.svg"}
+        icon={"/assets/emergency_serc_icon.svg"}
       />
       <FormFrameScroll>
         <EmergencyServiceForm Id={id} />

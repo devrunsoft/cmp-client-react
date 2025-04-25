@@ -107,7 +107,7 @@ export const BusinessLicense = ({
                 <img
                   width={24}
                   height={24}
-                  src="/src/assets/download_icon_dark.svg"
+                  src="/assets/download_icon_dark.svg"
                   alt="Upload Icon"
                 />
                 <span>
@@ -147,7 +147,7 @@ export const BusinessLicense = ({
                 <img
                   width={24}
                   height={24}
-                  src="/src/assets/download_icon_dark.svg"
+                  src="/assets/download_icon_dark.svg"
                   alt="Upload Icon"
                 />
                 <span>
