@@ -39,6 +39,7 @@ import LocationPointHandlerMap from "components/map/locationPointHandlerMap";
 import MultiSelectProduct from "components/dropDown/multi-select";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import Switch from "components/switch/switch";
+import { ProductType } from "common/domain/enum/product_type";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -87,7 +88,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   );
 
   const [dayOfWeek, setDayOfWeek] = useState<string[]>([]);
-  const [amount, setAmount] = useState<number>(0);
+  const [qty, setQty] = useState<number>(0);
   const { setLoading } = useLoading();
   const { selectedAddresses, refreshAdr } = useAddress();
   const navigate = useNavigate();
@@ -198,9 +199,9 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     ) {
       return toast.error("Pickup point can not be empty");
     }
-    if (dayOfWeek.length == 0) {
-      return toast.error("At least one day must be selected.");
-    }
+    // if (dayOfWeek.length == 0) {
+    //   return toast.error("At least one day must be selected.");
+    // }
     try {
       setLoading(true);
       var command: AddShoppingCardCommand = {
@@ -210,7 +211,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
         FrequencyType: selectedValue!.Name!,
         ServiceKind: 1,
         LocationCompanyIds: adresses.map((e) => e.Id),
-        Qty: 0,
+        Qty: qty,
         ProductId: services.Id!,
         DayOfWeek: dayOfWeek,
         FromHour: convertTimeStringToMinutes(fromTime ?? ""),
@@ -350,7 +351,11 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
         <div className={styles.form}>
           <div className={styles.formSection}>
             <label className={styles.label} htmlFor="frequency">
-              {!services ? "" : services.Type == 1 ? "Frequency:" : "Quantity:"}
+              {!services
+                ? ""
+                : services.Type == ProductType.Service
+                ? "Frequency:"
+                : "Container Size:"}
             </label>
             <div
               className={`${styles.selector} ${
@@ -392,7 +397,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
             />
           )}
 
-          {services.Type == 1 && (
+          {services.Type == ProductType.Service && (
             <div className={styles.formSection}>
               <label className={styles.label} htmlFor="startDate">
                 Start date:
@@ -405,7 +410,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
                 <Controller
                   name="startDate"
                   control={control}
-                  rules={{ required: "Start date is required" }}
+                  // rules={{ required: "Start date is required" }}
                   render={({ field }) => (
                     <DatePicker
                       id="startDate"
@@ -422,7 +427,9 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
                 <div className={styles.inputIconButton}>
                   <button
                     type="button"
-                    onClick={() => document.getElementById("startDate")?.focus()}
+                    onClick={() =>
+                      document.getElementById("startDate")?.focus()
+                    }
                   >
                     <LuCalendar size={24} />
                   </button>
@@ -430,7 +437,25 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
               </div>
             </div>
           )}
+          {services.Type == ProductType.Product && (
+            <div className={styles.formSection}>
+              <label className={styles.label}> Quantity:</label>
+              <input
+                className={`${styles.formInput} ${
+                  errors.locationName && styles.inputError
+                }`}
+                type="number"
+                placeholder="Enter quantity"
+                onChange={(e) => setQty(Number(e.target.value))}
+              />
+            </div>
+          )}
           <MultiSelectProduct
+            label={
+              services.Type == ProductType.Product
+                ? "Preferred Delivery Day"
+                : "Preferred Days"
+            }
             refresh={(res) => {
               setDayOfWeek(res);
             }}
@@ -438,7 +463,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
           />
           <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <label className={styles.label} htmlFor="DayOfWeek">
-              Range:
+              Time range:
             </label>
 
             <TimePicker
@@ -458,7 +483,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
           <div className={styles.agreementText}>
             <div className={styles.textWrapper}>
-              {services.Type == 1 && (
+              {services.Type == ProductType.Service && (
                 <div>
                   <Switch active={true} onChange={() => {}} />{" "}
                   <span>

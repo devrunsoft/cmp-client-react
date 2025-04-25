@@ -179,14 +179,14 @@ export default function RequestServices() {
         <tbody>
           {invoices.map((item, index) => (
             <tr key={index}>
-              <td>---</td>
+              <td>{item.RequestNumber}</td>
               <td>
                 {new Date(item.CreatedAt).toLocaleDateString() +
                   " " +
                   new Date(item.CreatedAt).toLocaleTimeString()}
               </td>
 
-              {item.Status == InvoiceStatus.Draft ? (
+              {((item.Status == InvoiceStatus.Draft) || (item.Status == InvoiceStatus.Deleted)) ? (
                 <td>---</td>
               ) : (
                 <td>${item.Amount}</td>
@@ -195,6 +195,7 @@ export default function RequestServices() {
               <td>
                 {(() => {
                   switch (item.InvoiceStatus) {
+                    case "Deleted":
                     case "Canceled":
                       return (
                         <div

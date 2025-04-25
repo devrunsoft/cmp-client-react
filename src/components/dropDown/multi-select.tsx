@@ -10,12 +10,14 @@ type ProviderWindowsProps = {
   refresh: (products: string[]) => void;
   selected: string[];
   disable?: boolean;
+  label: string;
 };
 
 export default function MultiSelectProduct({
   refresh,
   selected,
   disable,
+  label,
   ...props
 }: ProviderWindowsProps) {
   const [product, setProduct] = useState<NameAndValue[]>(DayOfWeekOptions);
@@ -46,7 +48,7 @@ export default function MultiSelectProduct({
     <>
       <div className={styles.formSection}>
         <label className={styles.label} htmlFor="DayOfWeek">
-          Preferred Days:
+         {label}:
         </label>
         <Select
           disabled={disable}

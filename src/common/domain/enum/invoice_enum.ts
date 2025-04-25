@@ -9,6 +9,7 @@ export enum InvoiceStatus {
   UpdatedProvider = 8,
   SubmitedProvider = 9,
   SendPayment = 10,
+  Deleted = 11,
 }
 
 // ✅ Mapping function: Convert server enum string to TypeScript enum
@@ -24,6 +25,7 @@ export const parseInvoiceStatus = (status: string): InvoiceStatus | null => {
     Updated_Provider: InvoiceStatus.UpdatedProvider,
     Submited_Provider: InvoiceStatus.SubmitedProvider,
     Send_Payment: InvoiceStatus.SendPayment,
+    Deleted: InvoiceStatus.Deleted,
   };
 
   return mapping[status] ?? null;
@@ -41,9 +43,10 @@ export const InvoiceStatusStyles: Record<
   [InvoiceStatus.ProcessingProvider]: { background: "#4CAF501A", color: "#4CAF50" },
   [InvoiceStatus.Complete]: { background: "#0080001A", color: "#008000" },
   [InvoiceStatus.Canceled]: { background: "#8080801A", color: "#808080" },
-  [InvoiceStatus.UpdatedProvider]: { background: "#17A2B81A", color: "#17A2B8" }, // Info shade
-  [InvoiceStatus.SubmitedProvider]: { background: "#007BFF1A", color: "#007BFF" }, // Primary blue
-  [InvoiceStatus.SendPayment]: { background: "#9C27B01A", color: "#9C27B0" }, // Purple shade
+  [InvoiceStatus.UpdatedProvider]: { background: "#17A2B81A", color: "#17A2B8" },
+  [InvoiceStatus.SubmitedProvider]: { background: "#007BFF1A", color: "#007BFF" },
+  [InvoiceStatus.SendPayment]: { background: "#9C27B01A", color: "#9C27B0" },
+  [InvoiceStatus.Deleted]: { background: "#FF00001A", color: "#FF0000" },  // 🔴 Red for deleted
 };
 
 // ✅ Description mapping
@@ -58,6 +61,7 @@ export const InvoiceStatusDescriptions: Record<InvoiceStatus, string> = {
   [InvoiceStatus.UpdatedProvider]: "Updated by Provider",
   [InvoiceStatus.SubmitedProvider]: "Submitted by Provider",
   [InvoiceStatus.SendPayment]: "Payment Sent",
+  [InvoiceStatus.Deleted]: "Deleted",
 };
 
 // ✅ Convert enum to dropdown options
@@ -66,9 +70,7 @@ export interface NameAndValue {
   value: number;
 }
 
-export const InvoiceStatusOptions: NameAndValue[] = Object.entries(
-  InvoiceStatus
-)
+export const InvoiceStatusOptions: NameAndValue[] = Object.entries(InvoiceStatus)
   .filter(([_, value]) => typeof value === "number")
   .map(([key, value]) => ({
     name: InvoiceStatusDescriptions[value as InvoiceStatus] || key,

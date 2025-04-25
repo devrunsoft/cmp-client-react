@@ -12,4 +12,5 @@ export type CompanyEntity = {
     ReferredBy?: string;
     AccountNumber?: string;
     Type: number;
+    ProfilePicture?: string;
 };

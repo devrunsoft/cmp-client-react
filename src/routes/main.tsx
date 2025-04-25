@@ -19,6 +19,7 @@ const Profile = Loadable(lazy(() => import("views/Profile")));
 const ShoppingCard = Loadable(
   lazy(() => import("views/ShoppingCard/shoppingCard"))
 );
+const LogOfService = Loadable(lazy(() => import("views/LogOfService")));
 
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
@@ -79,7 +80,14 @@ const MainRoutes = {
       path: getPath(LinkEnum.ShoppingCard),
       element: <ShoppingCard />,
     },
-
+    {
+      path: getPath(LinkEnum.ShoppingCard),
+      element: <ShoppingCard />,
+    },
+    {
+      path: getPath(LinkEnum.ClientServiceLog),
+      element: <LogOfService />,
+    },
   ],
 };
 

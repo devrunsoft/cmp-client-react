@@ -168,7 +168,7 @@ export default function Services() {
                         </>
                       )}
                     </div>
-                    <div>
+                    <div className={styles.boxItem}>
                       <div
                         className={styles.subsButtom}
                         key={index + "-service-enroll"}
@@ -182,14 +182,14 @@ export default function Services() {
                         )}
                       </div>
                       &nbsp;
-                      <div
+                      {/* <div
                         className={styles.subsButtom}
                         key={index + "-service-seeAll"}
                         onClick={() => onRouteAll(item, serviceAppoitnemtn)}
                       >
                         {"See All"}
                         {<IoListCircleOutline size={17} />}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 );
@@ -237,7 +237,7 @@ export default function Services() {
                         </>
                       )}
                     </div>
-                    <div>
+                   <div className={styles.boxItem}>
                       <div
                         className={styles.subsButtom}
                         key={index + "-product-enroll"}
@@ -251,14 +251,14 @@ export default function Services() {
                         )}
                       </div>
                       &nbsp;
-                      <div
+                      {/* <div
                         className={styles.subsButtom}
                         key={index + "-product-seeAll"}
                         onClick={() => onRouteAll(item, serviceAppoitnemtn)}
                       >
                         {"See All"}
                         {<IoListCircleOutline size={17} />}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 );

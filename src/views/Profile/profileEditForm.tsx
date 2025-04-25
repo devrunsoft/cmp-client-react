@@ -231,7 +231,7 @@ const ProfileEditForm = () => {
     <>
       {StateStatusExtension.from(state).isSuccess() ? (
         <div className={styles.container}>
-          <PhotoUpload />
+          {company&&<PhotoUpload model={company} />}
           <h3>Basic Information</h3>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.formSection}>
@@ -321,7 +321,38 @@ const ProfileEditForm = () => {
                 readOnly={true}
                 disabled={true}
                 autoComplete="email"
-                // {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+              />
+            </div>
+
+            <div className={styles.formSection}>
+              <label htmlFor="email">Referred by: </label>
+              <input
+                type="text"
+                placeholder="---"
+                className={`${styles.disableInput} ${
+                  errors.email && styles.inputError
+                }`}
+                defaultValue={company?.ReferredBy}
+                // name="email"
+                readOnly={true}
+                disabled={true}
+
+              />
+            </div>
+
+            <div className={styles.formSection}>
+              <label htmlFor="email">Account number: </label>
+              <input
+                type="text"
+                placeholder="---"
+                className={`${styles.disableInput} ${
+                  errors.email && styles.inputError
+                }`}
+                defaultValue={company?.AccountNumber}
+                // name="email"
+                readOnly={true}
+                disabled={true}
+
               />
             </div>
 

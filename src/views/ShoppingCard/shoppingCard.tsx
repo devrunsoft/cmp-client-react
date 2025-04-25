@@ -19,6 +19,7 @@ import { APP_ROUTES } from "../../routes/app_route";
 import { deleteShoppingCard } from "data/api/shopping_card/delete";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import ShowInvoice from "components/Invoice/invoice_modal";
+import TitleBack from "components/title/title_back";
 
 const ShoppingCard = () => {
   const { selectedAddresses } = useAddress();
@@ -85,11 +86,12 @@ const ShoppingCard = () => {
   }
 
   return (
-    // <a className='pagecontent'>
-    //     <TitleBack title={"Shopping Cart"} icon={"/invoices_and_payments_logo.svg"} />
-    //     {
+    <div className='pagecontent'>
+        <TitleBack title={"Shopping Cart"} icon={"/assets/invoices_and_payments_logo.svg"} />
+        {
     itemsCard.length > 0 ? (
       <div className={styles.cardContainer}>
+
         <div className={styles.itemsContainer}>
           {itemsCard.map((item, index) => (
             <div className={styles.form} key={index}>
@@ -97,6 +99,8 @@ const ShoppingCard = () => {
                 {item.AddressName}
                 <br />
                 {item.Name} - {item.PriceName}
+                <br />
+                Quantity: {item.Qty}
                 <div className={styles.inputIconButton}>
                   <button
                     type="button"
@@ -114,7 +118,7 @@ const ShoppingCard = () => {
         </div>
         {invoiceModel && (
           <ShowInvoice
-          open={invoiceModalIsOpen}
+            open={invoiceModalIsOpen}
             onClose={() => {
               setInvoiceModalIsOpen(false);
             }}
@@ -157,8 +161,8 @@ const ShoppingCard = () => {
         <AiTwotoneShopping size={400} color="rgb(241, 237, 237)" />
       </div>
     )
-    //     }
-    // </a>
+        }
+    </div>
   );
 };
 

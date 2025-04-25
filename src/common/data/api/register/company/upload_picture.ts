@@ -10,14 +10,14 @@ import { CompanyContractEntity } from "common/domain/entity/contract_entity";
 import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
-import { header } from "core/src/utils/auth";
+import { header, tokenheader } from "core/src/utils/auth";
 import { Api_URL } from "core/src/utils/url";
 
 
 export async function uploadPicture(command: UploadPictureCommand): Promise<Either<Error, BaseResponse<object>>> {
 
     try {
-        var h = header();
+        var h = tokenheader();
         const formData = new FormData();
         formData.append('ProfilePicture', command.ProfilePicture);
         const response = await fetch(`${Api_URL}/RegisterCompany/UploadProfilePicture`, {

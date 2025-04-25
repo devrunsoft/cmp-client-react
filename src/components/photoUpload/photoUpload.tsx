@@ -9,8 +9,9 @@ import { Site_URL } from "core/src/utils/url";
 import { UploadPictureCommand } from "common/domain/command/upload_picture_command";
 import { uploadPicture } from "data/api/register/company/upload_picture";
 import { toast } from "react-toastify";
+import { CompanyEntity } from "common/domain/entity/company_entity";
 
-const PhotoUpload = () => {
+const PhotoUpload = ({ model }: { model: CompanyEntity }) => {
   const [selectedPhoto, setSelectedPhoto] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -23,7 +24,7 @@ const PhotoUpload = () => {
     try {
       var token = await getToken();
       var decoded = jwtDecode(token?.token ?? "");
-      var profile = decoded["ProfilePicture"];
+      var profile = model.ProfilePicture;
       if (profile) {
         var image = Site_URL + profile;
         setSelectedPhoto(image);

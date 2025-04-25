@@ -20,6 +20,7 @@ export enum LinkEnum {
   ShoppingCard = 14,
   Activation = 15,
   ForgotPassword = 16,
+  ClientServiceLog = 17,
 }
 
 export type LinkInfo = {
@@ -57,7 +58,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     href: `${APP_ROUTES.Enrollservice}`,
   },
   [LinkEnum.Requestservice]: {
-    title: "Request service",
+    title: "Service Requests ",
     icon: "/assets/images/request_icon.svg",
     href: `${APP_ROUTES.Requests}`,
     countKey: "Requests",
@@ -114,6 +115,11 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     icon: "",
     href: `/login/forgotPassword`,
   },
+  [LinkEnum.ClientServiceLog]: {
+    title: "Log of service",
+    icon: "/assets/images/white_services_icon.svg",
+    href: `/service-log`,
+  },
 };
 
 export type SidebarGroupType = { key: LinkEnum; children: LinkEnum[] };
@@ -124,6 +130,7 @@ export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Requestservice, children: [] },
   { key: LinkEnum.invoices, children: [] },
   { key: LinkEnum.Contract, children: [] },
+  { key: LinkEnum.ClientServiceLog, children: [] },
   { key: LinkEnum.Inbox, children: [] },
   { key: LinkEnum.Statistics, children: [] },
   { key: LinkEnum.Help, children: [] },
