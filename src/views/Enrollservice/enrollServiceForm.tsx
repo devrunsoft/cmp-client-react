@@ -375,9 +375,9 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
                       select={
                         !services
                           ? ""
-                          : services.Type == 1
+                          : services.Type == ProductType.Service
                           ? "frequency"
-                          : "Quantity"
+                          : "Container Size"
                       }
                       selectValue={(value) => {
                         setSelectedValue(value);
