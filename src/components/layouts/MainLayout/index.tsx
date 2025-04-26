@@ -8,7 +8,7 @@ import { APP_VERSION_HEIGHT, APPBAR_HEIGHT } from "cmp-core/src/Contants/const";
 import Breadcrumb from "uikit/src/Breadcrumb";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useMemo, useState } from "react";
-import { DataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import { ProviderProvider } from "cmp-core/src/Context/Providers";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { getBreadcrumbFromPath, LinkInfo } from "common/menu-items";
@@ -63,7 +63,7 @@ export default function MainLayout() {
               links={[{ title: parent.title }, { title: info.title }]}
             />
           )}
-          <DataFetchingWrapper loading={request.loading}>
+          <AppDataFetchingWrapper request={request}>
             {request.data && (
               <AddressProvider
                 address={request.data.data}
@@ -77,7 +77,7 @@ export default function MainLayout() {
                 </TermsAndConditionProvider>
               </AddressProvider>
             )}
-          </DataFetchingWrapper>
+          </AppDataFetchingWrapper>
         </Main>
       </Box>
     </HasAccess>
