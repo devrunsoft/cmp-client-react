@@ -191,7 +191,12 @@ export default function InvoicesTable() {
               {item.Status == InvoiceStatus.Draft ? (
                 <td>---</td>
               ) : (
-                <td>${item.Amount}</td>
+                <td>
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(item.Amount)}
+                </td>
               )}
 
               <td>

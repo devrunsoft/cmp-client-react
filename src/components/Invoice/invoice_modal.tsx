@@ -14,6 +14,8 @@ import InvoiceComponent from "cmp-core/src/Component/Invoice/InvoiceComponent";
 import Gap from "uikit/src/Gap";
 import { Box } from "@mui/material";
 import Dialog, { DialogPropsType } from "uikit/src/Dialog";
+import { useInvoiceGet } from "data/repository/invoice";
+import { DataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 
 type InvoiceModalProps = Omit<DialogPropsType, "size"> & {
   onClose: () => void;
@@ -25,69 +27,28 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
   model,
   ...props
 }: InvoiceModalProps) => {
+  const request = useInvoiceGet(model?.Id);
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(null);
-  const [iframeKey, setIframeKey] = useState(0);
 
-  const { setLoading } = useLoading();
-
-  const [selectedValue, setSelectedValue] = useState(null);
-
-  const [invoiceModel, setinvoiceModel] = useState<Partial<InvoiceEntity>>({});
+  const [invoice, setInvoice] = useState<InvoiceEntity | null>(null);
 
   useEffect(() => {
     if (props.open) {
-      setinvoiceModel(model as InvoiceEntity);
-      // setLoading(true);
+      loadData();
     }
-    // else {
-    //     setLoading(false);
-    // }
-    // setLoading(false);
   }, [props.open]);
 
-  const handleIframeLoad = () => {
-    setLoading(false); // Hide loading spinner when iframe is loaded
+  const loadData = () => {
+    request.call({
+      onSuccess: (res) => {
+        setInvoice(res.data);
+      },
+    });
   };
 
   function onCancel() {
     onClose();
-  }
-
-  async function Send() {
-    try {
-      setLoading(true);
-      var result = await SendInvoiceApi(model!.Id);
-      result.fold(
-        (error) => {
-          toast.error(error.message);
-        },
-        (data) => {
-          setIframeKey(iframeKey + 1);
-          setinvoiceModel(data);
-        }
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function Refresh() {
-    try {
-      setLoading(true);
-      var result = await CheckInvoiceApi(model!.Id);
-      result.fold(
-        (error) => {
-          toast.error(error.message);
-        },
-        (data) => {
-          setIframeKey(iframeKey + 1);
-          setinvoiceModel(data);
-        }
-      );
-    } finally {
-      setLoading(false);
-    }
   }
 
   return (
@@ -99,47 +60,29 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
       PaperProps={{}}
       onClose={onClose}
     >
-      {/* Iframe section */}
-      <Box
-        sx={{
-          margin: "auto",
-          p: 4,
-          height: "100%",
-          width: "100%",
-          background: "white",
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
+      <DataFetchingWrapper
+        retry={loadData}
+        loading={request.loading && !request.data?.data}
+        error={request.error && !request.data?.data}
       >
-        {model && <InvoiceComponent invoice={model} />}
+        <Box
+          sx={{
+            margin: "auto",
+            p: 4,
+            height: "100%",
+            width: "100%",
+            background: "white",
+            borderRadius: 2,
+            boxShadow: 3,
+          }}
+        >
+          {invoice && <InvoiceComponent invoice={invoice} />}
 
-        <Gap />
+          <Gap />
 
-        <Box className="flex justify-end"></Box>
-      </Box>
-
-      {/* {invoiceModel && (
-          <div className={styles.submitButtons} style={{ marginTop: "10px" }}>
-            <button className={styles.cancel} type="button" onClick={onCancel}>
-              Cancel
-            </button>
-            {invoiceModel.Status != InvoiceStatus.Draft && (
-              <button type="button" onClick={Refresh}>
-                Did You Pay? <IoIosRefresh size={24} />
-              </button>
-            )}
-
-            {invoiceModel.Status == InvoiceStatus.Draft ? (
-              <button type="button" onClick={Send}>
-                {"Accept And Send"} <GoPlusCircle size={24} />
-              </button>
-            ) : (
-              <button type="button" onClick={Send}>
-                {"ReSend"} <GoPlusCircle size={24} />
-              </button>
-            )}
-          </div>
-        )} */}
+          <Box className="flex justify-end"></Box>
+        </Box>
+      </DataFetchingWrapper>
     </Dialog>
   );
 };

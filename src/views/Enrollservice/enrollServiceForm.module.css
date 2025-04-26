@@ -240,6 +240,8 @@
 .textWrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 .price {
@@ -306,4 +308,14 @@
   gap: 10px;
   align-items: center;
   padding: 25px 0px 25px 0px;
+}
+
+.privacyPolicyText{
+  color: rgba(102, 102, 102, 1);
+  font-size: 14px;
+}
+
+.privacyPolicyText a{
+  color:  rgba(76, 142, 59, 1);
+  cursor: pointer;
 }

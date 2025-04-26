@@ -139,7 +139,7 @@ export default function RequestServices() {
     <div className={styles.table_container}>
       {invoiceModel && (
         <ShowInvoice
-        open={invoiceModalIsOpen}
+          open={invoiceModalIsOpen}
           onClose={() => {
             fetchInvoice();
             setInvoiceModalIsOpen(false);
@@ -186,10 +186,16 @@ export default function RequestServices() {
                   new Date(item.CreatedAt).toLocaleTimeString()}
               </td>
 
-              {((item.Status == InvoiceStatus.Draft) || (item.Status == InvoiceStatus.Deleted)) ? (
+              {item.Status == InvoiceStatus.Draft ||
+              item.Status == InvoiceStatus.Deleted ? (
                 <td>---</td>
               ) : (
-                <td>${item.Amount}</td>
+                <td>
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(item.Amount)}
+                </td>
               )}
 
               <td>

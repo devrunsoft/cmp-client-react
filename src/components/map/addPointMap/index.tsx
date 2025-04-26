@@ -191,6 +191,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
         lat: marker?.lat,
         lng: marker?.lng,
       };
+      
 
       if (type === "Oil" || type === "Grease Trap") {
         var otherCompanyLocationCommand = new OtherCompanyLocationCommand(

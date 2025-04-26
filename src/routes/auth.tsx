@@ -9,7 +9,8 @@ import { ProtectWrapper } from "./main";
 import SignUp from "views/Auth/SignUp";
 import { getPath, LinkEnum } from "common/menu-items";
 import { APP_ROUTES } from "./app_route";
-// import SignUp from "views/Auth/SignUp";
+import { TermsAndConditionProvider } from "components/context_api/terms_and_conditions";
+import TermConditionModal from "components/term";
 
 const Login = Loadable(lazy(() => import("views/Auth/Login")));
 const Activation = Loadable(lazy(() => import("views/Activation")));
@@ -53,9 +54,12 @@ const MainRoutes = {
       ),
     },
     {
-      path: APP_ROUTES.SignUpDetail+"/:step",
+      path: APP_ROUTES.SignUpDetail + "/:step",
       element: (
+        <TermsAndConditionProvider>
           <SignUp />
+          <TermConditionModal />
+        </TermsAndConditionProvider>
       ),
     },
     {

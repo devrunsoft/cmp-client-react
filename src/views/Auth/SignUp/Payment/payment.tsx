@@ -12,6 +12,7 @@ import { BillingInfromationCommand } from "common/domain/command/billing_informa
 import { addBilling } from "data/api/register/bilingInformation/add";
 import PaymentAddressCm from "cmp-core/src/Component/PaymentAddress/PaymentAddress.tsx";
 import { NextButton } from "components/button/next/next";
+import { useTerms } from "components/context_api/terms_and_conditions";
 // import PaymentOptions from "@/comments/forms/paymentOptions/paymentOptions";
 
 // import SignUpButtons from "../signUpButtons/signUpButtons";
@@ -57,6 +58,7 @@ const PaymentForm = ({ onRegistrationSuccess }) => {
     }
   };
 
+  const { setOpen, isOpen } = useTerms();
   return (
     <>
       {/* <div className={styles.container}>
@@ -170,8 +172,24 @@ const PaymentForm = ({ onRegistrationSuccess }) => {
           <p className={styles.privacyPolicyText}>
             By clicking the button, you confirm that you have read and agree to
             Ecoenergy
-            <a href=""> Terms and Conditions</a> and{" "}
-            <a href="">Privacy Policy.</a>
+            <a
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setOpen(!isOpen);
+              }}
+            >
+              {" "}
+              Terms and Conditions
+            </a>{" "}
+            and{" "}
+            <a
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setOpen(!isOpen);
+              }}
+            >
+              Privacy Policy.
+            </a>
           </p>
         </div>
         <div className={styles.buttonLine}>

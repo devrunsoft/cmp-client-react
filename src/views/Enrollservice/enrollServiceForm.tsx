@@ -200,7 +200,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     ) {
       return toast.error("Pickup point can not be empty");
     }
-    if(services.Type == ProductType.Product && qty<=0){
+    if (services.Type == ProductType.Product && qty <= 0) {
       return toast.error("Quantity must be at least 1.");
     }
     // if (dayOfWeek.length == 0) {
@@ -339,7 +339,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   //         setLoading(false);
   //     }
   // }
-  const { setOpen , isOpen } = useTerms();
+  const { setOpen, isOpen } = useTerms();
   return (
     <>
       {invoiceModel && (
@@ -488,25 +488,21 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
           <div className={styles.agreementText}>
             <div className={styles.textWrapper}>
               {services.Type == ProductType.Service && (
-                <div>
-                  <Switch active={true} onChange={() => {}} />{" "}
-                  <span>
+                <>
+                  <Switch active={true} onChange={() => {}} />
+                  <span className={styles.privacyPolicyText}>
                     I agree with{" "}
-                    <span
-                      onClick={()=>{
-                        setOpen(!isOpen)
-                      }}
-                      style={{
-                        color: "blue",
-                        textDecoration: "underline",
-                        cursor: "pointer",
+                    <a
+                      onClick={() => {
+                        setOpen(!isOpen);
                       }}
                     >
+                      {" "}
                       Terms and Conditions
-                    </span>{" "}
-                    for this service
+                    </a>{" "}
+                    and for this service
                   </span>
-                </div>
+                </>
               )}
             </div>
           </div>
