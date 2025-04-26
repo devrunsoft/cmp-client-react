@@ -200,6 +200,9 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     ) {
       return toast.error("Pickup point can not be empty");
     }
+    if(services.Type == ProductType.Product && qty<=0){
+      return toast.error("Quantity must be at least 1.");
+    }
     // if (dayOfWeek.length == 0) {
     //   return toast.error("At least one day must be selected.");
     // }
