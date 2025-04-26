@@ -26,7 +26,7 @@ export default function SideBar({ isOpen, toggleMenu }) {
       count: 0,
     },
     {
-      title: "Request service",
+      title: "Service Requests",
       path: APP_ROUTES.Requests,
       status: "",
       icon: "/sideIcons/request_icon.svg",

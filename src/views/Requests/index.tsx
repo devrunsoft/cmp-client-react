@@ -5,7 +5,7 @@ export default function Requets() {
   return (
     <div className="pagecontent">
       <Title
-        title={"Request service"}
+        title={"Service Requests"}
         icon={"/assets/invoices_and_payments_logo.svg"}
       />
       <RequestServices />
