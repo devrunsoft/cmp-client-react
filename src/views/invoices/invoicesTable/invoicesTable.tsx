@@ -15,6 +15,7 @@ import { InvoiceStatus } from "common/domain/enum/invoice_enum";
 import { toast } from "react-toastify";
 import { DeleteInvoiceApi } from "data/api/invoice/delete_invoice_api";
 import ShowInvoice from "components/Invoice/invoice_modal";
+import { Check } from "@mui/icons-material";
 
 export default function InvoicesTable() {
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -54,6 +55,7 @@ export default function InvoicesTable() {
                 We’ll review it, prepare the contract, and send it to you ASAP.
                 Thank you!`);
         break;
+      case InvoiceStatus.Complete:
       case InvoiceStatus.SendPayment:
         openInvoice(model);
         break;
@@ -246,6 +248,18 @@ export default function InvoicesTable() {
                             className={styles.buttonPay}
                           >
                             <IoCardOutline size={"24px"} />
+                            {item.InvoiceStatus}
+                          </a>
+                        </div>
+                      );
+                    case "Complete":
+                      return (
+                        <div className={styles.buttonsDraft}>
+                          <a
+                            onClick={() => invoiceHandler(item)}
+                            className={styles.buttonComplete}
+                          >
+                            <Check />
                             {item.InvoiceStatus}
                           </a>
                         </div>
