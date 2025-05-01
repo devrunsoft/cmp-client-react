@@ -14,7 +14,7 @@ const MainLogo = () => {
   return (
     <div style={styles.logoText}>
       <h1 style={styles.h1}>CLIENT PORTAL</h1>
-      <p style={styles.p}>{email}</p>
+      <p style={styles.h1}>{email}</p>
     </div>
   );
 };

@@ -465,25 +465,35 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
             }}
             selected={dayOfWeek}
           />
-          <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "16px",
+              justifyContent: "start",
+              flexDirection: { xs: "column", md: "row" }
+            }}
+          >
             <label className={styles.label} htmlFor="DayOfWeek">
               Time Range:
             </label>
 
-            <TimePicker
-              disableClock={true}
-              onChange={setFromTime}
-              value={fromTime}
-            />
-            <label className={styles.labelFont} htmlFor="DayOfWeek">
-              to:
-            </label>
-            <TimePicker
-              disableClock={true}
-              onChange={setToTime}
-              value={toTime}
-            />
-          </div>
+            <Box sx={{ display: "flex", gap: "16px", alignItems: "center" }}>
+              {" "}
+              <TimePicker
+                disableClock={true}
+                onChange={setFromTime}
+                value={fromTime}
+              />
+              <label className={styles.labelFont} htmlFor="DayOfWeek">
+                to:
+              </label>
+              <TimePicker
+                disableClock={true}
+                onChange={setToTime}
+                value={toTime}
+              />
+            </Box>
+          </Box>
 
           <div className={styles.agreementText}>
             <div className={styles.textWrapper}>

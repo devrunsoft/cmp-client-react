@@ -6,14 +6,17 @@ import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 
 enum ApiType {
   get = "getByInvoiceNumber",
+  pay="pay"
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
   [ApiType.get]: (id: any) => `Invoice/${id}`,
+  [ApiType.pay]: (id: any) => `Invoice/Pay/${id}`,
 };
 
 const method: Record<ApiType, Method> = {
   [ApiType.get]: "GET",
+  [ApiType.pay]: "POST",
 };
 
 const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
@@ -30,5 +33,13 @@ export function useInvoiceGet(
 ): UseApiOutputType<InvoiceEntity> {
   return useApi<InvoiceEntity>({
     ...getConfig(ApiType.get, invoiceNumber),
+  });
+}
+
+export function useInvoicePay(
+  invoiceNumber?: number
+): UseApiOutputType<string> {
+  return useApi<string>({
+    ...getConfig(ApiType.pay, invoiceNumber),
   });
 }

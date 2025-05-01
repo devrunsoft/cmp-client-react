@@ -14,8 +14,11 @@ import InvoiceComponent from "cmp-core/src/Component/Invoice/InvoiceComponent";
 import Gap from "uikit/src/Gap";
 import { Box } from "@mui/material";
 import Dialog, { DialogPropsType } from "uikit/src/Dialog";
-import { useInvoiceGet } from "data/repository/invoice";
+import { useInvoiceGet, useInvoicePay } from "data/repository/invoice";
 import { DataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { MoneyOffSharp, MoneySharp } from "@mui/icons-material";
+import { InvoiceStatus } from "common/domain/enum/invoice_enum";
 
 type InvoiceModalProps = Omit<DialogPropsType, "size"> & {
   onClose: () => void;
@@ -28,6 +31,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
   ...props
 }: InvoiceModalProps) => {
   const request = useInvoiceGet(model?.Id);
+  const requestSend = useInvoicePay(model?.Id!);
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(null);
 
@@ -43,6 +47,15 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
     request.call({
       onSuccess: (res) => {
         setInvoice(res.data);
+      },
+    });
+  };
+  const pay = () => {
+    requestSend.call({
+      onSuccess: (res) => {
+        if (res.data) {
+          window.location.href = res.data;
+        }
       },
     });
   };
@@ -76,11 +89,34 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
             boxShadow: 3,
           }}
         >
-          {invoice && <InvoiceComponent invoice={invoice} />}
+          {invoice && (
+            <InvoiceComponent
+              title="Invoice"
+              number={invoice.InvoiceNumber}
+              invoice={invoice}
+            />
+          )}
 
           <Gap />
 
-          <Box className="flex justify-end"></Box>
+          <Box className="flex justify-end">
+            <Gap />
+
+            {invoice?.Status == InvoiceStatus.SendPayment && (
+              <LoadingButton
+                onClick={() => {
+                  pay();
+                }}
+                variant="contained"
+                loading={requestSend.loading}
+                color="primary"
+                startIcon={<MoneySharp />}
+                className="appButton"
+              >
+                Pay
+              </LoadingButton>
+            )}
+          </Box>
         </Box>
       </DataFetchingWrapper>
     </Dialog>

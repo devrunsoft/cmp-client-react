@@ -154,7 +154,7 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
               <td>
                 {(() => {
                   switch (item.Status) {
-                    case ContractStatis.Created:
+                    case ContractStatis.Send:
                       return (
                         <div className={styles.buttonsDraft}>
                           <a

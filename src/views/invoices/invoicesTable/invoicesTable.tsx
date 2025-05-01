@@ -204,7 +204,7 @@ export default function InvoicesTable() {
               <td>
                 {(() => {
                   switch (item.InvoiceStatus) {
-                    case "Canceled":
+                    case InvoiceStatus.Canceled:
                       return (
                         <div
                           className={styles.statusPaid}
@@ -214,7 +214,7 @@ export default function InvoicesTable() {
                           {item.InvoiceStatus}
                         </div>
                       );
-                    case "Send_Payment":
+                    case InvoiceStatus.SendPayment:
                       return (
                         <div className={styles.buttonsDraft}>
                           {/* <a
@@ -233,7 +233,7 @@ export default function InvoicesTable() {
                           </a>
                         </div>
                       );
-                    case "Draft":
+                    case InvoiceStatus.Draft:
                       return (
                         <div className={styles.buttonsDraft}>
                           <a
@@ -252,7 +252,7 @@ export default function InvoicesTable() {
                           </a>
                         </div>
                       );
-                    case "Complete":
+                    case InvoiceStatus.Complete:
                       return (
                         <div className={styles.buttonsDraft}>
                           <a
@@ -271,7 +271,7 @@ export default function InvoicesTable() {
                           className={styles.buttonPay}
                         >
                           <IoCardOutline size={"24px"} />
-                          {item.InvoiceStatus.replace(/_/g, " ")}
+                          {item.InvoiceStatus.toString().replace(/_/g, " ")}
                         </a>
                       );
                   }
@@ -279,7 +279,7 @@ export default function InvoicesTable() {
               </td>
 
               <td>
-                {item.InvoiceStatus === "paid" ? (
+                {item.InvoiceStatus ==InvoiceStatus.Complete ? (
                   <img
                     src="/assets/download_icon_dark.svg"
                     onClick={() => openInvoice(item)}

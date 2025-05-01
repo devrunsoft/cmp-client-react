@@ -13,7 +13,7 @@ import styles from "./sideBar.module.css";
 import { APP_ROUTES } from "../../../../routes/app_route";
 import { IoLogInOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
-import { Site_URL } from "core/src/utils/url";
+import { Api_URL, Site_URL } from "core/src/utils/url";
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -59,43 +59,47 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         sx={{ height: APPBAR_HEIGHT + "px" }}
         className="flex items-center justify-between"
       >
-        <Box
-          className="flex items-center"
-          flexDirection="column"
-          alignItems="flex-start"
-        >
-          <Box className="flex items-center">
-            {isSmallScreen && onMenuClick && (
-              <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
-                <MenuIcon />
-              </IconButton>
-            )}
-            <Link href="/" className="flex">
-              <Typography
-                color="text.tooltip"
-                variant="titleLg"
-                sx={{ mr: "24px" }}
-              >
-                CLIENT PORTAL
-              </Typography>
-            </Link>
-          </Box>
-
-          <Typography
-            sx={{
-              fontSize: "13px",
-              lineHeight: "15.6px",
-              letterSpacing: "0.08em",
-              textAlign: "left",
-              color: "rgba(255, 255, 255, 0.6)",
-              mt: "4px", // Optional: margin top for spacing
-              ml: isSmallScreen && onMenuClick ? "48px" : "0", // Align with text if menu icon exists
-            }}
+        <Box className="flex" sx={{ gap: "5px" }}>
+          <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
+          <Box
+            className="flex items-center"
+            flexDirection="column"
+            alignItems="flex-start"
           >
-            {email}
-          </Typography>
-        </Box>
+            <Box className="flex items-center">
+              {isSmallScreen && onMenuClick && (
+                <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
+                  <MenuIcon />
+                </IconButton>
+              )}
+              <Link href="/" className="flex">
+                <Typography
+                  color="text.tooltip"
+                  variant="titleLg"
+                  sx={{ mr: "24px" }}
+                >
+                  CLIENT PORTAL
+                </Typography>
+              </Link>
+            </Box>
 
+            {!isSmallScreen && (
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  lineHeight: "15.6px",
+                  letterSpacing: "0.08em",
+                  textAlign: "left",
+                  color: "rgba(255, 255, 255, 0.6)",
+                  mt: "4px", // Optional: margin top for spacing
+                  ml: isSmallScreen ? "48px" : "0", // Align with text if menu icon exists
+                }}
+              >
+                {email}
+              </Typography>
+            )}
+          </Box>
+        </Box>
         <div className={styles.navigSec}>
           <ShoppingCardIcon />
 

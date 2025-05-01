@@ -113,7 +113,7 @@ export default function RequestServices() {
             <div />
             <div className="react-confirm-alert-body">
               <h1>Confirm to cancel</h1>
-              <p>Are you sure you want to cancel this invoice?</p>
+              <p>Are you sure you want to cancel this request?</p>
               <div className={styles.container}>
                 <button
                   className={styles.cancelService}
@@ -186,8 +186,7 @@ export default function RequestServices() {
                   new Date(item.CreatedAt).toLocaleTimeString()}
               </td>
 
-              {item.Status == InvoiceStatus.Draft ||
-              item.Status == InvoiceStatus.Deleted ? (
+              {item.Status == InvoiceStatus.Draft  ? (
                 <td>---</td>
               ) : (
                 <td>
@@ -201,8 +200,8 @@ export default function RequestServices() {
               <td>
                 {(() => {
                   switch (item.InvoiceStatus) {
-                    case "Deleted":
-                    case "Canceled":
+                    case InvoiceStatus.Canceled:
+                    case InvoiceStatus.Deleted:
                       return (
                         <div
                           className={styles.statusPaid}
@@ -231,7 +230,7 @@ export default function RequestServices() {
                     //       </a>
                     //     </div>
                     //   );
-                    case "Draft":
+                    case InvoiceStatus.Draft:
                       return (
                         <div className={styles.buttonsDraft}>
                           <a
@@ -257,7 +256,7 @@ export default function RequestServices() {
                           className={styles.buttonPay}
                         >
                           <IoCardOutline size={"24px"} />
-                          {item.InvoiceStatus.replace(/_/g, " ")}
+                          {item.InvoiceStatus.toString().replace(/_/g, " ")}
                         </a>
                       );
                   }
@@ -265,7 +264,7 @@ export default function RequestServices() {
               </td>
 
               <td>
-                {item.InvoiceStatus === "paid" ? (
+                {item.InvoiceStatus === InvoiceStatus.Complete ? (
                   <img
                     src="/assets/download_icon_dark.svg"
                     onClick={() => openInvoice(item)}

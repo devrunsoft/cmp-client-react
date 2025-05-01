@@ -75,7 +75,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     href: `${APP_ROUTES.EnrollEmergencyService}`,
   },
   [LinkEnum.Contract]: {
-    title: "Contract",
+    title: "Contracts",
     icon: "/assets/images/invoices_icon.svg",
     href: "/dashboard/contract",
     countKey: "Contract",
@@ -116,7 +116,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     href: `/login/forgotPassword`,
   },
   [LinkEnum.ClientServiceLog]: {
-    title: "Log of service",
+    title: "Log of services",
     icon: "/assets/images/white_services_icon.svg",
     href: `/service-log`,
   },

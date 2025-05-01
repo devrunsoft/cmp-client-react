@@ -1,3 +1,4 @@
+import { InvoiceStatus } from "../enum/invoice_enum";
 import { BaseServiceAppointmentEntity } from "./service_appointment_entity";
 
 export type InvoiceEntity = {
@@ -8,8 +9,8 @@ export type InvoiceEntity = {
   ProductPriceCrmId: string;
   InvoiceCrmId: string;
   InvoiceNumber: string;
-  Status: number;
-  InvoiceStatus: string;
+  Status: InvoiceStatus;
+  InvoiceStatus: InvoiceStatus;
   Link: string;
   InvoiceId: string;
   Amount: number;
