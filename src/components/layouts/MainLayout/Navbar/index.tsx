@@ -3,7 +3,7 @@ import MuiToolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { Logout } from "@mui/icons-material";
+import { Logout, ShoppingBag, ShoppingCart } from "@mui/icons-material";
 import { getToken, logout } from "core/src/utils/auth";
 import { APPBAR_HEIGHT } from "cmp-core/src/Contants/const";
 import { useTheme, useMediaQuery, IconButton, Link } from "@mui/material";
@@ -14,6 +14,7 @@ import { APP_ROUTES } from "../../../../routes/app_route";
 import { IoLogInOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import { Api_URL, Site_URL } from "core/src/utils/url";
+import { ShoppingBasket } from "lucide-react";
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -101,16 +102,16 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           </Box>
         </Box>
         <div className={styles.navigSec}>
-          <ShoppingCardIcon />
+          <ShoppingCart sx={{ color: "white" }} />
 
-          <button className={styles.notifiButton}>
+          {/* <button className={styles.notifiButton}>
             <img
               src="/assets/heroicons_bell.svg"
               alt="notifications"
               width={"24"}
               height={"24"}
             />
-          </button>
+          </button> */}
 
           <Link href={`${APP_ROUTES.EditProfile}`}>
             {profile == null ? (

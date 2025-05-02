@@ -3,6 +3,7 @@ import { UseApiOutputType } from "core/src/hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { Api_URL } from "core/src/utils/url";
 import { BaseServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
+import { PaginatedDataType, PaginationSearchParamsType } from "core/src/types/api";
 
 enum ApiType {
   getAll = "ClientService",
@@ -26,9 +27,11 @@ const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
   return config;
 };
 
-export function useClientServiceGetAll(
-): UseApiOutputType<BaseServiceAppointmentEntity[]> {
-  return useApi<BaseServiceAppointmentEntity[]>({
+export function useClientServiceGetAll(): UseApiOutputType<
+  PaginatedDataType<BaseServiceAppointmentEntity>,
+  PaginationSearchParamsType
+> {
+  return useApi<PaginatedDataType<BaseServiceAppointmentEntity>, PaginationSearchParamsType>({
     ...getConfig(ApiType.getAll),
   });
 }

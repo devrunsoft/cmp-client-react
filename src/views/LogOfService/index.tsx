@@ -1,128 +1,90 @@
-import { Box, Button, Typography } from "@mui/material";
-import BoxItem from "uikit/src/BoxItem";
-import Gap from "uikit/src/Gap";
-import { DataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import ApiTable from "cmp-core/src/Datatable/ApiTable";
+import TableDefinition from "./TableDefinition";
+import useFilterData from "hooks/useFilterData";
+import { useEffect, useState } from "react";
+import { Box, Button } from "@mui/material";
 import { Plus } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Empty from "cmp-core/src/Empty";
-import { useClientServiceGetAll } from "data/repository/service";
+
+import { GridFilter } from "uikit/src/GridFilter";
 import { BaseServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
-import { getStatusStyleFromString } from "cmp-core/src/Enum/serviceStatus";
-import convertMinutesToTimeFrom from "cmp-core/src/utils/convertMinuteToString";
+import { useClientServiceGetAll } from "data/repository/service";
+import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
+import {
+  LogOfServiceEnum,
+  LogOfServiceEnumOptions,
+} from "cmp-core/src/Enum/logOfServiceEnum";
 
-export default function ClientServiceLog() {
+export default function LogOfService() {
   const request = useClientServiceGetAll();
-
-  const navigate = useNavigate();
-  const [data, setData] = useState<BaseServiceAppointmentEntity[]>([]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  useEffect(() => {}, [data]);
-
-  const loadData = () => {
+  const [selected, setSelected] =
+    useState<Partial<BaseServiceAppointmentEntity> | null>(null);
+  const [isProviderDialog, setIsProviderDialog] = useState<boolean>(false);
+  const [status, setstatus] = useState<LogOfServiceEnum | null>(null);
+  const loadData = (
+    filter: PaginationSearchParamsType,
+    page: number,
+    PAGE_SIZE: number
+  ) => {
     request.call({
-      onSuccess: (res) => {
-        setData(res.data);
+      data: {
+        ...filter,
+      },
+      params: {
+        Status: status,
+        Size: PAGE_SIZE,
+        Page: page,
+        allField: filter.allField,
       },
     });
   };
-  //   const onAdd = () => {
-  //     navigate(`/client-dashboard/${id}`);
-  //   };
+
+  useEffect(() => {
+    if (status !== null) {
+      refresh();
+    }
+  }, [status]);
+
+  const { setFilter, setPage, refresh, page } =
+    useFilterData<PaginationSearchParamsType>({
+      initData: FILTER_INIT,
+      handleFetchFn: loadData,
+    });
 
   return (
-    <DataFetchingWrapper loading={request.loading}>
-      <Box
-        sx={{
-          padding: "16px",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="titleSm" fontSize={20} sx={{ textAlign: "left" }}>
-          Log of Services
-        </Typography>
-        {/* <Button
-          onClick={(_) => onAdd()}
-          startIcon={<Plus />}
-          variant="contained"
-          sx={{ borderRadius: AppConstants.Radius }}
-        >
-          Add
-        </Button> */}
+    <>
+      <Box className="mainPadding">
+        <AppDataFetchingWrapper retry={refresh} request={request}>
+          <ApiTable<BaseServiceAppointmentEntity>
+            title="Log Of Services"
+            columnDef={TableDefinition}
+            data={request.data?.data?.elements || []}
+            loadData={(v) =>
+              setFilter({ allField: (v?.filterAll as string) || "" })
+            }
+            isRowSelected={(i) => i.Id === selected?.Id}
+            filterAllTitle="search"
+            totalRows={request.data?.data?.totalElements || 1}
+            loadPage={setPage}
+            pageCount={request.data?.data?.totalPages}
+            page={page}
+            onSingleRowSelection={(s) => {
+              setSelected(s);
+              setIsProviderDialog(true);
+            }}
+            loading={request.loading}
+            endChildren={[
+              <GridFilter
+                handleChange={(v) => {
+                  setstatus(v);
+                }}
+                options={LogOfServiceEnumOptions}
+                selected={status}
+              />,
+            ]}
+          ></ApiTable>
+        </AppDataFetchingWrapper>
       </Box>
-      <Gap />
-      <Box
-        sx={{
-          padding: "16px",
-          flexGrow: 1, // Takes available space
-          overflowY: "auto", // Enables scrolling
-          width: "100%",
-        }}
-      >
-        {data.length ? (
-          data?.map((e) => (
-            <BoxItem>
-              <Box className="w-full">
-                <Box className="flex justify-between">
-                  <Typography
-                    variant="titleSm"
-                    fontWeight={400}
-                    sx={{ textAlign: "left" }}
-                  >
-                    {e.Product?.Name}
-                  </Typography>
-                  <Box
-                    sx={{
-                      top: 10,
-                      right: 10,
-                      backgroundColor: getStatusStyleFromString(e.Status ?? "")
-                        .background,
-                      color: getStatusStyleFromString(e.Status ?? "").color,
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      padding: "4px 10px",
-                      textAlign: "center",
-                      borderRadius: "10px",
-                      textTransform: "capitalize",
-                      display: "inline-block",
-                    }}
-                  >
-                    {e.Status}
-                  </Box>
-                </Box>
-                <Gap size={2} />
-                <Typography
-                  variant="titleSm"
-                  fontWeight={400}
-                  sx={{ textAlign: "left", color: "#666666" }}
-                >
-                  {e.ProductPrice?.Name}
-                </Typography>
-                <Gap size={3} />
-                <Typography
-                  variant="titleSm"
-                  fontWeight={400}
-                  sx={{ textAlign: "left", color: "#666666" }}
-                >
-                  {new Date(e.StartDate!)?.toLocaleDateString()}
-                  {" - "}
-                  {convertMinutesToTimeFrom(e.FromHour ?? 0)} to{" "}
-                  {convertMinutesToTimeFrom(e.ToHour ?? 0)}
-                </Typography>
-              </Box>
-            </BoxItem>
-          ))
-        ) : (
-          <Empty />
-        )}
-      </Box>
-    </DataFetchingWrapper>
+    </>
   );
 }
