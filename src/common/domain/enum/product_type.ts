@@ -12,7 +12,3 @@ export enum ProductType {
     [ProductType.ServiceEmergency]: "ServiceEmergency"
   };
   
-//   // Example Usage
-//   const example: ProductType = ProductType.Service;
-//   console.log(ProductCollectionDescriptions[example]);  // Output: "Service"
-  
