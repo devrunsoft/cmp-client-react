@@ -159,7 +159,7 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
                         <div className={styles.buttonsDraft}>
                           <a
                             onClick={() => openContract(item)}
-                            className={styles.buttonPay}
+                            className={styles.buttonPayable}
                           >
                             <IoCardOutline size={"24px"} />
                             Ready for Sign

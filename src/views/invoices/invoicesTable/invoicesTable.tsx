@@ -260,7 +260,7 @@ export default function InvoicesTable() {
                             className={styles.buttonComplete}
                           >
                             <Check />
-                            {item.InvoiceStatus}
+                            Paid
                           </a>
                         </div>
                       );
