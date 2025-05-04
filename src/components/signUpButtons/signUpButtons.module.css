@@ -67,3 +67,21 @@
     }
   }
   
+  .spinner {
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid white;
+    border-top-color: rgb(181, 178, 178);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

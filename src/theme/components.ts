@@ -199,6 +199,12 @@ const components = (theme: Theme): Components => ({
             backgroundColor: theme.palette.primary.light,
           },
         }),
+        ...(ownerState.color === "default" && {
+          borderColor: "rgba(228, 228, 228, 1)",
+          "&:hover": {
+            backgroundColor: "rgba(228, 228, 228, 1)"
+          },
+        }),
         "&.MuiLoadingButton-root": {
           "& .MuiLoadingButton-loadingIndicator": {},
         },

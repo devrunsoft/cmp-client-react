@@ -20,14 +20,13 @@ import { deleteShoppingCard } from "data/api/shopping_card/delete";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import ShowInvoice from "components/Invoice/invoice_modal";
 import TitleBack from "components/title/title_back";
+import Gap from "uikit/src/Gap";
 
 const ShoppingCard = () => {
   const { selectedAddresses } = useAddress();
   var { itemsCard, refreshCard } = useCard();
   const { setLoading } = useLoading();
   const navigate = useNavigate();
-  const [invoiceModalIsOpen, setInvoiceModalIsOpen] = useState(false);
-  const [invoiceModel, setInvoiceModel] = useState<InvoiceEntity | null>(null);
 
   useEffect(() => {
     refreshCard();
@@ -62,10 +61,6 @@ const ShoppingCard = () => {
       setLoading(false);
     }
   }
-  const openInvoice = (data) => {
-    setInvoiceModel(data);
-    setInvoiceModalIsOpen(true);
-  };
 
   async function unregisterService(Id: number) {
     try {
@@ -86,82 +81,74 @@ const ShoppingCard = () => {
   }
 
   return (
-    <div className='pagecontent'>
-        <TitleBack title={"Shopping Cart"} icon={"/assets/invoices_and_payments_logo.svg"} />
-        {
-    itemsCard.length > 0 ? (
-      <div className={styles.cardContainer}>
-
-        <div className={styles.itemsContainer}>
-          {itemsCard.map((item, index) => (
-            <div className={styles.form} key={index}>
-              <div className={styles.fakeInput}>
-                {item.AddressName}
-                <br />
-                {item.Name} - {item.PriceName}
-                <br />
-                Quantity: {item.Qty}
-                <div className={styles.inputIconButton}>
-                  <button
-                    type="button"
-                    onClick={() => unregisterService(item.Id)}
-                  >
-                    <FiTrash
-                      size={22}
-                      style={{ color: "rgba(76, 142, 59, 1)" }}
-                    />
-                  </button>
+    <div className="pagecontent">
+      <TitleBack
+        title={"Shopping Cart"}
+        icon={"/assets/invoices_and_payments_logo.svg"}
+      />
+      {itemsCard.length > 0 ? (
+        <div className={styles.cardContainer}>
+          <div className={styles.itemsContainer}>
+            {itemsCard.map((item, index) => (
+              <div className={styles.form} key={index}>
+                <div className={styles.fakeInput}>
+                  {item.AddressName}
+                  <br />
+                  {item.Name} - {item.PriceName}
+                  <br />
+                  Quantity: {item.Qty}
+                  <div className={styles.inputIconButton}>
+                    <button
+                      type="button"
+                      onClick={() => unregisterService(item.Id)}
+                    >
+                      <FiTrash
+                        size={22}
+                        style={{ color: "rgba(76, 142, 59, 1)" }}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <ButtonsForm
+              // hasCancel={false}
+              isActive={true}
+              nameOfButton={"Add another service"}
+              icon={<MdAddShoppingCart size={24} />}
+              status={""}
+              onClick={() => {
+                navigate(
+                  APP_ROUTES.Service.replace(
+                    ":oprAddress",
+                    selectedAddresses?.Id?.toString() ?? ""
+                  ),
+                  { replace: true }
+                );
+              }}
+              children={
+                <ButtonsForm
+                  isActive={true}
+                  hasCancel={false}
+                  nameOfButton={"Submit"}
+                  status={""}
+                  icon={<MdDone size={24} />}
+                  onClick={() => {
+                    creatInvoice();
+                  }}
+                />
+              }
+            />
+          </div>
         </div>
-        {invoiceModel && (
-          <ShowInvoice
-            open={invoiceModalIsOpen}
-            onClose={() => {
-              setInvoiceModalIsOpen(false);
-            }}
-            model={invoiceModel}
-          />
-        )}
+      ) : (
         <div className={styles.buttonContainer}>
-          <ButtonsForm
-            // hasCancel={false}
-            isActive={true}
-            nameOfButton={"Add another service"}
-            icon={<MdAddShoppingCart size={24} />}
-            status={""}
-            onClick={() => {
-              navigate(
-                APP_ROUTES.Service.replace(
-                  ":oprAddress",
-                  selectedAddresses?.Id?.toString() ?? ""
-                ),
-                { replace: true }
-              );
-            }}
-            children={
-              <ButtonsForm
-                isActive={true}
-                hasCancel={false}
-                nameOfButton={"Submit"}
-                status={""}
-                icon={<MdDone size={24} />}
-                onClick={() => {
-                  creatInvoice();
-                }}
-              />
-            }
-          />
+          <AiTwotoneShopping size={400} color="rgb(241, 237, 237)" />
         </div>
-      </div>
-    ) : (
-      <div className={styles.buttonContainer}>
-        <AiTwotoneShopping size={400} color="rgb(241, 237, 237)" />
-      </div>
-    )
-        }
+      )}
     </div>
   );
 };

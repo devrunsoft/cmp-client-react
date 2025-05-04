@@ -29,7 +29,7 @@ import { getServiceApi } from "data/api/service/get_all_service_by_id_api";
 import { getAllServicePriceApi } from "data/api/service/get_all_service_price_api";
 import { toast } from "react-toastify";
 import { AddShoppingCardCommand } from "common/domain/command/shopping_card/add";
-import { addShoppingCard } from "data/api/shopping_card/add";
+
 import { getServiceAppointmentApi } from "data/api/service_appointment/get_service_appointment_api";
 import { APP_ROUTES } from "../../routes/app_route";
 import { cancelServiceAppointmentApi } from "data/api/service_appointment/camcel_service_appointment_api";
@@ -41,6 +41,7 @@ import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import Switch from "components/switch/switch";
 import { ProductType } from "common/domain/enum/product_type";
 import { useTerms } from "components/context_api/terms_and_conditions";
+import { useAddShoppingCard } from "data/repository/shopingCard";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -79,8 +80,6 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
   const [startDate, setStartDate] = useState<Date | null>(null);
 
-  const [invoiceModalIsOpen, setInvoiceModalIsOpen] = useState(false);
-  const [invoiceModel, setInvoiceModel] = useState<InvoiceEntity | null>(null);
   const [formisValid, setFormisValid] = useState<boolean>(false);
 
   const [locations, setLocations] = useState<LocationCompanyEntity[]>([]);
@@ -94,26 +93,26 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   const { selectedAddresses, refreshAdr } = useAddress();
   const navigate = useNavigate();
   var { itemsCard, refreshCard } = useCard();
-  // const [model, setModel] = useState<ServiceAppointmentEntity>(null);
-  // const [collection, setcollection] = useState<String[]>([]);
 
   const [adresses, setadresses] = useState<LocationCompanyEntity[]>([]);
 
   const onAddress = (data: LocationCompanyEntity[]) => {
     setadresses(data);
   };
-  // const [fromHour, setFromHour] = useState("");
-  // const [toHour, setToHour] = useState("");
 
-  function convertTimeTostring(totalMinutes: number): string {
-    const convertedHours = Math.floor(totalMinutes / 60)
-      .toString()
-      .padStart(2, "0");
-    const convertedMinutes = (totalMinutes % 60).toString().padStart(2, "0");
+  var request = useAddShoppingCard();
+  const isLoading = request.loading;
 
-    const convertedTime = `${convertedHours}:${convertedMinutes}`;
-    return convertedTime;
-  }
+  // function convertTimeTostring(totalMinutes: number): string {
+  //   const convertedHours = Math.floor(totalMinutes / 60)
+  //     .toString()
+  //     .padStart(2, "0");
+  //   const convertedMinutes = (totalMinutes % 60).toString().padStart(2, "0");
+
+  //   const convertedTime = `${convertedHours}:${convertedMinutes}`;
+  //   return convertedTime;
+  // }
+
   useEffect(() => {
     if (selectedAddresses) {
       fetchServicePrice();
@@ -203,41 +202,30 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     if (services.Type == ProductType.Product && qty <= 0) {
       return toast.error("Quantity must be at least 1.");
     }
-    // if (dayOfWeek.length == 0) {
-    //   return toast.error("At least one day must be selected.");
-    // }
-    try {
-      setLoading(true);
-      var command: AddShoppingCardCommand = {
-        OperationalAddressId: selectedAddresses.Id!,
-        ProductPriceId: selectedValue!.Id,
-        StartDate: startDate!,
-        FrequencyType: selectedValue!.Name!,
-        ServiceKind: 1,
-        LocationCompanyIds: adresses.map((e) => e.Id),
-        Qty: qty,
-        ProductId: services.Id!,
-        DayOfWeek: dayOfWeek,
-        FromHour: convertTimeStringToMinutes(fromTime ?? ""),
-        ToHour: convertTimeStringToMinutes(toTime ?? ""),
-      };
 
-      var result = await addShoppingCard(command);
-      result.fold(
-        (error) => {
-          toast.error(error.message);
-        },
-        (data) => {
-          navigate(-1);
-          refreshCard();
-          setTimeout(() => {
-            navigate(APP_ROUTES.ShoppingCard, { replace: true });
-          }, 100);
-        }
-      );
-    } finally {
-      setLoading(false);
-    }
+    var command: AddShoppingCardCommand = {
+      OperationalAddressId: selectedAddresses.Id!,
+      ProductPriceId: selectedValue!.Id,
+      StartDate: startDate!,
+      FrequencyType: selectedValue!.Name!,
+      ServiceKind: 1,
+      LocationCompanyIds: adresses.map((e) => e.Id),
+      Qty: qty,
+      ProductId: services.Id!,
+      DayOfWeek: dayOfWeek,
+      FromHour: convertTimeStringToMinutes(fromTime ?? ""),
+      ToHour: convertTimeStringToMinutes(toTime ?? ""),
+    };
+    request.call({
+      data: command,
+      onSuccess: (res) => {
+        navigate(-1);
+        refreshCard();
+        setTimeout(() => {
+          navigate(APP_ROUTES.ShoppingCard, { replace: true });
+        }, 100);
+      },
+    });
   }
 
   let closeDialog;
@@ -342,15 +330,6 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   const { setOpen, isOpen } = useTerms();
   return (
     <>
-      {invoiceModel && (
-        <ShowInvoice
-          open={invoiceModalIsOpen}
-          onClose={() => {
-            setInvoiceModalIsOpen(false);
-          }}
-          model={invoiceModel}
-        />
-      )}
       {
         <div className={styles.form}>
           <div className={styles.formSection}>
@@ -470,7 +449,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
               display: "flex",
               gap: "16px",
               justifyContent: "start",
-              flexDirection: { xs: "column", md: "row" }
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
             <label className={styles.label} htmlFor="DayOfWeek">
@@ -521,6 +500,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
             <ButtonsForm
               isActive={formisValid}
               nameOfButton={"Save"}
+              loading={isLoading}
               status={"save"}
               onClick={handleSubmit(registerService)}
             />

@@ -11,7 +11,23 @@
     align-items: center;
     gap: 16px;
 }
-
+.privacyPolicyText{
+    color: rgba(102, 102, 102, 1);
+    font-size: 14px;
+  }
+  
+  .privacyPolicyText a{
+    color:  rgba(76, 142, 59, 1);
+    cursor: pointer;
+  }
+  
+.textWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  
 .form label{
     font-size: 16px;
     font-weight: 600;

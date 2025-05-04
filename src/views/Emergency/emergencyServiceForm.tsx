@@ -30,7 +30,6 @@ import { OtherCompanyLocationCommand } from "common/domain/command/other_company
 import { deleteOtherAddressApi } from "data/api/dashboard/other_address/delete";
 import { cancelServiceAppointmentEmergencyApi } from "data/api/service_appointment_emergency/cancel_service_appointment_emergency_api";
 import { AddShoppingCardCommand } from "common/domain/command/shopping_card/add";
-import { addShoppingCard } from "data/api/shopping_card/add";
 import { APP_ROUTES } from "../../routes/app_route";
 import ServiceDropDown from "components/dropDown/service_dropdown";
 import ServicePriceDropDown from "components/dropDown/service_price_dropdown";
@@ -40,6 +39,7 @@ import MultiSelectProduct from "components/dropDown/multi-select";
 import Switch from "components/switch/switch";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import { useTerms } from "components/context_api/terms_and_conditions";
+import { useAddShoppingCard } from "data/repository/shopingCard";
 
 type EmergencyServiceFormProps = {
   Id?: number | null;
@@ -80,7 +80,6 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
     null
   );
   const { selectedAddresses, refreshAdr } = useAddress();
-  const [allitemsService, setallitemsService] = useState<ServiceEntity[]>([]);
   const [itemsService, setItemsService] = useState<ServiceEntity[]>([]);
   const [servicesPrice, setservicesPrice] = useState<ServicePriceEntity[]>([]);
   const [selectedPriceValue, setSelectedPriceValue] =
@@ -106,6 +105,8 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
 
   const allFields = watch("select");
   const allFields2 = watch("startDate");
+  var request = useAddShoppingCard();
+  const isLoading = request.loading;
 
   useEffect(() => {
     checkFormValidity();
@@ -175,7 +176,6 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
       result.fold(
         (error) => {},
         (data) => {
-          setallitemsService(data);
           setItemsService(data.filter((e) => e.IsEmergency));
           if (props.Id) {
             getById(props.Id, data);
@@ -303,43 +303,29 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
         FromHour: convertTimeStringToMinutes(fromTime ?? ""),
         ToHour: convertTimeStringToMinutes(toTime ?? ""),
       };
-      var result = await addShoppingCard(command);
-      result.fold(
-        (error) => {
-          if (error.message) toast.error(error.message);
-        },
-        (data) => {
-          // back();
+      request.call({
+        data: command,
+        onSuccess: (res) => {
           refreshCard();
 
           if (isEnrolled) {
-            // var item: ServiceEntity;
-            // if (selectedValue.Type==ServiceTypeEnum.CookingOilCollection) {
-            //   item = allitemsService.filter(e => e.collectionIds.includes(ServiceCollectionConst.Service) && e.collectionIds.includes(ServiceCollectionConst.Cooking_Oil_Collection))[0]
-            // } else if (selectedValue.Type==ServiceTypeEnum.GreaseTrapManagement) {
-            //   item= allitemsService.filter(e => e.collectionIds.includes(ServiceCollectionConst.Service) && e.collectionIds.includes(ServiceCollectionConst.Grease_Trap_Management_Collection))[0]
-            // }
-
-            // setTimeout(() => {
             navigate(
               `${APP_ROUTES.Enrollservice.replace(
                 ":oprAddress",
                 selectedAddresses.Id?.toString() ?? ""
               )}?serviceId=${selectedValue!.Id}&type=${selectedValue!.Name}`
             );
-            // }, 300);
           } else {
-            // back();
             navigate(APP_ROUTES.ShoppingCard);
           }
-        }
-      );
+        },
+      });
     } finally {
       setLoading(false);
     }
   }
 
-  const { setOpen , isOpen } = useTerms();
+  const { setOpen, isOpen } = useTerms();
 
   return (
     <>
@@ -442,27 +428,24 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
           <TimePicker disableClock={true} onChange={setToTime} value={toTime} />
         </div>
         <div className={styles.agreementText}>
-          <div className={styles.question}>
-            <Switch active={true} onChange={() => {}} />{" "}
-            <span>
-              I agree with{" "}
-              <span
-                onClick={() => {
-                  setOpen(!isOpen);
-                }}
-                style={{
-                  color: "blue",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
-              >
-                Terms and Conditions
-              </span>{" "}
-              for this service
-            </span>
-            {/* {selectedPriceValue && <div className={styles.price}>
-              <span className={styles.currency}> {"Total: "}</span>  ${selectedPriceValue.amount}
-            </div>} */}
+          <div className={styles.textWrapper}>
+            {
+              <>
+              <Switch active={true} onChange={() => {}} />
+                <span className={styles.privacyPolicyText}>
+                  I agree with{" "}
+                  <a
+                    onClick={() => {
+                      setOpen(!isOpen);
+                    }}
+                  >
+                    {" "}
+                    Terms and Conditions
+                  </a>{" "}
+                  and for this service
+                </span>
+              </>
+            }
           </div>
           <div className={styles.question}>
             <Switch active={false} onChange={handleToggleEnrollment} />
@@ -472,6 +455,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
         <div className={styles.submitButtons}>
           {props.Id == null ? (
             <ButtonsForm
+              loading={isLoading}
               isActive={formisValid}
               nameOfButton={"Place Order"}
               status={"save"}
