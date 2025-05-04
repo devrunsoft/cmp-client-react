@@ -23,7 +23,7 @@ import { ServiceAppointmentEntity } from "common/domain/entity/service_appointme
 import { useCard } from "components/context_api/shopping_card_context";
 import { getServiceAppointmentEmergencyApi } from "data/api/service_appointment_emergency/get_service_appointment_api";
 import { toast } from "react-toastify";
-import { getAllServiceApi } from "data/api/service/get_all_service_api";
+
 import { getAllServicePriceApi } from "data/api/service/get_all_service_price_api";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
 import { OtherCompanyLocationCommand } from "common/domain/command/other_company_location_command";
@@ -40,6 +40,7 @@ import Switch from "components/switch/switch";
 import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
+import { useGetAllServiceApi } from "data/repository/serviceV2";
 
 type EmergencyServiceFormProps = {
   Id?: number | null;
@@ -90,6 +91,8 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
 
   const [adresses, setadresses] = useState<LocationCompanyEntity[]>([]);
   const [formisValid, setFormisValid] = useState<boolean>(false);
+  var requestService = useGetAllServiceApi();
+
   const onAddress = (data: LocationCompanyEntity[]) => {
     setadresses(data);
   };
@@ -106,7 +109,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
   const allFields = watch("select");
   const allFields2 = watch("startDate");
   var request = useAddShoppingCard();
-  const isLoading = request.loading;
+  const isLoading = request.loading || requestService.loading;
 
   useEffect(() => {
     checkFormValidity();
@@ -170,21 +173,14 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
   }
 
   async function fetchService() {
-    try {
-      setLoading(true);
-      var result = await getAllServiceApi();
-      result.fold(
-        (error) => {},
-        (data) => {
-          setItemsService(data.filter((e) => e.IsEmergency));
-          if (props.Id) {
-            getById(props.Id, data);
-          }
+    requestService.call({
+      onSuccess: (res) => {
+        setItemsService(res.data.filter((e) => e.IsEmergency));
+        if (props.Id) {
+          getById(props.Id, res.data);
         }
-      );
-    } finally {
-      setLoading(false);
-    }
+      },
+    });
   }
 
   async function fetchServicePrice(
@@ -431,7 +427,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
           <div className={styles.textWrapper}>
             {
               <>
-              <Switch active={true} onChange={() => {}} />
+                <Switch active={true} onChange={() => {}} />
                 <span className={styles.privacyPolicyText}>
                   I agree with{" "}
                   <a

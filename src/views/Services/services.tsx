@@ -9,12 +9,16 @@ import { ServiceAppointmentEntity } from "common/domain/entity/service_appointme
 import { ServiceEntity } from "common/domain/entity/service_entity";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "components/loading/loading_context";
-import { getAllServiceApi } from "data/api/service/get_all_service_api";
+
 import { APP_ROUTES } from "../../routes/app_route";
 import { Link } from "@mui/material";
 import LocationSelect from "components/locationSelect/locationSelect";
 import { useGetAllServiceAppointmentApi } from "data/repository/service";
-import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import {
+  AppDataFetchingWrapper,
+  DataFetchingWrapper,
+} from "cmp-core/src/DataFetchingWrapper";
+import { useGetAllServiceApi } from "data/repository/serviceV2";
 
 export default function Services() {
   const { selectedAddresses } = useAddress();
@@ -26,7 +30,9 @@ export default function Services() {
   const [itemsProduct, setItemsProduct] = useState<ServiceEntity[]>([]);
   const navigate = useNavigate();
   var request = useGetAllServiceAppointmentApi(selectedAddresses.Id);
-  const isloading = request.loading;
+  var requestService = useGetAllServiceApi();
+
+  const isloading = request.loading || requestService.loading;
   const { setLoading } = useLoading();
   useEffect(() => {
     if (selectedAddresses) {
@@ -47,19 +53,12 @@ export default function Services() {
   }
 
   async function fetchService(serviceAppointment: ServiceAppointmentEntity[]) {
-    try {
-      setLoading(true);
-      var result = await getAllServiceApi();
-      result.fold(
-        (error) => {},
-        (data) => {
-          setItemsService(data.filter((e) => e.Type == 1));
-          setItemsProduct(data.filter((e) => e.Type == 2));
-        }
-      );
-    } finally {
-      setLoading(false);
-    }
+    requestService.call({
+      onSuccess: (res) => {
+        setItemsService(res.data.filter((e) => e.Type == 1));
+        setItemsProduct(res.data.filter((e) => e.Type == 2));
+      },
+    });
   }
 
   function onRoute(
@@ -109,7 +108,7 @@ export default function Services() {
   }
 
   return (
-    <AppDataFetchingWrapper request={request}>
+    <DataFetchingWrapper loading={isloading}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.sectLocation}>
@@ -280,6 +279,6 @@ export default function Services() {
           </Link>
         </div>
       </div>
-    </AppDataFetchingWrapper>
+    </DataFetchingWrapper>
   );
 }
