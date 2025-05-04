@@ -28,5 +28,6 @@ export function useTermsAndCondition(): UseApiOutputType<String> {
   const config = getConfig(AuthApiType.get);
   return useApi<String>({
     ...config,
+    tokenRequired: false,
   });
 }
