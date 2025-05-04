@@ -17,9 +17,6 @@ function ContractPage() {
     id = query.get("id");
   }
   return (
-    <div className="pagecontent">
-      <Title title={"Contract"} icon={"/assets/invoices_and_payments_logo.svg"} />
-      <ContractTable contractId={Number(id)} />
-    </div>
+    <ContractTable contractId={Number(id)} />
   );
 }

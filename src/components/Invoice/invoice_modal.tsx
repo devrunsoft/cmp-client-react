@@ -22,12 +22,14 @@ import { InvoiceStatus } from "common/domain/enum/invoice_enum";
 
 type InvoiceModalProps = Omit<DialogPropsType, "size"> & {
   onClose: () => void;
+  refresh: () => void;
   model?: InvoiceEntity;
 };
 
 const ShowInvoice: React.FC<InvoiceModalProps> = ({
   onClose,
   model,
+  refresh,
   ...props
 }: InvoiceModalProps) => {
   const request = useInvoiceGet(model?.Id);
@@ -60,9 +62,6 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
     });
   };
 
-  function onCancel() {
-    onClose();
-  }
 
   return (
     <Dialog
@@ -89,6 +88,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
             boxShadow: 3,
           }}
         >
+          
           {invoice && (
             <InvoiceComponent
               title="Invoice"

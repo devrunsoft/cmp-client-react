@@ -141,8 +141,10 @@ export default function RequestServices() {
         <ShowInvoice
           open={invoiceModalIsOpen}
           onClose={() => {
-            fetchInvoice();
             setInvoiceModalIsOpen(false);
+          }}
+          refresh={() => {
+            fetchInvoice();
           }}
           model={invoiceModel}
         />
@@ -186,7 +188,7 @@ export default function RequestServices() {
                   new Date(item.CreatedAt).toLocaleTimeString()}
               </td>
 
-              {item.Status == InvoiceStatus.Draft  ? (
+              {item.Status == InvoiceStatus.Draft ? (
                 <td>---</td>
               ) : (
                 <td>
