@@ -1,4 +1,5 @@
 import { Either, left, right } from "common/core/either";
+import { GOOGLE_MAPS_API_KEY } from "core/src/utils/url";
 
 
 export async function getAddressFromCoordsApi(
@@ -6,7 +7,7 @@ export async function getAddressFromCoordsApi(
     lng: number
 ): Promise<Either<Error, string>> {
     try {
-        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+        const apiKey = GOOGLE_MAPS_API_KEY;
         const response = await fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
         );

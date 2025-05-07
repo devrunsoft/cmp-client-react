@@ -13,7 +13,10 @@ import "react-phone-number-input/style.css";
 import { IoClose } from "react-icons/io5";
 import { LocationCompanyEntity } from "common/domain/entity/location_company_entity";
 import { OtherCompanyLocationCommand } from "common/domain/command/other_company_location_command";
-import { CapacityEntity, mapCapacityToNameAndValue } from "common/domain/entity/capacity_entity";
+import {
+  CapacityEntity,
+  mapCapacityToNameAndValue,
+} from "common/domain/entity/capacity_entity";
 import { useLoading } from "components/loading/loading_context";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 import { toast } from "react-toastify";
@@ -30,13 +33,13 @@ const containerStyle = {
 };
 
 type LatLng = {
-    lat: number;
-    lng: number;
-  };
-  export const mcenter = {
-    lat: 34.063473,
-    lng: -118.242753,
-  };
+  lat: number;
+  lng: number;
+};
+export const mcenter = {
+  lat: 34.063473,
+  lng: -118.242753,
+};
 
 const libraries = ["places"];
 
@@ -44,7 +47,7 @@ interface AddPointMapProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmitAddress: (data: LocationCompanyEntity) => void;
-  center: { lat: number | undefined; lng: number  | undefined};
+  center: { lat: number | undefined; lng: number | undefined };
   type: "Oil" | "Grease Trap";
   typeOfButton: string;
   oprId?: number;
@@ -135,6 +138,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
           const { latitude, longitude } = position.coords;
           setMarker({ lat: latitude, lng: longitude });
           setMapCenter({ lat: latitude, lng: longitude });
+          changeCenter(latitude, longitude);
         },
         (error) => {
           console.error("Error fetching location:", error);
@@ -191,7 +195,6 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
         lat: marker?.lat,
         lng: marker?.lng,
       };
-      
 
       if (type === "Oil" || type === "Grease Trap") {
         var otherCompanyLocationCommand = new OtherCompanyLocationCommand(

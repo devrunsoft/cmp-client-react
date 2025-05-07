@@ -41,8 +41,7 @@ const getTableDefinition = (): ColumnDef<InvoiceEntity>[] => {
     {
       size: 110,
       cell: (info) => {
-        const theme = useTheme();
-        const status = info.getValue() as string;
+        const status = info.getValue() as InvoiceStatus;
         return (
           <div
             style={{

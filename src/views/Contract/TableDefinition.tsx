@@ -20,10 +20,7 @@ export const TableDefinition: ColumnDef<CompanyContractEntity>[] = [
     accessorKey: "ContractNumber",
     header: () => <>Contract Number</>,
   },
-  {
-    accessorKey: "Company.CompanyName",
-    header: () => <>Company Name</>,
-  },
+
   {
     accessorKey: "Status",
     header: () => <>Status</>,

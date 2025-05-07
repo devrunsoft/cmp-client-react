@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import {
   getStatusStyleFromString,
   ServiceStatus,
+  ServiceStatusTitles,
 } from "cmp-core/src/Enum/serviceStatus";
 import { PiInvoice } from "react-icons/pi";
 import { dateOnlyFormat } from "cmp-core/src/utils/date";
@@ -31,18 +32,18 @@ const TableDefinition: ColumnDef<BaseServiceAppointmentEntity>[] = [
       </>
     ),
   },
-  {
-    accessorKey: "Amount",
-    cell: (info) => {
-      return `$${info.getValue() as string}`;
-    },
-    header: () => (
-      <>
-        Amount
-        <CgProductHunt />
-      </>
-    ),
-  },
+  // {
+  //   accessorKey: "Amount",
+  //   cell: (info) => {
+  //     return `$${info.getValue() as string}`;
+  //   },
+  //   header: () => (
+  //     <>
+  //       Amount
+  //       <CgProductHunt />
+  //     </>
+  //   ),
+  // },
   {
     accessorKey: "StartDate",
     cell: (info) => dateOnlyFormat(info.getValue() as string),
@@ -75,7 +76,7 @@ const TableDefinition: ColumnDef<BaseServiceAppointmentEntity>[] = [
             justifyContent: "center",
           }}
         >
-          {status}
+          {ServiceStatusTitles[status]}
         </Box>
       );
     },
