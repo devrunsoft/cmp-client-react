@@ -1,4 +1,4 @@
-import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import ApiTable from "cmp-core/src/Datatable/ApiTable";
 import TableDefinition from "./TableDefinition";
 import useFilterData from "hooks/useFilterData";
@@ -54,7 +54,7 @@ export default function LogOfService() {
   return (
     <>
       <Box className="mainPadding">
-        <AppDataFetchingWrapper retry={refresh} request={request}>
+        <GridDataFetchingWrapper retry={refresh} request={request}>
           <ApiTable<BaseServiceAppointmentEntity>
             title="Log Of Services"
             columnDef={TableDefinition}
@@ -83,7 +83,7 @@ export default function LogOfService() {
               />,
             ]}
           ></ApiTable>
-        </AppDataFetchingWrapper>
+        </GridDataFetchingWrapper>
       </Box>
     </>
   );

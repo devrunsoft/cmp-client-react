@@ -1,4 +1,4 @@
-import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import ApiTable from "cmp-core/src/Datatable/ApiTable";
 import getTableDefinition from "./TableDefinition";
 import useFilterData from "hooks/useFilterData";
@@ -60,7 +60,7 @@ export default function Invoices() {
   return (
     <>
       <Box className="mainPadding">
-        <AppDataFetchingWrapper retry={refresh} request={request}>
+        <GridDataFetchingWrapper retry={refresh} request={request}>
           <ApiTable<InvoiceEntity>
             title="Invoices"
             removeId={true}
@@ -84,7 +84,7 @@ export default function Invoices() {
               />,
             ]}
           ></ApiTable>
-        </AppDataFetchingWrapper>
+        </GridDataFetchingWrapper>
         {/* </Paper> */}
 
         {invoiceModel && (

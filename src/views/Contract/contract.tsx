@@ -1,4 +1,4 @@
-import { AppDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
+import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import ApiTable from "cmp-core/src/Datatable/ApiTable";
 import useFilterData from "hooks/useFilterData";
 import { useState } from "react";
@@ -50,7 +50,7 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
   return (
     <>
       <Box className="mainPadding">
-        <AppDataFetchingWrapper retry={refresh} request={request}>
+        <GridDataFetchingWrapper retry={refresh} request={request}>
           <ApiTable<CompanyContractEntity>
             title="Contract Drafts"
             columnDef={TableDefinition}
@@ -80,7 +80,7 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
               model={invoiceModel}
             />
           )}
-        </AppDataFetchingWrapper>
+        </GridDataFetchingWrapper>
       </Box>
     </>
   );
