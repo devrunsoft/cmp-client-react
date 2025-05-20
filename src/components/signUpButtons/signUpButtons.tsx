@@ -181,6 +181,7 @@ export function ButtonsForm({
       )}
       <ActiveLoadingButton
         loading={loading}
+        color={status === "cancel" ? "warning" : "primary"}
         startIcon={
           <>
             {status === "cancel" ? (
@@ -192,7 +193,7 @@ export function ButtonsForm({
             )}
           </>
         }
-        variant="contained"
+        variant={status === "cancel" ? "outlined" : "contained"}
         sx={{ mt: 3 }}
         onClick={onClick}
         isActive={isActive ?? true}

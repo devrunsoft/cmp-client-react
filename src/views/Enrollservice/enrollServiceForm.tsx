@@ -505,12 +505,13 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
               onClick={handleSubmit(registerService)}
             />
           ) : (
-            <ButtonsForm
-              isActive={formisValid}
-              nameOfButton={"Cancel Service"}
-              status={"cancel"}
-              onClick={() => confirmDelete(prop.Id!)}
-            />
+            // <ButtonsForm
+            //   isActive={formisValid}
+            //   nameOfButton={"Cancel Service"}
+            //   status={"cancel"}
+            //   onClick={() => confirmDelete(prop.Id!)}
+            // />
+            <></>
           )}
         </div>
       }

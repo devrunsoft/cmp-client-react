@@ -458,12 +458,13 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
               onClick={handleSubmit(onSubmit)}
             />
           ) : (
-            <ButtonsForm
-              isActive={formisValid}
-              nameOfButton={"Cancel Service"}
-              status={"cancel"}
-              onClick={() => cancelService(props.Id!)}
-            />
+            // <ButtonsForm
+            //   isActive={formisValid}
+            //   nameOfButton={"Cancel Service"}
+            //   status={"cancel"}
+            //   onClick={() => cancelService(props.Id!)}
+            // />
+            <></>
           )}
         </div>
 
