@@ -1,5 +1,11 @@
 import { String_Const } from "common/constants/string_constants";
-import { CusomerError, Either, left, right, UnAuthorize } from "common/core/either";
+import {
+  CusomerError,
+  Either,
+  left,
+  right,
+  UnAuthorize,
+} from "common/core/either";
 import { BaseResponse } from "common/core/response/api_response";
 import { AddServiceAppointmentCommand } from "common/domain/command/service_appointment/add_service_appointment_command";
 import { SignCompanyContractCommand } from "common/domain/command/sign_contract_command";
@@ -14,20 +20,26 @@ import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 import { header, saveToken, tokenheader } from "core/src/utils/auth";
 import { Api_URL } from "core/src/utils/url";
 
-export async function ForgotPasswordApi(email: string): Promise<Either<Error, boolean>> {
-
-    try {
-        const response = await fetch(`${Api_URL}/User/ForgotPassword`, {
-            method: 'POST',
-            headers: {
-                'accept': '*/*',
-                'Content-Type': 'application/json-patch+json'
-            },
-            body: JSON.stringify({ "Email": email })
-        });
-        const data = await response.json();
-        return right(true);
-    } catch (error) {
-        return left(new Error(String_Const.Error));
+export async function ForgotPasswordApi(
+  email: string
+): Promise<Either<Error, boolean>> {
+  try {
+    const response = await fetch(`${Api_URL}/User/ForgotPassword`, {
+      method: "POST",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json-patch+json",
+      },
+      body: JSON.stringify({ Email: email }),
+    });
+    const data = await response.json();
+    if (data.token || data.Success) {
+      // AppConfig.token = data.token;
+      return right(data.registered);
+    } else {
+      return left(new CusomerError(data.Message));
     }
+  } catch (error) {
+    return left(new Error(String_Const.Error));
+  }
 }

@@ -12,8 +12,13 @@ import { AddressProvider } from "common/context/address_context";
 import { SignableContractProvider } from "components/context_api/signable_contract_context";
 import { InvoicePayableProvider } from "components/context_api/payable_invoice_context";
 import { ShoppingCardProvider } from "components/context_api/shopping_card_context";
+import { Site_URL } from "core/src/utils/url";
 
 function App() {
+  const favicon = document.querySelector("link[rel='icon']");
+  if (favicon) {
+    favicon.setAttribute("href", `${Site_URL}/api/Common/Logo`);
+  }
   return (
     <>
       <StyledEngineProvider injectFirst>
