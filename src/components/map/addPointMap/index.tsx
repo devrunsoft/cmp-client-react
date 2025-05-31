@@ -26,6 +26,8 @@ import { editOtherCompanyLocation } from "data/api/register/otherCompanyLocation
 import { getAddressFromCoordsApi } from "data/api/map/reverse_id";
 import { DropDown } from "components/dropDown";
 import { GOOGLE_MAPS_API_KEY } from "core/src/utils/url";
+import { SearchBox } from "cmp-core/src/Component/SearchBox";
+import { FiTrash } from "react-icons/fi";
 
 const containerStyle = {
   width: "100%",
@@ -91,6 +93,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
     control,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     defaultValues: {
       locationName: model?.Name,
@@ -256,7 +259,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
       setLoading(false);
     }
   };
-
+  const address = watch("Address");
   function onSuccess(data: LocationCompanyEntity, completeData) {
     onSubmitAddress(data);
     console.log(completeData);
@@ -343,14 +346,35 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
             {...register("locationName", { required: true })}
           />
           <label className={styles.smallText}>Address:</label>
-          <input
-            className={`${styles.formInput} ${
-              errors.Address && styles.inputError
-            }`}
-            placeholder="Enter address"
-            defaultValue={model?.Address}
-            {...register("Address", { required: true })}
-          />
+          {address ? (
+            <div className={styles.fakeInput}>
+              <p>{address}</p>
+              <button type="button" onClick={() => setValue("Address", "")}>
+                <FiTrash size={22} style={{ color: "rgba(76, 142, 59, 1)" }} />
+              </button>
+            </div>
+          ) : (
+            <div className={`${styles.inputError}`}>
+              <SearchBox
+                isForm={true}
+                onSelectAddress={(
+                  address,
+                  latitude,
+                  longitude,
+                  city,
+                  state,
+                  county,
+                  bounds
+                ) => {
+                  setValue("Address", address);
+                  setMarker({ lat: latitude, lng: longitude });
+                  setMapCenter({ lat: latitude, lng: longitude });
+                }}
+                defaultValue={address}
+                loader={loader}
+              />
+            </div>
+          )}
           <label className={styles.smallText}>Location coordinates:</label>
           {marker && (
             <div className={styles.selectAdress}>
@@ -392,7 +416,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
             />
           </div>
           <label className={styles.smallText}>
-            {type === "Oil" ? "Oil" : "Trap"} Location Comments:
+            {type === "Oil" ? "Oil" : "Grease Trap"} Location Comments:
           </label>
           <textarea
             className={`${styles.textareaInput} ${
