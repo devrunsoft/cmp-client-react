@@ -161,6 +161,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
           setValue("latitude", latitude);
           setValue("longitude", longitude);
           setMapCenter({ lat: latitude, lng: longitude });
+          changeCenter(latitude, longitude);
         },
         (error) => {
           console.error("Error fetching location:", error);
@@ -284,15 +285,19 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
     const lng = event.latLng.lng();
     setValue("latitude", lat);
     setValue("longitude", lng);
+    changeCenter(lat, lng);
+  }, []);
+
+  const changeCenter = (lat, lng) => {
     getAddressFromCoordsApi(lat, lng).then((result) => {
       result.fold(
-        (error) => {},
+        (_) => {},
         (data) => {
           setValue("address", data);
         }
       );
     });
-  }, []);
+  };
 
   const isAddressFilled = !!address;
   const sanitizePhoneNumber = (value) => {
@@ -327,6 +332,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
               setValue("address", address);
               setValue("latitude", latitude);
               setValue("longitude", longitude);
+              setValue("county", county);
               setMapCenter({ lat: latitude, lng: longitude });
             }}
             defaultValue=""
