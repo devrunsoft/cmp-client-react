@@ -305,11 +305,37 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
           refreshCard();
 
           if (isEnrolled) {
+            var data = requestService.data?.data ?? [];
+            var item: ServiceEntity;
+            item = data.filter(
+              (e) =>
+                e.ServiceType == selectedValue?.ServiceType
+            )[0];
+            // if (selectedValue.Type == ServiceTypeEnum.CookingOilCollection) {
+            //   item = allitemsService.filter(
+            //     (e) =>
+            //       e.collectionIds.includes(ServiceCollectionConst.Service) &&
+            //       e.collectionIds.includes(
+            //         ServiceCollectionConst.Cooking_Oil_Collection
+            //       )
+            //   )[0];
+            // } else if (
+            //   selectedValue.Type == ServiceTypeEnum.GreaseTrapManagement
+            // ) {
+            //   item = allitemsService.filter(
+            //     (e) =>
+            //       e.collectionIds.includes(ServiceCollectionConst.Service) &&
+            //       e.collectionIds.includes(
+            //         ServiceCollectionConst.Grease_Trap_Management_Collection
+            //       )
+            //   )[0];
+            // }
+
             navigate(
               `${APP_ROUTES.Enrollservice.replace(
                 ":oprAddress",
                 selectedAddresses.Id?.toString() ?? ""
-              )}?serviceId=${selectedValue!.Id}&type=${selectedValue!.Name}`
+              )}?serviceId=${item!.Id}&type=${item!.Name}`
             );
           } else {
             navigate(APP_ROUTES.ShoppingCard);

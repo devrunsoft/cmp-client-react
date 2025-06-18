@@ -42,6 +42,7 @@ import Switch from "components/switch/switch";
 import { ProductType } from "common/domain/enum/product_type";
 import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
+import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -194,7 +195,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
   async function registerService(data) {
     if (
-      (services.ServiceType == 1 || services.ServiceType == 2) &&
+      (services.ServiceType == ServiceTypeEnum.CookingOilCollection || services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) &&
       adresses.length == 0
     ) {
       return toast.error("Pickup point can not be empty");
@@ -372,9 +373,9 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
             </div>
           </div>
 
-          {(services.ServiceType == 1 || services.ServiceType == 2) && (
+          {(services.ServiceType == ServiceTypeEnum.CookingOilCollection || services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) && (
             <LocationPointHandlerMap
-              type={services.ServiceType == 1 ? "Oil" : "Grease Trap"}
+              type={services.ServiceType == ServiceTypeEnum.CookingOilCollection ? "Oil" : "Grease Trap"}
               onAddress={(data) => onAddress(data)}
               typeOfButton={"Point"}
             />

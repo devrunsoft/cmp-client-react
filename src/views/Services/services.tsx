@@ -84,24 +84,24 @@ export default function Services() {
       );
   }
 
-  function onRouteAll(
-    item: ServiceEntity,
-    serviceappoitnment: ServiceAppointmentEntity
-  ) {
-    if (serviceappoitnment)
-      navigate(
-        `${APP_ROUTES.ServiceItem}?data=${serviceappoitnment.Id}&serviceId=${item.Id}&type=${item.Name}`,
-        undefined
-      );
-    else
-      navigate(
-        `${APP_ROUTES.ServiceItem}?serviceId=${item.Id}&type=${item.Name}`
-      );
-  }
+  // function onRouteAll(
+  //   item: ServiceEntity,
+  //   serviceappoitnment: ServiceAppointmentEntity
+  // ) {
+  //   if (serviceappoitnment)
+  //     navigate(
+  //       `${APP_ROUTES.ServiceItem}?data=${serviceappoitnment.Id}&serviceId=${item.Id}&type=${item.Name}`,
+  //       undefined
+  //     );
+  //   else
+  //     navigate(
+  //       `${APP_ROUTES.ServiceItem}?serviceId=${item.Id}&type=${item.Name}`
+  //     );
+  // }
 
-  function existService(service: ServiceEntity[], id: number): boolean {
-    return service.find((appointment) => appointment.Id === id) != null;
-  }
+  // function existService(service: ServiceEntity[], id: number): boolean {
+  //   return service.find((appointment) => appointment.Id === id) != null;
+  // }
 
   function hasRegistered(service: ServiceEntity): ServiceAppointmentEntity {
     return appointmentservices.find((e) => e.ProductId == service.Id)!;
@@ -167,7 +167,7 @@ export default function Services() {
                           key={index + "-service-enroll"}
                           onClick={() => onRoute(item, serviceAppoitnemtn)}
                         >
-                          {status ? "enrolled" : "Sign Up"}
+                          {status ? "enrolled" : "Request"}
                           {status ? (
                             <FaRegFileAlt size={17} />
                           ) : (
@@ -236,7 +236,7 @@ export default function Services() {
                           key={index + "-product-enroll"}
                           onClick={() => onRoute(item, serviceAppoitnemtn)}
                         >
-                          {status ? "Bought" : "Buy Now"}
+                          {status ? "Bought" : "Request"}
                           {status ? (
                             <FaRegFileAlt size={17} />
                           ) : (

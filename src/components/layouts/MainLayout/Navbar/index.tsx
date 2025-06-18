@@ -15,10 +15,12 @@ import { IoLogInOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import { Api_URL, Site_URL } from "core/src/utils/url";
 import { ShoppingBasket } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [profile, setPtofile] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProfile();
@@ -102,7 +104,13 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           </Box>
         </Box>
         <div className={styles.navigSec}>
-          <ShoppingCart sx={{ color: "white" }} />
+          <Box
+            onClick={() => {
+              navigate(APP_ROUTES.ShoppingCard);
+            }}
+          >
+            <ShoppingCart sx={{ color: "white" }} />
+          </Box>
 
           {/* <button className={styles.notifiButton}>
             <img

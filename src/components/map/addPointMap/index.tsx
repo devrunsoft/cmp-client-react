@@ -395,7 +395,7 @@ const AddPointMap: React.FC<AddPointMapProps> = ({
             </>
           )}
           <label className={styles.smallText}>
-            {type === "Oil" ? "Coocking Oil" : "Grease Trap"} Capacity: (gal)
+            {type === "Oil" ? "Cooking Oil" : "Grease Trap"} Capacity: (gal)
           </label>
           <div className={errors.select && styles.inputError}>
             <Controller

@@ -194,13 +194,13 @@ export default function SwitcherAndCompanyInfo({
           register={register}
           fieldError={errors.companyName}
           name="companyName"
-          label="Company name"
+          label="Company Name"
           placeholder="Enter company name"
           disabled={isLoading}
           fullWidth
         />
         <Box className="flex-container">
-          <Label label="Contact Phone Number:" styles={{ minWidth: "210px" }} />
+          <Label label="Contact Full Name:" styles={{ minWidth: "210px" }} />
 
           <FormHookInput<SignUpCommand>
             register={register}
