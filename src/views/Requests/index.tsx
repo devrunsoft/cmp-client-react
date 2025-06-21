@@ -3,20 +3,29 @@ import ApiTable from "cmp-core/src/Datatable/ApiTable";
 import getTableDefinition from "./TableDefinition";
 import useFilterData from "hooks/useFilterData";
 import { useEffect, useState } from "react";
-import { useInvoicRequestseGetAll } from "data/repository/invoice";
+import {
+  useCancelRequest,
+  useInvoicRequestseGetAll,
+} from "data/repository/invoice";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import useRoleAccess from "hooks/useRoleAccess";
 import { GridFilter } from "uikit/src/GridFilter";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
 import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 import { InvoiceStatus } from "common/domain/enum/invoice_enum";
+import { useAppSelector } from "state/index";
+import ConfirmDialog from "uikit/src/Dialog/ConfirmDialog";
 
 export default function Requests() {
-  const request = useInvoicRequestseGetAll();
   const [statusDialog, setStatusDialog] = useState<InvoiceEntity | null>(null);
   const [status, setstatus] = useState<InvoiceStatus | null>(
     InvoiceStatus.Draft
   );
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const request = useInvoicRequestseGetAll(refreshAddress.Id ?? 0);
+  var requestCancel = useCancelRequest();
+  const [configDelete, setConfirmDelete] = useState<string | null>(null);
+  const { refreshRep } = useRoleAccess();
 
   const loadData = (
     filter: PaginationSearchParamsType,
@@ -42,13 +51,16 @@ export default function Requests() {
     }
   }, [status]);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshAddress.Id]);
+
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
+      autoFetch: false,
     });
-
-  const closeStatusDialog = () => setStatusDialog(null);
 
   function open(data: InvoiceEntity) {
     setStatusDialog(data);
@@ -57,6 +69,18 @@ export default function Requests() {
   function handleChange(status: InvoiceStatus) {
     setstatus(status);
   }
+  async function CancelService(RequestNumber: string) {
+    requestCancel.call({
+      data: {
+        RequestNumber,
+      },
+      onSuccess: (res) => {
+        setConfirmDelete(null);
+        refresh();
+        refreshRep();
+      },
+    });
+  }
 
   return (
     <>
@@ -64,7 +88,9 @@ export default function Requests() {
         <GridDataFetchingWrapper retry={refresh} request={request}>
           <ApiTable<InvoiceEntity>
             title="Requests"
-            columnDef={getTableDefinition()}
+            columnDef={getTableDefinition((e) =>
+              setConfirmDelete(e.RequestNumber)
+            )}
             data={request.data?.data?.elements || []}
             loadData={(v) =>
               setFilter({ allField: (v?.filterAll as string) || "" })
@@ -84,6 +110,16 @@ export default function Requests() {
             //   />,
             // ]}
           ></ApiTable>
+          <ConfirmDialog
+            onClose={() => setConfirmDelete(null)}
+            onConfirm={() => {
+              CancelService(configDelete!);
+            }}
+            open={configDelete != null}
+            title="Delete"
+            body="Are you sure you want to cancel this request?"
+            loading={requestCancel.loading}
+          />
         </GridDataFetchingWrapper>
       </Box>
     </>

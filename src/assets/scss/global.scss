@@ -463,3 +463,12 @@ input[type="number"] {
   background: rgb(209, 94, 94);
   color: white !important;
 }
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

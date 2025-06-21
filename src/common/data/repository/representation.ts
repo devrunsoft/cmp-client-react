@@ -6,17 +6,20 @@ import { ClientRepresentationEntity } from "common/domain/entity/client_represen
 enum CompanyApiType {
   GetAllRepresentation = "GetAllRepresentation",
 }
-
-const urls: Record<CompanyApiType, () => string> = {
-  [CompanyApiType.GetAllRepresentation]: () => `ClientRepresentation`,
+const urls: Record<CompanyApiType, (queryPath?: any) => string> = {
+  [CompanyApiType.GetAllRepresentation]: (OperationalAddressId: any) =>
+    `ClientRepresentation/${OperationalAddressId}`,
 };
 
 const methods: Record<CompanyApiType, Method> = {
   [CompanyApiType.GetAllRepresentation]: "GET",
 };
 
-const getConfig = (type: CompanyApiType): AxiosRequestConfig => ({
-  url: urls[type](),
+const getConfig = (
+  type: CompanyApiType,
+  queryPath?: any
+): AxiosRequestConfig => ({
+  url: urls[type](queryPath),
   method: methods[type],
   baseURL: Api_URL,
   headers: {
@@ -26,8 +29,13 @@ const getConfig = (type: CompanyApiType): AxiosRequestConfig => ({
 });
 
 // ⚡️ Custom Hook
-export function useGetCompanyRepresentationApi(): UseApiOutputType<ClientRepresentationEntity, void> {
-  const config = getConfig(CompanyApiType.GetAllRepresentation);
+export function useGetCompanyRepresentationApi(
+  OperationalAddressId: number
+): UseApiOutputType<ClientRepresentationEntity, void> {
+  const config = getConfig(
+    CompanyApiType.GetAllRepresentation,
+    OperationalAddressId
+  );
   return useApi<ClientRepresentationEntity, void>({
     ...config,
   });

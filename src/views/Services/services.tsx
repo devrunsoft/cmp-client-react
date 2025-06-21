@@ -1,11 +1,14 @@
 "use client";
 import styles from "./services.module.css";
-import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFileAlt, FaSpinner } from "react-icons/fa";
 import { IoListCircleOutline, IoLogInOutline } from "react-icons/io5";
 
 import React, { useEffect, useState } from "react";
 import { useAddress } from "common/context/address_context";
-import { ServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
+import {
+  ClientServiceAppointment,
+  ServiceAppointmentEntity,
+} from "common/domain/entity/service_appointment_entity";
 import { ServiceEntity } from "common/domain/entity/service_entity";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "components/loading/loading_context";
@@ -19,18 +22,22 @@ import {
   DataFetchingWrapper,
 } from "cmp-core/src/DataFetchingWrapper";
 import { useGetAllServiceApi } from "data/repository/serviceV2";
+import { useTerminateContract } from "data/repository/invoice";
+import ConfirmDialog from "uikit/src/Dialog/ConfirmDialog";
 
 export default function Services() {
   const { selectedAddresses } = useAddress();
   const [appointmentservices, setAppointmentservices] = useState<
-    ServiceAppointmentEntity[]
+    ClientServiceAppointment[]
   >([]);
   const [services, setservices] = useState<ServiceEntity[]>([]);
   const [itemsService, setItemsService] = useState<ServiceEntity[]>([]);
   const [itemsProduct, setItemsProduct] = useState<ServiceEntity[]>([]);
   const navigate = useNavigate();
   var request = useGetAllServiceAppointmentApi(selectedAddresses.Id);
+  var requestTerminate = useTerminateContract();
   var requestService = useGetAllServiceApi();
+  const [configDelete, setConfirmDelete] = useState<string | null>(null);
 
   const isloading = request.loading || requestService.loading;
   const { setLoading } = useLoading();
@@ -46,13 +53,24 @@ export default function Services() {
   async function fetchAppointmentService() {
     request.call({
       onSuccess: (res) => {
-        setAppointmentservices(res.data.filter((e) => !e.IsEmegency));
-        fetchService(res.data);
+        setAppointmentservices(res.data);
+        fetchService();
+      },
+    });
+  }
+  async function TerminateContract(InvoiceNumber: string) {
+    requestTerminate.call({
+      data: {
+        InvoiceNumber,
+      },
+      onSuccess: (res) => {
+        setConfirmDelete(null);
+        fetchAppointmentService();
       },
     });
   }
 
-  async function fetchService(serviceAppointment: ServiceAppointmentEntity[]) {
+  async function fetchService() {
     requestService.call({
       onSuccess: (res) => {
         setItemsService(res.data.filter((e) => e.Type == 1));
@@ -103,15 +121,44 @@ export default function Services() {
   //   return service.find((appointment) => appointment.Id === id) != null;
   // }
 
-  function hasRegistered(service: ServiceEntity): ServiceAppointmentEntity {
-    return appointmentservices.find((e) => e.ProductId == service.Id)!;
+  function hasDraft(service: ServiceEntity): ServiceAppointmentEntity | null {
+    return (
+      appointmentservices.find((e) => e.Draft?.ProductId == service.Id)
+        ?.Draft ?? null
+    );
+  }
+  function hasRegistered(
+    service: ServiceEntity
+  ): ServiceAppointmentEntity | null {
+    return (
+      appointmentservices.find((e) => e.Current?.ProductId == service.Id)
+        ?.Current ?? null
+    );
+  }
+  function hasNext(service: ServiceEntity): ServiceAppointmentEntity | null {
+    return (
+      appointmentservices.find((e) => e.Next?.ProductId == service.Id)?.Next ??
+      null
+    );
+  }
+  function canBeTerminate(service: ServiceEntity): boolean {
+    return (
+      appointmentservices.find((e) => e.ServiceId == service.Id)
+        ?.CanTerminate ?? false
+    );
+  }
+  function getInvoiceNumber(service: ServiceEntity): string {
+    return (
+      appointmentservices.find((e) => e.ServiceId == service.Id)
+        ?.InvoiceNumber ?? ""
+    );
   }
 
   return (
     <DataFetchingWrapper loading={isloading}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          <div className={styles.sectLocation}>
+          {/* <div className={styles.sectLocation}>
             <img
               src="/assets/fluent_location-regular.svg"
               alt="location icon"
@@ -119,8 +166,7 @@ export default function Services() {
               height={36}
               style={{ width: "auto", height: "auto" }}
             />
-            <LocationSelect />
-          </div>
+          </div> */}
           <div className={styles.scrollStaff}>
             <div className={styles.mainText}>
               <img
@@ -135,7 +181,10 @@ export default function Services() {
             <div className={styles.main}>
               <div className={styles.cardsContainer}>
                 {itemsService.map((item, index) => {
+                  const canTerminate = canBeTerminate(item);
                   var serviceAppoitnemtn = hasRegistered(item);
+                  var hasDrafted = hasDraft(item);
+                  var next = hasNext(item);
                   var status = serviceAppoitnemtn != null;
                   return (
                     <div className={styles.card} key={index + "-service"}>
@@ -148,41 +197,90 @@ export default function Services() {
                           <>
                             <div className={styles.smallStaff}>
                               Frequency:{" "}
-                              <p>{serviceAppoitnemtn.FrequencyType}x yr</p>
+                              <p>{serviceAppoitnemtn?.FrequencyType}x yr</p>
                             </div>
                             <div className={styles.smallStaff}>
-                              Start date:{" "}
+                              Start Date:{" "}
                               <p>
                                 {new Date(
-                                  serviceAppoitnemtn.StartDate
+                                  serviceAppoitnemtn!.StartDate
                                 ).toLocaleDateString()}
                               </p>
                             </div>
+                            {next != null && (
+                              <div className={styles.smallStaff}>
+                                Next Service:{" "}
+                                <p>
+                                  {new Date(
+                                    next!.StartDate
+                                  ).toLocaleDateString()}
+                                </p>
+                              </div>
+                            )}
                           </>
                         )}
                       </div>
                       <div className={styles.boxItem}>
-                        <div
-                          className={styles.subsButtom}
-                          key={index + "-service-enroll"}
-                          onClick={() => onRoute(item, serviceAppoitnemtn)}
-                        >
-                          {status ? "enrolled" : "Request"}
-                          {status ? (
-                            <FaRegFileAlt size={17} />
-                          ) : (
-                            <IoLogInOutline size={17} />
-                          )}
-                        </div>
+                        {status ? (
+                          <div
+                            className={styles.subsButtom}
+                            key={index + "-service-enroll"}
+                            onClick={() => onRoute(item, serviceAppoitnemtn!)}
+                          >
+                            {status ? "enrolled" : "Request"}
+                            {status ? (
+                              <FaRegFileAlt size={17} />
+                            ) : (
+                              <IoLogInOutline size={17} />
+                            )}
+                          </div>
+                        ) : hasDrafted ? (
+                          <div
+                            className={styles.draftButton}
+                            key={index + "-service-enroll"}
+                            onClick={() => onRoute(item, hasDrafted!)}
+                          >
+                            {"Drafted"}
+                            {status ? (
+                              <FaRegFileAlt size={17} />
+                            ) : (
+                              <IoLogInOutline size={17} />
+                            )}
+                          </div>
+                        ) : (
+                          <div
+                            className={styles.subsButtom}
+                            key={index + "-service-enroll"}
+                            onClick={() => onRoute(item, serviceAppoitnemtn!)}
+                          >
+                            {status ? "enrolled" : "Request"}
+                            {status ? (
+                              <FaRegFileAlt size={17} />
+                            ) : (
+                              <IoLogInOutline size={17} />
+                            )}
+                          </div>
+                        )}
                         &nbsp;
-                        {/* <div
-                        className={styles.subsButtom}
-                        key={index + "-service-seeAll"}
-                        onClick={() => onRouteAll(item, serviceAppoitnemtn)}
-                      >
-                        {"See All"}
-                        {<IoListCircleOutline size={17} />}
-                      </div> */}
+                        {canTerminate && (
+                          <div
+                            className={styles.subsButtom}
+                            key={index + "-service-enroll"}
+                            onClick={() =>
+                              setConfirmDelete(getInvoiceNumber(item))
+                            }
+                          >
+                            {"terminate the contract"}
+                            {requestTerminate.loading ? (
+                              <FaSpinner
+                                size={17}
+                                className="animate-spin ml-2"
+                              />
+                            ) : (
+                              <FaRegFileAlt size={17} />
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
@@ -217,13 +315,13 @@ export default function Services() {
                           <>
                             <div className={styles.smallStaff}>
                               Frequency:{" "}
-                              <p>{serviceAppoitnemtn.FrequencyType}x yr</p>
+                              <p>{serviceAppoitnemtn?.FrequencyType}x yr</p>
                             </div>
                             <div className={styles.smallStaff}>
                               Start date:{" "}
                               <p>
                                 {new Date(
-                                  serviceAppoitnemtn.StartDate
+                                  serviceAppoitnemtn!.StartDate
                                 ).toLocaleDateString()}
                               </p>
                             </div>
@@ -234,7 +332,7 @@ export default function Services() {
                         <div
                           className={styles.subsButtom}
                           key={index + "-product-enroll"}
-                          onClick={() => onRoute(item, serviceAppoitnemtn)}
+                          onClick={() => onRoute(item, serviceAppoitnemtn!)}
                         >
                           {status ? "Bought" : "Request"}
                           {status ? (
@@ -279,6 +377,16 @@ export default function Services() {
           </Link>
         </div>
       </div>
+      <ConfirmDialog
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={() => {
+          TerminateContract(configDelete!);
+        }}
+        open={configDelete != null}
+        title="Delete"
+        body="Are you sure you want to terminate this contract?"
+        loading={requestTerminate.loading}
+      />
     </DataFetchingWrapper>
   );
 }

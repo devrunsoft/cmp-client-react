@@ -9,14 +9,14 @@
     margin-bottom: 0.8em;
     padding: 0.4em 1em 0.4em 1em;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    font-weight: 500;
-    font-size: 1.3rem;
     color: #000;
     background: #ffffff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 10px;
+
 }
 
 .dropDownHeader p{
@@ -50,9 +50,13 @@
     padding: 4px 8px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .listItem:hover{
     background: rgba(245, 245, 245, 1);
     
 }  
+.dropDownHeaderText{
+
+}

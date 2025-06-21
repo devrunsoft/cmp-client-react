@@ -10,6 +10,8 @@ import { useLoading } from "components/loading/loading_context";
 import SideBar from "components/sidebar/sideBar";
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch } from "state/index";
+import { setAddress } from "state/slice/address";
 
 export default function Layout() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ export default function Layout() {
     // Initial data fetch
     fetch();
   }, []);
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     // Update selected address when `oprAddress` changes
     if (oprAddress && addresses.length > 0) {
@@ -38,6 +40,8 @@ export default function Layout() {
       );
       if (selectedAddress) {
         setSelectedAddresses(selectedAddress);
+
+        dispatch(setAddress(selectedAddress));
       } else {
         // Redirect to a valid address or show an error if not found
         navigate("/dashboard/services");

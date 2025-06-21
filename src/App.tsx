@@ -22,7 +22,6 @@ function App() {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <AddressProvider address={[]} defaultAddress={{}}>
           <LoadingProvider>
             <SignableContractProvider>
               <InvoicePayableProvider>
@@ -47,7 +46,6 @@ function App() {
               </InvoicePayableProvider>
             </SignableContractProvider>
           </LoadingProvider>
-        </AddressProvider>
       </StyledEngineProvider>
     </>
   );

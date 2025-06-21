@@ -7,6 +7,8 @@ import { LiaEdit } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 import { APP_ROUTES } from "../../routes/app_route";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
+import { useAppDispatch } from "state/index";
+import { setAddress } from "state/slice/address";
 
 
 export default function Dashboard() {
@@ -19,9 +21,11 @@ export default function Dashboard() {
   const handleClick = (model: OperationalAddressEntity) => {
     navigate(`${APP_ROUTES.Address}/${model.Id}`, undefined);
   };
+  var dispatch = useAppDispatch();
 
   const selectService = (model: OperationalAddressEntity) => {
     setSelectedAddresses(model);
+    dispatch(setAddress(model));
     navigate(`${APP_ROUTES.Service.replace(":oprAddress", model.Id?.toString()??"") }`, undefined);
   };
   const addNewAdderss = () => {

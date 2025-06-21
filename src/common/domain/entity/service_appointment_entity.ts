@@ -1,3 +1,4 @@
+import { ServiceStatusEnum } from "../enum/service_status_enum";
 import { LocationCompanyEntity } from "./location_company_entity";
 import { ServiceEntity } from "./service_entity";
 import { ServicePriceEntity } from "./service_price_entity";
@@ -15,12 +16,20 @@ export type ServiceAppointmentEntity = {
   FrequencyType: string;
   IsEmegency: string;
   Qty: number;
-  Status: number;
+  Status: ServiceStatusEnum;
   DayOfWeek: string;
   FromHour: number;
   ToHour: number;
 };
 
+export type ClientServiceAppointment = {
+  Draft: ServiceAppointmentEntity | null;
+  Current: ServiceAppointmentEntity | null;
+  Next: ServiceAppointmentEntity | null;
+  CanTerminate: boolean;
+  ServiceId: number;
+  InvoiceNumber: string;
+};
 
 export type BaseServiceAppointmentEntity = {
   Id?: number;

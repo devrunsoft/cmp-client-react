@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import styles from "./locationSelect.module.css";
 import { useAddress } from "common/context/address_context";
 import { APP_ROUTES } from "../../routes/app_route";
+import { useAppDispatch, useAppSelector } from "state/index";
+import { setAddress } from "state/slice/address";
 
 
 
 export default function LocationSelect() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-
   const { addresses, selectedAddresses, setSelectedAddresses } = useAddress();
-
   const toggling = () => setIsOpen(!isOpen);
+  var dispatch = useAppDispatch();
 
   const onOptionClicked = value => () => {
     setSelectedAddresses(value);
+    dispatch(setAddress(value));
     setIsOpen(false);
     const newUrl = `${APP_ROUTES.Service.replace(":oprAddress", value.Id.toString()) }`;
     window.history.replaceState(null, "", newUrl);
@@ -25,8 +27,8 @@ export default function LocationSelect() {
     <div className={styles.dropDownContainer}>
       <div className={styles.dropDownHeader} onClick={toggling}>
         <div>
-          <h2>Location - {selectedAddresses?.Name}</h2>
-          <p>{selectedAddresses?.Address}</p>
+          <p className={styles.dropDownHeaderText}>Location - {selectedAddresses?.Name}</p>
+          {/* <p>{selectedAddresses?.Address}</p> */}
         </div>
         <svg width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4.86603 6.5C4.48113 7.16667 3.51887 7.16667 3.13397 6.5L0.535899 2C0.150999 
@@ -39,6 +41,7 @@ export default function LocationSelect() {
             {addresses.map(option => (
               <li className={styles.listItem} onClick={onOptionClicked(option)} key={Math.random()}>
                 {option.Name} - {selectedAddresses?.Address}
+
               </li>
             ))}
           </ul>

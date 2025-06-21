@@ -4,7 +4,7 @@ import { BaseServiceAppointmentEntity } from "./service_appointment_entity";
 export type InvoiceEntity = {
   Id: number;
   CompanyId: number;
-  RequestNumber: number;
+  RequestNumber: string;
   ProductCrmId: string;
   ProductPriceCrmId: string;
   InvoiceCrmId: string;

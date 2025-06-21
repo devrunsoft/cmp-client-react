@@ -16,6 +16,7 @@ import { jwtDecode } from "jwt-decode";
 import { Api_URL, Site_URL } from "core/src/utils/url";
 import { ShoppingBasket } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LocationSelect from "components/locationSelect/locationSelect";
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -62,47 +63,57 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         sx={{ height: APPBAR_HEIGHT + "px" }}
         className="flex items-center justify-between"
       >
-        <Box className="flex" sx={{ gap: "5px" }}>
-          <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
-          <Box
-            className="flex items-center"
-            flexDirection="column"
-            alignItems="flex-start"
+<Box
+  sx={{
+    display: "flex",
+    flexDirection: isSmallScreen ? "column" : "row",
+    gap: isSmallScreen ? "4px" : "8px",
+    alignItems: isSmallScreen ? "flex-start" : "center",
+  }}
+>
+  <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
+    <Box className="flex items-center" flexDirection="column" alignItems="flex-start">
+      <Box className="flex items-center">
+        {isSmallScreen && onMenuClick && (
+          <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Link href="/" className="flex">
+          <Typography
+            color="text.tooltip"
+            variant="titleLg"
+            sx={{ mr: "24px" }}
           >
-            <Box className="flex items-center">
-              {isSmallScreen && onMenuClick && (
-                <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
-                  <MenuIcon />
-                </IconButton>
-              )}
-              <Link href="/" className="flex">
-                <Typography
-                  color="text.tooltip"
-                  variant="titleLg"
-                  sx={{ mr: "24px" }}
-                >
-                  CLIENT PORTAL
-                </Typography>
-              </Link>
-            </Box>
+            CLIENT PORTAL
+          </Typography>
+        </Link>
+      </Box>
 
-            {!isSmallScreen && (
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  lineHeight: "15.6px",
-                  letterSpacing: "0.08em",
-                  textAlign: "left",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  mt: "4px", // Optional: margin top for spacing
-                  ml: isSmallScreen ? "48px" : "0", // Align with text if menu icon exists
-                }}
-              >
-                {email}
-              </Typography>
-            )}
-          </Box>
-        </Box>
+      {!isSmallScreen && (
+        <Typography
+          sx={{
+            fontSize: "13px",
+            lineHeight: "15.6px",
+            letterSpacing: "0.08em",
+            textAlign: "left",
+            color: "rgba(255, 255, 255, 0.6)",
+            mt: "4px",
+          }}
+        >
+          {email}
+        </Typography>
+      )}
+    </Box>
+  </Box>
+
+  {/* Move this below logo/text on small screens */}
+  <Box sx={{ width: isSmallScreen ? "100%" : "auto", mt: isSmallScreen ? 1 : 0 }}>
+    <LocationSelect />
+  </Box>
+</Box>
+
         <div className={styles.navigSec}>
           <Box
             onClick={() => {

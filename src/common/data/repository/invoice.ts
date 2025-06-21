@@ -7,19 +7,27 @@ import {
   PaginatedDataType,
   PaginationSearchParamsType,
 } from "core/src/types/api";
+import { TerminateContractCommand } from "common/domain/command/terminate_contract_command";
+import { CancelRequestCommand } from "common/domain/command/cancel_request_command";
 
 enum ApiType {
   get = "getByInvoiceNumber",
   pay = "pay",
   getAllRequest = "getAllRequest",
   getAllCreatedInvoice = "getAllCreatedInvoice",
+  terminateContract = "terminateContract",
+  useCancelRequest = "useCancelRequest",
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
   [ApiType.get]: (id: any) => `Invoice/${id}`,
   [ApiType.pay]: (id: any) => `Invoice/Pay/${id}`,
-  [ApiType.getAllRequest]: (id: any) => `/Invoice/Request`,
-  [ApiType.getAllCreatedInvoice]: (id: number) => `Invoice`,
+  [ApiType.getAllRequest]: (operationalAddressId: any) =>
+    `/Invoice/Request/${operationalAddressId}`,
+  [ApiType.getAllCreatedInvoice]: (operationalAddressId: number) =>
+    `Invoice/OperationalAddress/${operationalAddressId}`,
+  [ApiType.terminateContract]: (_) => `Invoice/TerminateContacrt`,
+  [ApiType.useCancelRequest]: (_) => `Invoice/CancelRequest`,
 };
 
 const method: Record<ApiType, Method> = {
@@ -27,6 +35,8 @@ const method: Record<ApiType, Method> = {
   [ApiType.getAllRequest]: "GET",
   [ApiType.pay]: "POST",
   [ApiType.getAllCreatedInvoice]: "GET",
+  [ApiType.terminateContract]: "POST",
+  [ApiType.useCancelRequest]: "POST",
 };
 
 const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
@@ -54,20 +64,42 @@ export function useInvoicePay(
   });
 }
 
-export function useInvoicRequestseGetAll(): UseApiOutputType<
+export function useInvoicRequestseGetAll(
+  operationalAddressId: number
+): UseApiOutputType<
   PaginatedDataType<InvoiceEntity>,
   PaginationSearchParamsType
 > {
   return useApi<PaginatedDataType<InvoiceEntity>, PaginationSearchParamsType>({
-    ...getConfig(ApiType.getAllRequest),
+    ...getConfig(ApiType.getAllRequest, operationalAddressId),
   });
 }
 
-export function useCreatedInvoiceGetAll(): UseApiOutputType<
+export function useCreatedInvoiceGetAll(
+  operationalAddressId: number
+): UseApiOutputType<
   PaginatedDataType<InvoiceEntity>,
   PaginationSearchParamsType
 > {
   return useApi<PaginatedDataType<InvoiceEntity>, PaginationSearchParamsType>({
-    ...getConfig(ApiType.getAllCreatedInvoice),
+    ...getConfig(ApiType.getAllCreatedInvoice, operationalAddressId),
+  });
+}
+
+export function useTerminateContract(): UseApiOutputType<
+  InvoiceEntity,
+  TerminateContractCommand
+> {
+  return useApi<InvoiceEntity, TerminateContractCommand>({
+    ...getConfig(ApiType.terminateContract),
+  });
+}
+
+export function useCancelRequest(): UseApiOutputType<
+  InvoiceEntity,
+  CancelRequestCommand
+> {
+  return useApi<InvoiceEntity, CancelRequestCommand>({
+    ...getConfig(ApiType.useCancelRequest),
   });
 }

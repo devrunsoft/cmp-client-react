@@ -1,7 +1,7 @@
 import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import ApiTable from "cmp-core/src/Datatable/ApiTable";
 import useFilterData from "hooks/useFilterData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,11 @@ import { CompanyContractEntity } from "common/domain/entity/contract_entity";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
 import SignContract from "./signContract/signContract";
 import { TableDefinition } from "./TableDefinition";
+import { useAppSelector } from "state/index";
 
 export default function ContractTable({ contractId }: { contractId?: number }) {
-  const request = useCompanyContractGetAll();
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const request = useCompanyContractGetAll(refreshAddress.Id ?? 0);
 
   const navigate = useNavigate();
   const [invoiceModel, setInvoiceModel] =
@@ -35,10 +37,15 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
     });
   };
 
+  useEffect(() => {
+    refresh();
+  }, [refreshAddress.Id]);
+
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
+      autoFetch: false,
     });
 
   const openContract = (data) => {

@@ -11,11 +11,13 @@ import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
 import ShowInvoice from "components/Invoice/invoice_modal";
 import { InvoiceCreateStatusOptions } from "common/domain/enum/invoice_enum";
+import { useAppSelector } from "state/index";
 
 export default function Invoices() {
-  const request = useCreatedInvoiceGetAll();
   const [invoiceModel, setStatusDialog] = useState<InvoiceEntity | null>(null);
   const [status, setstatus] = useState<number | null>(null);
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const request = useCreatedInvoiceGetAll(refreshAddress.Id ?? 0);
 
   const loadData = (
     filter: PaginationSearchParamsType,
@@ -41,10 +43,15 @@ export default function Invoices() {
     }
   }, [status]);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshAddress.Id]);
+
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
+      autoFetch: false,
     });
 
   const closeStatusDialog = () => setStatusDialog(null);

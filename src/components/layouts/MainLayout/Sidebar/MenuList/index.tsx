@@ -13,7 +13,8 @@ import { setRepresentation } from "state/slice/representation";
 
 export default function MenuList() {
   // const request = useMenuAccess();
-  const requestRep = useGetCompanyRepresentationApi();
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const requestRep = useGetCompanyRepresentationApi(refreshAddress.Id ?? 0);
 
   const dispatch = useAppDispatch();
   const refreshTrigger = useAppSelector((state) => state.representation);
@@ -28,6 +29,7 @@ export default function MenuList() {
     refreshTrigger.Contract,
     refreshTrigger.Invoice,
     refreshTrigger.Requests,
+    refreshAddress.Id,
   ]);
 
   // const loadData = () => {

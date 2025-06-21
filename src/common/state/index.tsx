@@ -5,11 +5,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import configReducer from "./slice/config";
 import representationlice from "./slice/representation";
+import addressSlice from "./slice/address";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       representation: representationlice,
+      addressSlice: addressSlice,
       config: configReducer,
     },
     middleware: () => new Tuple(logger),

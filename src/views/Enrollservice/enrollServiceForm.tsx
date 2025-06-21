@@ -43,6 +43,7 @@ import { ProductType } from "common/domain/enum/product_type";
 import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
+import { ServiceStatusEnum } from "common/domain/enum/service_status_enum";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -52,6 +53,7 @@ type EnrollServiceFormProps = {
 const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   const [servicesPrice, setservicesPrice] = useState<ServicePriceEntity[]>([]);
   const [services, setservices] = useState<Partial<ServiceEntity>>({});
+  const [model, setModel] = useState<Partial<ServiceAppointmentEntity>>({});
 
   const {
     handleSubmit,
@@ -195,7 +197,8 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
   async function registerService(data) {
     if (
-      (services.ServiceType == ServiceTypeEnum.CookingOilCollection || services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) &&
+      (services.ServiceType == ServiceTypeEnum.CookingOilCollection ||
+        services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) &&
       adresses.length == 0
     ) {
       return toast.error("Pickup point can not be empty");
@@ -307,6 +310,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
       setFromTime(convertMinutesToTime(entityModel.FromHour));
       setToTime(convertMinutesToTime(entityModel.ToHour));
       setDayOfWeek(entityModel.DayOfWeek?.split(",") ?? []);
+      setModel(entityModel ?? {});
     }
     setLocations(selectedAddresses.LocationCompany ?? []);
     setValue("locationCount", selectedAddresses.LocationCompany?.length);
@@ -373,9 +377,14 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
             </div>
           </div>
 
-          {(services.ServiceType == ServiceTypeEnum.CookingOilCollection || services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) && (
+          {(services.ServiceType == ServiceTypeEnum.CookingOilCollection ||
+            services.ServiceType == ServiceTypeEnum.GreaseTrapManagement) && (
             <LocationPointHandlerMap
-              type={services.ServiceType == ServiceTypeEnum.CookingOilCollection ? "Oil" : "Grease Trap"}
+              type={
+                services.ServiceType == ServiceTypeEnum.CookingOilCollection
+                  ? "Oil"
+                  : "Grease Trap"
+              }
               onAddress={(data) => onAddress(data)}
               typeOfButton={"Point"}
             />
@@ -505,13 +514,14 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
               status={"save"}
               onClick={handleSubmit(registerService)}
             />
+          ) : model.Status == ServiceStatusEnum.Draft ? (
+            <ButtonsForm
+              isActive={formisValid}
+              nameOfButton={"Cancel Service"}
+              status={"cancel"}
+              onClick={() => confirmDelete(prop.Id!)}
+            />
           ) : (
-            // <ButtonsForm
-            //   isActive={formisValid}
-            //   nameOfButton={"Cancel Service"}
-            //   status={"cancel"}
-            //   onClick={() => confirmDelete(prop.Id!)}
-            // />
             <></>
           )}
         </div>

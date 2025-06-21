@@ -2,7 +2,10 @@ import useApi from "hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { UseApiOutputType } from "core/src/hooks/useApi";
 import { BASE_URL, Client_URL } from "core/src/utils/url";
-import { PaginatedDataType, PaginationSearchParamsType } from "core/src/types/api";
+import {
+  PaginatedDataType,
+  PaginationSearchParamsType,
+} from "core/src/types/api";
 import { CompanyContractEntity } from "common/domain/entity/contract_entity";
 
 enum ApiType {
@@ -10,7 +13,8 @@ enum ApiType {
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
-  [ApiType.getAll]: (_: any) => `CompanyContract`,
+  [ApiType.getAll]: (OperationalAddressId: any) =>
+    `CompanyContract/OperationalAddress/${OperationalAddressId}`,
 };
 
 const method: Record<ApiType, Method> = {
@@ -27,7 +31,9 @@ const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
   return config;
 };
 
-export function useCompanyContractGetAll(): UseApiOutputType<
+export function useCompanyContractGetAll(
+  OperationalAddressId: number
+): UseApiOutputType<
   PaginatedDataType<CompanyContractEntity>,
   PaginationSearchParamsType
 > {
@@ -35,6 +41,6 @@ export function useCompanyContractGetAll(): UseApiOutputType<
     PaginatedDataType<CompanyContractEntity>,
     PaginationSearchParamsType
   >({
-    ...getConfig(ApiType.getAll),
+    ...getConfig(ApiType.getAll, OperationalAddressId),
   });
 }

@@ -13,9 +13,12 @@ import { ProviderProvider } from "cmp-core/src/Context/Providers";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { getBreadcrumbFromPath, LinkInfo } from "common/menu-items";
 import { useGetAllOperationalAddress } from "data/repository/operationalAddress";
-import { AddressProvider } from "common/context/address_context";
+import { AddressProvider, useAddress } from "common/context/address_context";
 import { TermsAndConditionProvider } from "components/context_api/terms_and_conditions";
 import TermConditionModal from "components/term";
+import { useAppDispatch, useAppSelector } from "state/index";
+import { setAddress } from "state/slice/address";
+import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
 
 export default function MainLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -38,47 +41,60 @@ export default function MainLayout() {
   const displayBreadcrumb = info?.breadCrumb && display && parent;
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const request = useGetAllOperationalAddress();
+  var dispatch = useAppDispatch();
 
   useEffect(() => {
-    request.call({});
+    request.call({
+      onSuccess: (d) => {
+        dispatch(
+          setAddress(
+            d.data.length == 0 ? ({} as OperationalAddressEntity) : d.data[0]
+          )
+        );
+      },
+    });
   }, []);
 
   return (
     <HasAccess>
       <Box
-        sx={{
-          display: "flex",
-        }}
+        sx={
+          request.loading || request.error
+            ? { padding: "32px 40px", background: "white", height:"100vh" }
+            : {
+                display: "flex",
+              }
+        }
       >
-        <AppBar onMenuClick={toggleDrawer} />
-        <Sidebar open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-        <Main isSmallScreen={isSmallScreen}>
-          <Helmet>
-            <title>{info?.title || "CLIENT PORTAL"}</title>
-          </Helmet>
-          {!!displayBreadcrumb && (
-            <Breadcrumb
-              links={[{ title: parent.title }, { title: info.title }]}
-            />
-          )}
-          <AppDataFetchingWrapper request={request}>
-            {request.data && (
-              <AddressProvider
-                address={request.data.data}
-                defaultAddress={
-                  request.data.data.length == 0 ? {} : request.data.data[0]
-                }
-              >
+        <AppDataFetchingWrapper request={request}>
+          {request.data && (
+            <AddressProvider
+              address={request.data.data}
+              defaultAddress={
+                request.data.data.length == 0 ? {} : request.data.data[0]
+              }
+            >
+              <AppBar onMenuClick={toggleDrawer} />
+              <Sidebar open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+              <Main isSmallScreen={isSmallScreen}>
+                <Helmet>
+                  <title>{info?.title || "CLIENT PORTAL"}</title>
+                </Helmet>
+                {!!displayBreadcrumb && (
+                  <Breadcrumb
+                    links={[{ title: parent.title }, { title: info.title }]}
+                  />
+                )}
+
                 <TermsAndConditionProvider>
                   <Outlet />
                   <TermConditionModal />
                 </TermsAndConditionProvider>
-              </AddressProvider>
-            )}
-          </AppDataFetchingWrapper>
-        </Main>
+              </Main>
+            </AddressProvider>
+          )}
+        </AppDataFetchingWrapper>
       </Box>
     </HasAccess>
   );

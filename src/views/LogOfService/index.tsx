@@ -7,20 +7,29 @@ import { Box, Button } from "@mui/material";
 import { Plus } from "lucide-react";
 
 import { GridFilter } from "uikit/src/GridFilter";
-import { BaseServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
+import {
+  BaseServiceAppointmentEntity,
+  ServiceAppointmentEntity,
+} from "common/domain/entity/service_appointment_entity";
 import { useClientServiceGetAll } from "data/repository/service";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
 import {
   LogOfServiceEnum,
   LogOfServiceEnumOptions,
 } from "cmp-core/src/Enum/logOfServiceEnum";
+import { useAppSelector } from "state/index";
+import { useNavigate } from "react-router-dom";
+import { APP_ROUTES } from "../../routes/app_route";
 
 export default function LogOfService() {
-  const request = useClientServiceGetAll();
   const [selected, setSelected] =
     useState<Partial<BaseServiceAppointmentEntity> | null>(null);
   const [isProviderDialog, setIsProviderDialog] = useState<boolean>(false);
   const [status, setstatus] = useState<LogOfServiceEnum | null>(null);
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const request = useClientServiceGetAll(refreshAddress.Id ?? 0);
+  const navigate = useNavigate();
+
   const loadData = (
     filter: PaginationSearchParamsType,
     page: number,
@@ -45,11 +54,28 @@ export default function LogOfService() {
     }
   }, [status]);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshAddress.Id]);
+
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
+      autoFetch: false,
     });
+
+  function onRoute(serviceappoitnment: BaseServiceAppointmentEntity) {
+    navigate(
+      `${APP_ROUTES.Enrollservice.replace(
+        ":oprAddress",
+        serviceappoitnment.Id?.toString() ?? ""
+      )}?data=${serviceappoitnment.Id}&serviceId=${
+        serviceappoitnment.ProductId
+      }&type=${serviceappoitnment.Product?.Name}`,
+      undefined
+    );
+  }
 
   return (
     <>
@@ -69,8 +95,7 @@ export default function LogOfService() {
             pageCount={request.data?.data?.totalPages}
             page={page}
             onSingleRowSelection={(s) => {
-              setSelected(s);
-              setIsProviderDialog(true);
+              onRoute(s);
             }}
             loading={request.loading}
             endChildren={[
