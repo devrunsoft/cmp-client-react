@@ -28,6 +28,7 @@ import { RequestTerminateCommand } from "common/domain/command/requestTerminateC
 
 import TerminateContractDialog from "cmp-core/src/ui/dialog/terminateContract";
 import Empty from "cmp-core/src/Empty";
+import { TerminateStatusEnum } from "common/domain/enum/terminate_status";
 
 export default function Services() {
   const { selectedAddresses } = useAddress();
@@ -144,10 +145,10 @@ export default function Services() {
       null
     );
   }
-  function canBeTerminate(service: ServiceEntity): boolean {
+  function getTerminateStatus(service: ServiceEntity): TerminateStatusEnum {
     return (
       appointmentservices.find((e) => e.ServiceId == service.Id)
-        ?.CanTerminate ?? false
+        ?.TerminateStatus ?? TerminateStatusEnum.None
     );
   }
   function getInvoiceNumber(service: ServiceEntity): string {
@@ -193,7 +194,7 @@ export default function Services() {
             <div className={styles.main}>
               <div className={styles.cardsContainer}>
                 {itemsService.map((item, index) => {
-                  const canTerminate = canBeTerminate(item);
+                  const canTerminate = getTerminateStatus(item);
                   var serviceAppoitnemtn = hasRegistered(item);
                   var hasDrafted = hasDraft(item);
                   var next = hasNext(item);
@@ -274,7 +275,7 @@ export default function Services() {
                           </div>
                         )}
                         &nbsp;
-                        {canTerminate && (
+                        {canTerminate == TerminateStatusEnum.CanTerminate && (
                           <div
                             className={styles.subsButtom}
                             key={index + "-service-enroll"}
@@ -283,6 +284,29 @@ export default function Services() {
                             }
                           >
                             {"terminate the contract"}
+                            {requestTerminate.loading ? (
+                              <FaSpinner
+                                size={17}
+                                className="animate-spin ml-2"
+                              />
+                            ) : (
+                              <FaRegFileAlt size={17} />
+                            )}
+                          </div>
+                        )}
+                        {canTerminate == TerminateStatusEnum.Requested && (
+                          <div
+                            className={styles.subsButtom}
+                            style={{
+                              backgroundColor: "#6b7280",
+                              color: "white",
+                            }}
+                            key={index + "-service-enroll"}
+                            onClick={() => {
+                              // add your logic here, e.g., open request details modal
+                            }}
+                          >
+                            {"view termination request"}
                             {requestTerminate.loading ? (
                               <FaSpinner
                                 size={17}

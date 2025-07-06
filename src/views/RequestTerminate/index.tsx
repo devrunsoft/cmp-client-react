@@ -68,7 +68,7 @@ export default function Invoices() {
       <Box className="mainPadding">
         <GridDataFetchingWrapper retry={refresh} request={request}>
           <ApiTable<RequestTerminateEntity>
-            title="Terminate Request"
+            title="Terminate Requests"
             removeId={true}
             columnDef={TableDefinition}
             data={request.data?.data?.elements || []}

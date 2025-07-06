@@ -32,7 +32,7 @@ import { AddShoppingCardCommand } from "common/domain/command/shopping_card/add"
 
 import { getServiceAppointmentApi } from "data/api/service_appointment/get_service_appointment_api";
 import { APP_ROUTES } from "../../routes/app_route";
-import { cancelServiceAppointmentApi } from "data/api/service_appointment/camcel_service_appointment_api";
+// import { cancelServiceAppointmentApi } from "data/api/service_appointment/camcel_service_appointment_api";
 import ShowInvoice from "components/Invoice/invoice_modal";
 import ServicePriceDropDown from "components/dropDown/service_price_dropdown";
 import LocationPointHandlerMap from "components/map/locationPointHandlerMap";
@@ -44,6 +44,7 @@ import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 import { ServiceStatusEnum } from "common/domain/enum/service_status_enum";
+import { useCancelRequest } from "data/repository/invoice";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -105,16 +106,6 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
   var request = useAddShoppingCard();
   const isLoading = request.loading;
-
-  // function convertTimeTostring(totalMinutes: number): string {
-  //   const convertedHours = Math.floor(totalMinutes / 60)
-  //     .toString()
-  //     .padStart(2, "0");
-  //   const convertedMinutes = (totalMinutes % 60).toString().padStart(2, "0");
-
-  //   const convertedTime = `${convertedHours}:${convertedMinutes}`;
-  //   return convertedTime;
-  // }
 
   useEffect(() => {
     if (selectedAddresses) {
@@ -234,62 +225,63 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
 
   let closeDialog;
   const confirmDelete = (id: number) => {
-    confirmAlert({
-      title: "Confirm to cancel",
-      message: "Are you sure you want to cancel this request?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => cancelService(id),
-        },
-        {
-          label: "No",
-          onClick: () => console.log("Delete canceled"),
-        },
-      ],
-      customUI: ({ onClose }) => {
-        closeDialog = onClose; // Capture onClose to programmatically close
-        return (
-          <div className="react-confirm-alert">
-            <div />
-            <div className="react-confirm-alert-body">
-              <h1>Confirm to cancel</h1>
-              <p>Are you sure you want to cancel this service?</p>
-              <div className={styles.container}>
-                <button
-                  className={styles.cancelService}
-                  onClick={() => {
-                    onClose();
-                    cancelService(id);
-                  }}
-                >
-                  Yes
-                </button>
-                <button className={styles.signUp} onClick={onClose}>
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      },
-    });
+    navigate("/dashboard/requests");
+    // confirmAlert({
+    //   title: "Confirm to cancel",
+    //   message: "Are you sure you want to cancel this request?",
+    //   buttons: [
+    //     {
+    //       label: "Yes",
+    //       onClick: () => cancelService(id),
+    //     },
+    //     {
+    //       label: "No",
+    //       onClick: () => console.log("Delete canceled"),
+    //     },
+    //   ],
+    //   customUI: ({ onClose }) => {
+    //     closeDialog = onClose; // Capture onClose to programmatically close
+    //     return (
+    //       <div className="react-confirm-alert">
+    //         <div />
+    //         <div className="react-confirm-alert-body">
+    //           <h1>Confirm to cancel</h1>
+    //           <p>Are you sure you want to cancel this service?</p>
+    //           <div className={styles.container}>
+    //             <button
+    //               className={styles.cancelService}
+    //               onClick={() => {
+    //                 onClose();
+    //                 cancelService(id);
+    //               }}
+    //             >
+    //               Yes
+    //             </button>
+    //             <button className={styles.signUp} onClick={onClose}>
+    //               No
+    //             </button>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     );
+    //   },
+    // });
   };
-
+  var requestCancel = useCancelRequest();
   async function cancelService(id: number) {
     try {
-      setLoading(true);
-      var result = await cancelServiceAppointmentApi(id);
-      result.fold(
-        (error) => {
-          toast.error(error.message);
-        },
-        (data) => {
-          navigate(-1);
-        }
-      );
+      // setLoading(true);
+      // var result = await cancelServiceAppointmentApi(id);
+      // result.fold(
+      //   (error) => {
+      //     toast.error(error.message);
+      //   },
+      //   (data) => {
+      //     navigate(-1);
+      //   }
+      // );
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   }
 
@@ -517,7 +509,8 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
           ) : model.Status == ServiceStatusEnum.Draft ? (
             <ButtonsForm
               isActive={formisValid}
-              nameOfButton={"Cancel Service"}
+              hasCancel={false}
+              nameOfButton={"Cancel Request"}
               status={"cancel"}
               onClick={() => confirmDelete(prop.Id!)}
             />

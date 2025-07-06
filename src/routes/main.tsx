@@ -99,6 +99,11 @@ const MainRoutes = {
       element: <ClientManifest />,
       children: [],
     },
+    {
+      path: getPath(LinkEnum.RequestTerminate),
+      element: <RequestTerminate />,
+      children: [],
+    },
   ],
 };
 

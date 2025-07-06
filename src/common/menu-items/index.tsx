@@ -125,7 +125,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     href: `/service-log`,
   },
   [LinkEnum.RequestTerminate]: {
-    title: "Terminate Request",
+    title: "Terminate Requests",
     icon: PiTerminalWindowLight,
     href: `/request-terminate`,
   },

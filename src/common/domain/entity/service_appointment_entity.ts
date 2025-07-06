@@ -1,4 +1,5 @@
 import { ServiceStatusEnum } from "../enum/service_status_enum";
+import { TerminateStatusEnum } from "../enum/terminate_status";
 import { LocationCompanyEntity } from "./location_company_entity";
 import { ServiceEntity } from "./service_entity";
 import { ServicePriceEntity } from "./service_price_entity";
@@ -26,7 +27,7 @@ export type ClientServiceAppointment = {
   Draft: ServiceAppointmentEntity | null;
   Current: ServiceAppointmentEntity | null;
   Next: ServiceAppointmentEntity | null;
-  CanTerminate: boolean;
+  TerminateStatus: TerminateStatusEnum;
   ServiceId: number;
   InvoiceNumber: string;
 };
