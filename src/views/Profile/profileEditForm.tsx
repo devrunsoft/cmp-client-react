@@ -30,6 +30,22 @@ import { mapLocationCompanyEntityToCommand } from "common/domain/mapper/location
 import { EditProfileButtons } from "components/signUpButtons/signUpButtons";
 import PhotoUpload from "components/photoUpload/photoUpload";
 import { getAllOperationalAddress } from "data/api/dashboard/operationalAddress/get_all";
+import {
+  BillingInfromationEntity,
+  mapBillingEntityToCommand,
+} from "common/domain/entity/infromation_entity";
+import MultiPaymentAddressCm from "views/Auth/SignUp/Payment/multiPayment";
+import {
+  useDeleteInformation,
+  useGetInformation,
+} from "data/repository/billingInfromation";
+import {
+  BillingInfromationCommand,
+  InfromationCommand,
+} from "common/domain/command/billing_information_command";
+import { Button, Divider, TextField, Typography } from "@mui/material";
+import Gap from "uikit/src/Gap";
+import { addBilling } from "data/api/register/bilingInformation/add";
 
 const ProfileEditForm = () => {
   const [company, setCompanyEntity] = useState<CompanyEntity | null>(null);
@@ -48,6 +64,13 @@ const ProfileEditForm = () => {
   const [openEditOprAddressModal, setOpenEditOprAddressModal] = useState<
     number | null
   >(null);
+
+  const [billingList, setBillingList] = useState<BillingInfromationCommand[]>(
+    []
+  );
+
+  const [corporateAddress, setCorporateAddress] = useState("");
+
   const { setLoading } = useLoading();
 
   var initialEditData = {
@@ -71,6 +94,7 @@ const ProfileEditForm = () => {
     fetchCompany();
     fetchLocation();
     fetchBilling();
+    loadData();
   }, []);
 
   async function fetchCompany() {
@@ -167,6 +191,11 @@ const ProfileEditForm = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const payload: InfromationCommand = {
+        CorporateAddress: corporateAddress,
+        BilingInformationInputs: billingList,
+      };
+
       var command = new EditProfileCommand(
         data.companyName,
         data.primaryFirstName,
@@ -179,12 +208,15 @@ const ProfileEditForm = () => {
         data.billingAddress,
         data.city,
         data.postalCode,
-        data.state
+        data.state,
+        payload
       );
+
       var result = await editCompany(command);
       result.fold(
         (error) => {},
         (data) => {
+          // UpdateBillingAddress();
           setCompanyEntity(data);
         }
       );
@@ -227,11 +259,88 @@ const ProfileEditForm = () => {
     return value.replace(/\D/g, "");
   };
 
+  const updateAddress = (index, field, value) => {
+    const updated = [...billingList];
+    updated[index][field] = value;
+    setBillingList(updated);
+  };
+
+  const request = useGetInformation();
+  const requestDelete = useDeleteInformation();
+
+  const loadData = () => {
+    request.call({
+      onSuccess(result) {
+        if (result.data.billingInformation) {
+          setBillingList(
+            result.data.billingInformation.map((e) =>
+              mapBillingEntityToCommand(e)
+            )
+          );
+        }
+        setCorporateAddress(result.data.CorporateAddress ?? "");
+      },
+    });
+  };
+
+  const deleteInformation = (index: number, Id: number | null) => {
+    if (Id == null) {
+      return handleDelete(index);
+    }
+    requestDelete.call({
+      data: { Id },
+      onSuccess(result) {
+        handleDelete(index);
+      },
+    });
+  };
+
+  const handleDelete = (index: number) => {
+    const updated = [...billingList];
+    updated.splice(index, 1);
+    setBillingList(updated);
+  };
+
+  const addNewPaymentMethod = () => {
+    setBillingList([
+      ...billingList,
+      {
+        CardholderName: "",
+        CardNumber: "",
+        Expiry: 0,
+        CVC: "",
+        Address: "",
+        City: "",
+        State: "",
+        ZIPCode: "",
+        IsPaypal: false,
+      },
+    ]);
+  };
+  const UpdateBillingAddress = async () => {
+    try {
+      setLoading(true);
+
+      const payload: InfromationCommand = {
+        CorporateAddress: corporateAddress,
+        BilingInformationInputs: billingList,
+      };
+
+      const result = await addBilling(payload);
+      result.fold(
+        (s) => {},
+        (_) => {}
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {StateStatusExtension.from(state).isSuccess() ? (
         <div className={styles.container}>
-          {company&&<PhotoUpload model={company} />}
+          {company && <PhotoUpload model={company} />}
           <h3>Basic Information</h3>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.formSection}>
@@ -336,7 +445,6 @@ const ProfileEditForm = () => {
                 // name="email"
                 readOnly={true}
                 disabled={true}
-
               />
             </div>
 
@@ -352,7 +460,6 @@ const ProfileEditForm = () => {
                 // name="email"
                 readOnly={true}
                 disabled={true}
-
               />
             </div>
 
@@ -434,21 +541,55 @@ const ProfileEditForm = () => {
             </div>
             <br />
             <h3>Professional Information</h3>
-
-            <PaymentAddressCm
-              onSelectAddress={(
-                address,
-                latitude,
-                longitude,
-                city,
-                postalCode,
-                state
-              ) => {}}
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              defaultValue={bilingInformation}
-            />
+            <div className={styles.formSection}>
+              <label htmlFor="secondContactPerson">Corporate Addres</label>
+              <TextField
+                fullWidth
+                placeholder="Enter corporate address"
+                value={corporateAddress}
+                onChange={(e) => setCorporateAddress(e.target.value)}
+              />
+            </div>
+            <Divider />
+            {billingList.map((entry, index) => (
+              <div key={index} className={styles.paymentBlock}>
+                <MultiPaymentAddressCm
+                  isDeleting={requestDelete.loading}
+                  onDelete={() => {
+                    deleteInformation(index, entry.Id ?? null);
+                  }}
+                  onSelectAddress={(
+                    address,
+                    lat,
+                    lng,
+                    city,
+                    postalCode,
+                    state
+                  ) => {
+                    updateAddress(index, "Address", address);
+                    updateAddress(index, "City", city);
+                    updateAddress(index, "ZIPCode", postalCode);
+                    updateAddress(index, "State", state);
+                  }}
+                  // register={register}
+                  // setValue={setValue}
+                  // errors={errors}
+                  defaultValue={entry}
+                />
+                {/* <Gap />
+                <Divider />
+                <Gap /> */}
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={addNewPaymentMethod}
+              color="primary"
+            >
+              + Add Another Billing Address
+            </Button>
+            <Divider />
             {StateStatusExtension.from(stateLocation).isSuccess() &&
               initialEditData.addresses.map(
                 (operationalAddress, groupIndex) => (

@@ -45,6 +45,10 @@ export default function MainLayout() {
   var dispatch = useAppDispatch();
 
   useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
     request.call({
       onSuccess: (d) => {
         dispatch(
@@ -54,20 +58,20 @@ export default function MainLayout() {
         );
       },
     });
-  }, []);
+  };
 
   return (
     <HasAccess>
       <Box
         sx={
           request.loading || request.error
-            ? { padding: "32px 40px", background: "white", height:"100vh" }
+            ? { padding: "32px 40px", background: "white", height: "100vh" }
             : {
                 display: "flex",
               }
         }
       >
-        <AppDataFetchingWrapper request={request}>
+        <AppDataFetchingWrapper request={request} retry={loadData}>
           {request.data && (
             <AddressProvider
               address={request.data.data}

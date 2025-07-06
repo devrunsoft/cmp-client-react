@@ -28,7 +28,6 @@ const getConfig = (
   },
 });
 
-// ⚡️ Custom Hook
 export function useGetCompanyRepresentationApi(
   OperationalAddressId: number
 ): UseApiOutputType<ClientRepresentationEntity, void> {

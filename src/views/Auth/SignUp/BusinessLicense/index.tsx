@@ -1,9 +1,5 @@
 "use client";
-import {
-  useForm,
-  FormProvider,
-  Controller,
-} from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
@@ -16,6 +12,8 @@ import { DocumentCommand } from "common/domain/command/document_command";
 import { addDcoument } from "data/api/register/document/add";
 import Title from "components/title/title";
 import { NextButton } from "components/button/next/next";
+import SignUpStep from "uikit/src/Stepper";
+import { useNavigate } from "react-router-dom";
 
 export const BusinessLicense = ({
   setIndex,
@@ -25,6 +23,7 @@ export const BusinessLicense = ({
   const [file1, setFile1] = useState<File | null>(null);
   const [file2, setFile2] = useState<File | null>(null);
   const { setLoading } = useLoading();
+  const navigate = useNavigate();
 
   const handleFileChange1 = (event) => {
     const selectedFile = event.target.files[0];
@@ -75,6 +74,13 @@ export const BusinessLicense = ({
 
   return (
     <>
+      <SignUpStep
+        step={2}
+        count={3}
+        onTap={(s) => {
+          setIndex!(s + 2);
+        }}
+      />
       <Title title={"Document Submission"} />
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formSection}>
@@ -160,8 +166,9 @@ export const BusinessLicense = ({
         <div className={styles.buttonLine}>
           {/* <button onClick={onBack}>Back</button> */}
           <button
+            type="button"
             onClick={() => {
-              setIndex!(4);
+              navigate("/", { replace: true });
             }}
           >
             Skip

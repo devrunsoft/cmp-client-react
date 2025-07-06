@@ -19,12 +19,18 @@ const Profile = Loadable(lazy(() => import("views/Profile")));
 const ShoppingCard = Loadable(
   lazy(() => import("views/ShoppingCard/shoppingCard"))
 );
+const ClientManifest = Loadable(
+  lazy(() => import("views/Manifest"))
+);
 const LogOfService = Loadable(lazy(() => import("views/LogOfService")));
+const RequestTerminate = Loadable(lazy(() => import("views/RequestTerminate")));
+const ActivationToken = Loadable(lazy(() => import("views/ActivationToken")));
 
 export const ProtectWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
   if (!token) return <Navigate to="/login" />;
-  if (token.registered==false) return <Navigate to={`${APP_ROUTES.Activation}`} />;
+  // if (token.registered == false)
+  //   return <Navigate to={`${APP_ROUTES.Activation}`} />;
   return children;
 };
 
@@ -87,6 +93,11 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.ClientServiceLog),
       element: <LogOfService />,
+    },
+    {
+      path: getPath(LinkEnum.ClientManifest),
+      element: <ClientManifest />,
+      children: [],
     },
   ],
 };

@@ -27,21 +27,22 @@ const SignUp = () => {
       {index === 1 && <SwitcherAndCompanyInfo setIndex={setIndex} />}
       {index === 2 && (
         <ProtectWrapper>
-          <OperationalAddress setIndex={setIndex} />{" "}
+          <PaymentForm
+            setIndex={setIndex}
+            onRegistrationSuccess={() => {
+              setIndex(3);
+            }}
+          />
         </ProtectWrapper>
       )}
       {index === 3 && (
         <ProtectWrapper>
-          <BusinessLicense setIndex={setIndex} />{" "}
+          <OperationalAddress setIndex={setIndex} />{" "}
         </ProtectWrapper>
       )}
       {index === 4 && (
         <ProtectWrapper>
-          <PaymentForm
-            onRegistrationSuccess={() => {
-              navigate("/", { replace: true });
-            }}
-          />
+          <BusinessLicense setIndex={setIndex} />{" "}
         </ProtectWrapper>
       )}
 

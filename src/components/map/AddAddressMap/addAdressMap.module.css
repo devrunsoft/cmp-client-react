@@ -165,3 +165,81 @@
     background-color: rgb(210, 210, 210) !important;
 }
 
+
+
+.weekScheduleContainer {
+    margin-top: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2c3e50;
+  }
+  
+  .daySelectorRow {
+    margin-bottom: 12px;
+  }
+  
+  .daySelect {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    width: 100%;
+    background: #fff;
+  }
+  
+  .scheduleGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .scheduleCard {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  .dayLabel {
+    font-weight: 500;
+    min-width: 90px;
+    color: #2c3e50;
+  }
+  
+  .timeInput {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .toText {
+    font-size: 13px;
+    color: #6c757d;
+  }
+  
+  .trashButton {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+    transition: color 0.2s ease;
+  }
+  
+  .trashButton:hover {
+    color: #c0392b;
+  }
+  

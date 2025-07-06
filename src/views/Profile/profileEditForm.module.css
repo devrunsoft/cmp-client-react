@@ -177,3 +177,10 @@
    flex-direction: column;
    gap: 16px;
 }
+
+.paymentBlock {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+ }
+ 

@@ -1,205 +1,208 @@
 "use client";
 import styles from "./paymentForm.module.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { SiMastercard } from "react-icons/si";
-import { SiVisa } from "react-icons/si";
 import { CgInfo } from "react-icons/cg";
-import { IoCardOutline } from "react-icons/io5";
 import { useLoading } from "components/loading/loading_context";
-import { BillingInfromationCommand } from "common/domain/command/billing_information_command";
 import { addBilling } from "data/api/register/bilingInformation/add";
 import PaymentAddressCm from "cmp-core/src/Component/PaymentAddress/PaymentAddress.tsx";
 import { NextButton } from "components/button/next/next";
 import { useTerms } from "components/context_api/terms_and_conditions";
-// import PaymentOptions from "@/comments/forms/paymentOptions/paymentOptions";
+import SignUpStep from "uikit/src/Stepper";
+import { Button, TextField, Typography, Divider } from "@mui/material";
+import Gap from "uikit/src/Gap";
+import {
+  BillingInfromationCommand,
+  InfromationCommand,
+} from "common/domain/command/billing_information_command";
+import MultiPaymentAddressCm from "./multiPayment";
+import { useGetInformation } from "data/repository/billingInfromation";
+import { mapBillingEntityToCommand } from "common/domain/entity/infromation_entity";
 
-// import SignUpButtons from "../signUpButtons/signUpButtons";
-
-const PaymentForm = ({ onRegistrationSuccess }) => {
+const PaymentForm = ({ onRegistrationSuccess, setIndex }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
   } = useForm();
+
   const { setLoading } = useLoading();
+  const { setOpen, isOpen } = useTerms();
+  const [corporateAddress, setCorporateAddress] = useState("");
+  const request = useGetInformation();
 
-  const [selectedButton, setSelectedButton] = useState("card");
-
-  const handleButtonClick = (buttonName) => {
-    setSelectedButton(buttonName);
+  const loadData = () => {
+    request.call({
+      onSuccess(result) {
+        if (result.data.billingInformation) {
+          setBillingList(
+            result.data.billingInformation.map((e) =>
+              mapBillingEntityToCommand(e)
+            )
+          );
+        }
+        setCorporateAddress(result.data.CorporateAddress ?? "");
+      },
+    });
   };
 
-  const onSubmit = async (data) => {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const [billingList, setBillingList] = useState<BillingInfromationCommand[]>([
+    {
+      CardholderName: "",
+      CardNumber: "",
+      Expiry: 0,
+      CVC: "",
+      Address: "",
+      City: "",
+      State: "",
+      ZIPCode: "",
+      IsPaypal: false,
+    },
+  ]);
+
+  const addNewPaymentMethod = () => {
+    setBillingList([
+      ...billingList,
+      {
+        CardholderName: "",
+        CardNumber: "",
+        Expiry: 0,
+        CVC: "",
+        Address: "",
+        City: "",
+        State: "",
+        ZIPCode: "",
+        IsPaypal: false,
+      },
+    ]);
+  };
+
+  const onSubmit = async () => {
     try {
       setLoading(true);
-      var command = new BillingInfromationCommand(
-        data.cardholderName,
-        data.cardNumber,
-        parseInt(data.expiry ? data.expiry.replace("/", "") : "0"),
-        data.cvc,
-        data.billingAddress,
-        data.city,
-        data.state,
-        data.postalCode,
-        selectedButton === "paypal"
-      );
-      var result = await addBilling(command);
+
+      const payload: InfromationCommand = {
+        CorporateAddress: corporateAddress,
+        BilingInformationInputs: billingList,
+      };
+
+      const result = await addBilling(payload);
       result.fold(
         (s) => {},
-        (_) => {
-          onRegistrationSuccess();
-        }
+        (_) => onRegistrationSuccess()
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const { setOpen, isOpen } = useTerms();
+  const updateAddress = (index, field, value) => {
+    const updated = [...billingList];
+    updated[index][field] = value;
+    setBillingList(updated);
+  };
+
   return (
     <>
-      {/* <div className={styles.container}>
-                <button className={`${styles.selectedButton} ${selectedButton === 'card' ? styles.active : ''}`} onClick={() => handleButtonClick('card')}>
-                    <IoCardOutline size={'24'} />Card
-                </button>
-                <button className={`${styles.selectedButton} ${selectedButton === 'paypal' ? styles.active : ''}`} onClick={() => handleButtonClick('paypal')}>
-                    <Image width={'82'} height={'20'} src={"/pay_pal_logo.png"} alt="pay pal" />
-                </button>
-            </div> */}
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        {/* <label>Card Information</label>
-                <div className={styles.formSection}>
-                    <label htmlFor="cardholderName">Cardholder name:</label>
-                    <input
-                        className={`${styles.inputInformation} ${errors.cardholderName ? styles.inputError : ''}`}
-                        placeholder="Enter name"
-                        type="text"
-                        id="cardholderName"
-                        {...register('cardholderName', { required: false })}
-                    />
-                </div>
-
-                <div className={styles.formSection}>
-                    <label htmlFor="cardNumber">Card Number:</label>
-
-                    <div className={`${styles.inputWithButton} ${errors.cardNumber ? styles.inputError : ''}`}>
-                        <input
-                            type="text"
-                            id="cardNumber"
-                            placeholder="0000 0000 0000 0000"
-                            {...register('cardNumber', { required: false, pattern: { value: /^\d+$/ } })}
-                        // className={`${errors.cardNumber ? styles.inputError : ''}`}
-                        />
-                        <div className={styles.inputIconButton}>
-                            <button type="button"><SiMastercard size={26} style={{ color: "rgba(76, 142, 59, 1)" }} /></button>
-                            <button type="button"><SiVisa size={24} color='rgba(23, 43, 133, 1)' style={{ minWidth: '24px' }} /></button>
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.formSection}>
-                    <label htmlFor="expiry">Expiry / CVC:</label>
-                    <div className={styles.twoInputs}>
-                        <input
-                            className={`${styles.inputInformation} ${errors.expiry ? styles.inputError : ''}`}
-                            placeholder="MM/YY"
-                            type="text"
-                            id="expiry"
-                            {...register('expiry', { required: false, pattern: { value: /^(0[1-9]|1[0-2])\/\d{2}$/ } })}
-                        />
-                        <input
-                            className={`${styles.inputInformation} ${errors.cvc ? styles.inputError : ''}`}
-                            placeholder="000"
-                            type="text"
-                            id="cvc"
-                            {...register('cvc', { required: false, pattern: { value: /^\d+$/ } })}
-                        />
-                    </div>
-                </div>
-                <div className={styles.agreementText}>
-                    <Switch active={false} /> <span>Save card information</span>
-                </div> */}
-        <label>Billing Address</label>
-        <PaymentAddressCm
-          onSelectAddress={(
-            address,
-            latitude,
-            longitude,
-            city,
-            postalCode,
-            state
-          ) => {}}
-          register={register}
-          setValue={setValue}
-          errors={errors}
-          defaultValue={null}
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+        <SignUpStep
+          step={0}
+          count={3}
+          onTap={(s) => {
+            setIndex!(s + 2);
+          }}
         />
 
-        {/* <div className={styles.formSection}>
-                    <label htmlFor="city">City:</label>
-                    <input
-                        className={`${styles.inputInformation} ${errors.city ? styles.inputError : ''}`}
-                        placeholder="Enter city"
-                        type="text"
-                        id="city"
-                        {...register('city', { required: false })}
-                    />
-                </div>
-                <div className={styles.formSection}>
-                    <label htmlFor="state">State:</label>
-                    <input
-                        className={`${styles.inputInformation} ${errors.state ? styles.inputError : ''}`}
-                        placeholder="Select state"
-                        type="text"
-                        id="state"
-                        {...register('state', { required: false })}
-                    />
-                </div>
-                <div className={styles.formSection}>
-                    <label htmlFor="zipcode">ZIP Code:</label>
-                    <input
-                        className={`${styles.inputInformation} ${errors.zipcode ? styles.inputError : ''}`}
-                        placeholder="Enter code"
-                        type="text"
-                        id="zipcode"
-                        {...register('zipcode', { required: false, pattern: { value: /^\d+$/ } })}
-                    />
-                </div> */}
+        <Gap />
+
+        <Typography variant="h6" gutterBottom>
+          Corporate Address
+        </Typography>
+        <TextField
+          fullWidth
+          placeholder="Enter corporate address"
+          value={corporateAddress}
+          onChange={(e) => setCorporateAddress(e.target.value)}
+        />
+
+        <Gap />
+        <Divider />
+        <Gap />
+
+        {billingList.map((entry, index) => (
+          <div key={index} className={styles.paymentBlock}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600 }}
+              gutterBottom
+            >
+              Billing Address #{index + 1}
+            </Typography>
+            <MultiPaymentAddressCm
+              onSelectAddress={(address, lat, lng, city, postalCode, state) => {
+                updateAddress(index, "Address", address);
+                updateAddress(index, "City", city);
+                updateAddress(index, "ZIPCode", postalCode);
+                updateAddress(index, "State", state);
+              }}
+              // register={register}
+              // setValue={setValue}
+              // errors={errors}
+              defaultValue={entry}
+            />
+            <Gap />
+            <Divider />
+            <Gap />
+          </div>
+        ))}
+
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={addNewPaymentMethod}
+          color="primary"
+        >
+          + Add Another Billing Address
+        </Button>
+
+        <Gap />
+
         <div className={styles.info}>
           <CgInfo style={{ minWidth: "18px" }} />
           <p className={styles.privacyPolicyText}>
             By clicking the button, you confirm that you have read and agree to
             Ecoenergy
-            <a
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setOpen(!isOpen);
-              }}
-            >
+            <a style={{ cursor: "pointer" }} onClick={() => setOpen(!isOpen)}>
               {" "}
               Terms and Conditions
             </a>{" "}
-            and{" "}
-            <a
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setOpen(!isOpen);
-              }}
-            >
+            and
+            <a style={{ cursor: "pointer" }} onClick={() => setOpen(!isOpen)}>
+              {" "}
               Privacy Policy.
             </a>
           </p>
         </div>
+
         <div className={styles.buttonLine}>
-          {/* <button className={styles.cancel} type='button' onClick={onBack}>Back</button> */}
-          <button onClick={onRegistrationSuccess}>Skip</button>
+          <Button
+            variant="text"
+            color="default"
+            onClick={onRegistrationSuccess}
+          >
+            Skip
+          </Button>
           <NextButton onClick={null} />
-          {/* <RegistationSuccessModal/> */}
         </div>
       </form>
     </>
   );
 };
+
 export default PaymentForm;

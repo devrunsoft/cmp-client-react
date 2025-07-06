@@ -1,5 +1,11 @@
 import { String_Const } from "common/constants/string_constants";
-import { CusomerError, Either, left, right, UnAuthorize } from "common/core/either";
+import {
+  CusomerError,
+  Either,
+  left,
+  right,
+  UnAuthorize,
+} from "common/core/either";
 import { BaseResponse } from "common/core/response/api_response";
 import { AddServiceAppointmentCommand } from "common/domain/command/service_appointment/add_service_appointment_command";
 import { SignCompanyContractCommand } from "common/domain/command/sign_contract_command";
@@ -12,23 +18,26 @@ import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 import { Api_URL } from "core/src/utils/url";
 import { header } from "core/src/utils/auth";
 
-export async function CreateInvoiceApi(command: AddServiceAppointmentCommand[]): Promise<Either<Error, InvoiceEntity>> {
-    try {
-        var h = header();
-        const response = await fetch(`${Api_URL}/Invoice`, {
-            method: 'POST',
-            headers: h,
-            body: JSON.stringify(command)
-        });
-        const data = await response.json();
-        const result: BaseResponse<InvoiceEntity> = data;
+export async function CreateInvoiceApi(
+  command: AddServiceAppointmentCommand[],
+  billingId: number
+): Promise<Either<Error, InvoiceEntity>> {
+  try {
+    var h = header();
+    const response = await fetch(`${Api_URL}/Invoice/${billingId}`, {
+      method: "POST",
+      headers: h,
+      body: JSON.stringify(command),
+    });
+    const data = await response.json();
+    const result: BaseResponse<InvoiceEntity> = data;
 
-        if (result.Success) {
-            return right(result.Data);
-        } else {
-            return left(new CusomerError(result.Message));
-        }
-    } catch (error) {
-        return left(new Error(String_Const.Error));
+    if (result.Success) {
+      return right(result.Data);
+    } else {
+      return left(new CusomerError(result.Message));
     }
+  } catch (error) {
+    return left(new Error(String_Const.Error));
+  }
 }

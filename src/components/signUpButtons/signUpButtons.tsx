@@ -194,7 +194,7 @@ export function ButtonsForm({
           </>
         }
         variant={status === "cancel" ? "outlined" : "contained"}
-        sx={{ mt: 3 }}
+        // sx={{ mt: 3 }}
         onClick={onClick}
         isActive={isActive ?? true}
       >

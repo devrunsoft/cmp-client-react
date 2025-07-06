@@ -1,62 +1,51 @@
-
 .dropDownContainer {
-    width: 100%;
-    margin: 0 auto;
     position: relative;
-}
-
-.dropDownHeader {
-    margin-bottom: 0.8em;
-    padding: 0.4em 1em 0.4em 1em;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    color: #000;
-    background: #ffffff;
-    cursor: pointer;
+    width: 250px; /* or auto/full-width if needed */
+  }
+  
+  .dropDownHeader {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    border-radius: 10px;
-
-}
-
-.dropDownHeader p{
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    color: rgba(102, 102, 102, 1);
-}
-
-.dropDownListContainer {
-    width: 100%;
-    position: absolute;
-}
-
-.dropDownList {
-    padding: 0;
-    margin: 0;
-    padding: 12px;
-    background: #ffffff;
-    border: 1px solid rgba(228, 228, 228, 1);
-    box-sizing: border-box;
-    color: #000;
-    font-size: 1.3rem;
-    font-weight: 500;
-    border-radius: 10px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.listItem {
-    list-style: none;
-    padding: 4px 8px;
-    border-radius: 5px;
+    align-items: center;
+    background: white;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 15px;
-}
-
-.listItem:hover{
-    background: rgba(245, 245, 245, 1);
-    
-}  
-.dropDownHeaderText{
-
-}
+  }
+  
+  .dropDownHeaderText {
+    font-weight: 500;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .dropDownListContainer {
+    position: absolute;
+    width: 100%; /* ✅ Ensures it matches the header */
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    margin-top: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .dropDownList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .listItem {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .listItem:hover {
+    background-color: #f5f5f5;
+  }
+  

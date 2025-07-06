@@ -60,20 +60,10 @@ const TableDefinition: ColumnDef<BaseServiceAppointmentEntity>[] = [
       const status = info.getValue() as ServiceStatus;
       return (
         <Box
+          className="Status"
           sx={{
-            top: 10,
-            right: 10,
             backgroundColor: getStatusStyleFromString(status).background,
             color: getStatusStyleFromString(status).color,
-            fontSize: "12px",
-            fontWeight: "bold",
-            padding: "4px 10px",
-            textAlign: "center",
-            borderRadius: "10px",
-            textTransform: "capitalize",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
           {ServiceStatusTitles[status]}

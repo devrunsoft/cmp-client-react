@@ -21,15 +21,41 @@ import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import ShowInvoice from "components/Invoice/invoice_modal";
 import TitleBack from "components/title/title_back";
 import Gap from "uikit/src/Gap";
+import { mapBillingEntityToNameAndValue } from "common/domain/entity/infromation_entity";
+import { NameAndValue } from "core/src/types/nameAndValue";
+import { useGetInformation } from "data/repository/billingInfromation";
+import { AppDropDown } from "uikit/src/DropDown";
+import { Box } from "@mui/material";
+import { AppTitle } from "uikit/src/TitleBack";
+import { ArrowBack } from "@mui/icons-material";
 
 const ShoppingCard = () => {
   const { selectedAddresses } = useAddress();
   var { itemsCard, refreshCard } = useCard();
   const { setLoading } = useLoading();
   const navigate = useNavigate();
+  const request = useGetInformation();
+  const [billingList, setBillingList] = useState<NameAndValue[]>([]);
+  const [selectedBilling, setselectedBilling] = useState<number | null>(
+    null
+  );
+  const loadData = () => {
+    request.call({
+      onSuccess(result) {
+        if (result.data.billingInformation) {
+          setBillingList(
+            result.data.billingInformation.map((e) =>
+              mapBillingEntityToNameAndValue(e)
+            )
+          );
+        }
+      },
+    });
+  };
 
   useEffect(() => {
     refreshCard();
+    loadData();
   }, []);
 
   async function creatInvoice() {
@@ -47,7 +73,7 @@ const ShoppingCard = () => {
         );
       });
 
-      var result = await CreateInvoiceApi(commands);
+      var result = await CreateInvoiceApi(commands, selectedBilling!);
       await result.fold(
         (error) => {
           if (error.message) toast.error(error.message);
@@ -79,13 +105,20 @@ const ShoppingCard = () => {
       setLoading(false);
     }
   }
-
+  function handleChange(status: number) {
+    setselectedBilling(status);
+  }
   return (
     <div className="pagecontent">
-      <TitleBack
-        title={"Shopping Cart"}
-        icon={"/assets/invoices_and_payments_logo.svg"}
-      />
+      <Box className="flex justify-between">
+        <AppTitle title={"Shopping Cart"} icon={<></>} />
+        <AppDropDown
+          hint="Please select an billing address"
+          handleChange={handleChange}
+          options={billingList}
+          selected={selectedBilling}
+        />
+      </Box>
       {itemsCard.length > 0 ? (
         <div className={styles.cardContainer}>
           <div className={styles.itemsContainer}>
@@ -116,7 +149,6 @@ const ShoppingCard = () => {
           <div className={styles.buttonContainer}>
             <ButtonsForm
               // hasCancel={false}
-              isActive={true}
               nameOfButton={"Add another service"}
               icon={<MdAddShoppingCart size={24} />}
               status={""}
@@ -131,7 +163,7 @@ const ShoppingCard = () => {
               }}
               children={
                 <ButtonsForm
-                  isActive={true}
+                  isActive={!!selectedBilling}
                   hasCancel={false}
                   nameOfButton={"Submit"}
                   status={""}

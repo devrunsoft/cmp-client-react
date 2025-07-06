@@ -214,7 +214,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
       FrequencyType: selectedValue!.Name!,
       ServiceKind: 1,
       LocationCompanyIds: adresses.map((e) => e.Id),
-      Qty: qty,
+      Qty: qty == 0 ? 1 : qty,
       ProductId: services.Id!,
       DayOfWeek: dayOfWeek,
       FromHour: convertTimeStringToMinutes(fromTime ?? ""),

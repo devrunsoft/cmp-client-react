@@ -472,3 +472,15 @@ input[type="number"] {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+.Status {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 10px;
+  text-align: center;
+  border-radius: 10px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

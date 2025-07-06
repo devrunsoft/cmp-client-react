@@ -22,8 +22,12 @@ import {
   DataFetchingWrapper,
 } from "cmp-core/src/DataFetchingWrapper";
 import { useGetAllServiceApi } from "data/repository/serviceV2";
-import { useTerminateContract } from "data/repository/invoice";
-import ConfirmDialog from "uikit/src/Dialog/ConfirmDialog";
+
+import { useRequestTerminate } from "data/repository/requestTerminate";
+import { RequestTerminateCommand } from "common/domain/command/requestTerminateCommand";
+
+import TerminateContractDialog from "cmp-core/src/ui/dialog/terminateContract";
+import Empty from "cmp-core/src/Empty";
 
 export default function Services() {
   const { selectedAddresses } = useAddress();
@@ -35,7 +39,7 @@ export default function Services() {
   const [itemsProduct, setItemsProduct] = useState<ServiceEntity[]>([]);
   const navigate = useNavigate();
   var request = useGetAllServiceAppointmentApi(selectedAddresses.Id);
-  var requestTerminate = useTerminateContract();
+  var requestTerminate = useRequestTerminate();
   var requestService = useGetAllServiceApi();
   const [configDelete, setConfirmDelete] = useState<string | null>(null);
 
@@ -58,11 +62,10 @@ export default function Services() {
       },
     });
   }
-  async function TerminateContract(InvoiceNumber: string) {
+
+  async function TerminateContract(command: RequestTerminateCommand) {
     requestTerminate.call({
-      data: {
-        InvoiceNumber,
-      },
+      data: command,
       onSuccess: (res) => {
         setConfirmDelete(null);
         fetchAppointmentService();
@@ -151,6 +154,15 @@ export default function Services() {
     return (
       appointmentservices.find((e) => e.ServiceId == service.Id)
         ?.InvoiceNumber ?? ""
+    );
+  }
+
+  if (selectedAddresses.Id == 0) {
+    return (
+      <Empty
+        title="Select an address to continue with service registration."
+        mt="60px"
+      />
     );
   }
 
@@ -377,14 +389,19 @@ export default function Services() {
           </Link>
         </div>
       </div>
-      <ConfirmDialog
+      <TerminateContractDialog
         onClose={() => setConfirmDelete(null)}
-        onConfirm={() => {
-          TerminateContract(configDelete!);
+        onConfirm={(reason, comment) => {
+          var command: RequestTerminateCommand = {
+            InvoiceNumber: configDelete!,
+            Message: comment,
+            Status: reason,
+          };
+          TerminateContract(command);
         }}
         open={configDelete != null}
-        title="Delete"
-        body="Are you sure you want to terminate this contract?"
+        title="Request"
+        body=""
         loading={requestTerminate.loading}
       />
     </DataFetchingWrapper>

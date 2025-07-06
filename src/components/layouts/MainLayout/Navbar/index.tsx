@@ -8,15 +8,14 @@ import { getToken, logout } from "core/src/utils/auth";
 import { APPBAR_HEIGHT } from "cmp-core/src/Contants/const";
 import { useTheme, useMediaQuery, IconButton, Link } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCardIcon from "views/ShoppingCard/shopping_card_icon";
 import styles from "./sideBar.module.css";
 import { APP_ROUTES } from "../../../../routes/app_route";
-import { IoLogInOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import { Api_URL, Site_URL } from "core/src/utils/url";
-import { ShoppingBasket } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import LocationSelect from "components/locationSelect/locationSelect";
+import ShoppingCardIcon from "views/ShoppingCard/shopping_card_icon";
+
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -63,56 +62,68 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         sx={{ height: APPBAR_HEIGHT + "px" }}
         className="flex items-center justify-between"
       >
-<Box
-  sx={{
-    display: "flex",
-    flexDirection: isSmallScreen ? "column" : "row",
-    gap: isSmallScreen ? "4px" : "8px",
-    alignItems: isSmallScreen ? "flex-start" : "center",
-  }}
->
-  <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-    <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
-    <Box className="flex items-center" flexDirection="column" alignItems="flex-start">
-      <Box className="flex items-center">
-        {isSmallScreen && onMenuClick && (
-          <IconButton onClick={onMenuClick} sx={{ mr: 2, color: "#fff" }}>
-            <MenuIcon />
-          </IconButton>
-        )}
-        <Link href="/" className="flex">
-          <Typography
-            color="text.tooltip"
-            variant="titleLg"
-            sx={{ mr: "24px" }}
-          >
-            CLIENT PORTAL
-          </Typography>
-        </Link>
-      </Box>
-
-      {!isSmallScreen && (
-        <Typography
+        <Box
           sx={{
-            fontSize: "13px",
-            lineHeight: "15.6px",
-            letterSpacing: "0.08em",
-            textAlign: "left",
-            color: "rgba(255, 255, 255, 0.6)",
-            mt: "4px",
+            display: "flex",
+            flexDirection: isSmallScreen ? "column" : "row",
+            gap: isSmallScreen ? "4px" : "8px",
+            alignItems: isSmallScreen ? "flex-start" : "center",
           }}
         >
-          {email}
-        </Typography>
-      )}
-    </Box>
-  </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
+            <Box
+              className="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+            >
+              <Box className="flex items-center">
+                {isSmallScreen && onMenuClick && (
+                  <IconButton
+                    onClick={onMenuClick}
+                    sx={{ mr: 2, color: "#fff" }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )}
+                <Link href="/" className="flex">
+                  <Typography
+                    color="text.tooltip"
+                    variant="titleLg"
+                    sx={{ mr: "24px" }}
+                  >
+                    CLIENT PORTAL
+                  </Typography>
+                </Link>
+              </Box>
 
-  {/* Move this below logo/text on small screens */}
-  <Box sx={{ width: isSmallScreen ? "100%" : "auto", mt: isSmallScreen ? 1 : 0 }}>
-    <LocationSelect />
-  </Box>
-</Box>
+              {!isSmallScreen && (
+                <Typography
+                  sx={{
+                    fontSize: "13px",
+                    lineHeight: "15.6px",
+                    letterSpacing: "0.08em",
+                    textAlign: "left",
+                    color: "rgba(255, 255, 255, 0.6)",
+                    mt: "4px",
+                  }}
+                >
+                  {email}
+                </Typography>
+              )}
+            </Box>
+          </Box>
+
+          {/* Move this below logo/text on small screens */}
+          <Box
+            sx={{
+              width: isSmallScreen ? "100%" : "auto",
+              mt: isSmallScreen ? 1 : 0,
+            }}
+          >
+            <LocationSelect />
+          </Box>
+        </Box>
 
         <div className={styles.navigSec}>
           <Box
@@ -120,7 +131,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
               navigate(APP_ROUTES.ShoppingCard);
             }}
           >
-            <ShoppingCart sx={{ color: "white" }} />
+            <ShoppingCardIcon />
           </Box>
 
           {/* <button className={styles.notifiButton}>

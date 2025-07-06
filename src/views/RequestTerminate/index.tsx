@@ -1,23 +1,29 @@
-import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import ApiTable from "cmp-core/src/Datatable/ApiTable";
-import getTableDefinition from "./TableDefinition";
 import useFilterData from "hooks/useFilterData";
 import { useEffect, useState } from "react";
+import {
+  FILTER_INIT,
+  PaginatedDataType,
+  PaginationSearchParamsType,
+} from "core/src/types/api";
+import { Box } from "@mui/material";
+import TableDefinition from "./TableDefinition";
 
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+// import ManifestWindow from "./Window";
+import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import { GridFilter } from "uikit/src/GridFilter";
-import { useCreatedInvoiceGetAll } from "data/repository/invoice";
-import { InvoiceEntity } from "cmp-core/src/entity/InvoiceEntity";
-import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
-import ShowInvoice from "components/Invoice/invoice_modal";
-import { InvoiceCreateStatusOptions } from "common/domain/enum/invoice_enum";
-import { useAppSelector } from "state/index";
+import { RequestTerminateEntity } from "cmp-core/src/entity/requestTerminate";
+import {
+  RequestTerminateEnum,
+  RequestTerminateOptions,
+} from "cmp-core/src/Enum/requestTerminateStatus";
+import { useRequestTerminateGetAll } from "data/repository/requestTerminate";
 
 export default function Invoices() {
-  const [invoiceModel, setStatusDialog] = useState<InvoiceEntity | null>(null);
-  const [status, setstatus] = useState<number | null>(null);
-  const refreshAddress = useAppSelector((state) => state.addressSlice);
-  const request = useCreatedInvoiceGetAll(refreshAddress.Id ?? 0);
+  const request = useRequestTerminateGetAll();
+  const [statusDialog, setStatusDialog] =
+    useState<RequestTerminateEntity | null>(null);
+  const [status, setstatus] = useState<RequestTerminateEnum | null>(null);
 
   const loadData = (
     filter: PaginationSearchParamsType,
@@ -43,24 +49,17 @@ export default function Invoices() {
     }
   }, [status]);
 
-  useEffect(() => {
-    refresh();
-  }, [refreshAddress.Id]);
-
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
-      autoFetch: false,
     });
 
-  const closeStatusDialog = () => setStatusDialog(null);
-
-  function open(data: InvoiceEntity) {
+  function open(data: RequestTerminateEntity) {
     setStatusDialog(data);
   }
 
-  function handleChange(status: number) {
+  function handleChange(status: RequestTerminateEnum) {
     setstatus(status);
   }
 
@@ -68,10 +67,10 @@ export default function Invoices() {
     <>
       <Box className="mainPadding">
         <GridDataFetchingWrapper retry={refresh} request={request}>
-          <ApiTable<InvoiceEntity>
-            title="Invoices"
+          <ApiTable<RequestTerminateEntity>
+            title="Terminate Request"
             removeId={true}
-            columnDef={getTableDefinition()}
+            columnDef={TableDefinition}
             data={request.data?.data?.elements || []}
             loadData={(v) =>
               setFilter({ allField: (v?.filterAll as string) || "" })
@@ -86,26 +85,22 @@ export default function Invoices() {
             endChildren={[
               <GridFilter
                 handleChange={handleChange}
-                options={InvoiceCreateStatusOptions}
+                options={RequestTerminateOptions}
                 selected={status}
               />,
             ]}
           ></ApiTable>
         </GridDataFetchingWrapper>
-        {/* </Paper> */}
-
-        {invoiceModel && (
-          <ShowInvoice
-            open={!!invoiceModel}
+        {/* {statusDialog && (
+          <ManifestWindow
+            open={!!statusDialog}
             onClose={() => {
-              closeStatusDialog();
+              setStatusDialog(null);
             }}
-            refresh={() => {
-              refresh();
-            }}
-            model={invoiceModel}
+            selected={statusDialog!}
+            refresh={() => refresh()}
           />
-        )}
+        )} */}
       </Box>
     </>
   );

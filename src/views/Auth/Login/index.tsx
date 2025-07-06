@@ -67,29 +67,30 @@ const LoginForm = () => {
     switch (status) {
       case "NotRegistered":
         navigate(`${APP_ROUTES.SignUpDetail}/1`);
-        toast.error("You are not registered");
+        toast.warning("You are not registered");
         break;
       case "ProfessionalInformation":
-        navigate(`${APP_ROUTES.SignUpDetail}/2`);
-        toast.error("Please complete your registration!");
+        navigate(`${APP_ROUTES.SignUpDetail}/3`);
+        toast.warning("Please complete your registration!");
         break;
       case "DocumentSubmission":
-        navigate(`${APP_ROUTES.SignUpDetail}/3`);
-        toast.error("Please complete your registration!");
+        navigate(`${APP_ROUTES.SignUpDetail}/4`);
+        toast.warning("Please complete your registration!");
         break;
       case "BillingDetails":
-        navigate(`${APP_ROUTES.SignUpDetail}/4`);
-        toast.error("Please complete your registration!");
+        navigate(`${APP_ROUTES.SignUpDetail}/2`);
+        toast.warning("Please complete your registration!");
         break;
       case "NotActivate":
         navigate(APP_ROUTES.Activation);
-        toast.error("Check your email for the activation link!");
+        toast.warning("Check your email for the activation link!");
         break;
       case "Registered":
         navigate(APP_ROUTES.Dashboard);
         break;
     }
   };
+  
   let iconSize = 24;
   return (
     <Box className={styles.container}>

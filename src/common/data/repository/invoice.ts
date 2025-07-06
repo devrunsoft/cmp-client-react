@@ -2,7 +2,7 @@ import useApi from "hooks/useApi";
 import { UseApiOutputType } from "core/src/hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { Api_URL } from "core/src/utils/url";
-import { InvoiceEntity } from "common/domain/entity/invoice_entity";
+import { InvoiceEntity } from "cmp-core/src/entity/InvoiceEntity";
 import {
   PaginatedDataType,
   PaginationSearchParamsType,

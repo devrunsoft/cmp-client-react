@@ -30,6 +30,7 @@ const ForgotPassword = Loadable(lazy(() => import("views/ForgotPassword")));
 // );
 
 // const SignUpDetail = Loadable(lazy(() => import("views/Auth/SignUpDetail")));
+const ActivationToken = Loadable(lazy(() => import("views/ActivationToken")));
 
 const ProtectLoginWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getToken();
@@ -69,6 +70,10 @@ const MainRoutes = {
     {
       path: getPath(LinkEnum.ForgotPassword),
       element: <ForgotPassword />,
+    },
+    {
+      path: getPath(LinkEnum.ActivationToken),
+      element: <ActivationToken />,
     },
   ],
 };

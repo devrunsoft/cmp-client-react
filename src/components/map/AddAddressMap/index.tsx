@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import React from "react";
 import { FiTrash } from "react-icons/fi";
-import { LiaEdit } from "react-icons/lia";
+
 import { Loader } from "@googlemaps/js-api-loader";
 import { GoogleMap, OverlayView } from "@react-google-maps/api";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -13,37 +13,30 @@ import styles from "./addAdressMap.module.css";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { IoClose } from "react-icons/io5";
-import { LocationCompanyEntity } from "common/domain/entity/location_company_entity";
-import { OtherCompanyLocationCommand } from "common/domain/command/other_company_location_command";
-import {
-  CapacityEntity,
-  mapCapacityToNameAndValue,
-} from "common/domain/entity/capacity_entity";
+
 import { useLoading } from "components/loading/loading_context";
-import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
+
 import { toast } from "react-toastify";
-import { getAllCapacity } from "data/api/capacity/get_all";
-import { addOtherCompanyLocation } from "data/api/register/otherCompanyLocation/add";
-import { editOtherCompanyLocation } from "data/api/register/otherCompanyLocation/edit";
+
 import { getAddressFromCoordsApi } from "data/api/map/reverse_id";
-import { DropDown } from "components/dropDown";
-import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
-import { useNavigate } from "react-router-dom";
-import { useAddress } from "common/context/address_context";
-import { getOperationalAddress } from "data/api/dashboard/operationalAddress/get_by_id";
-import { getOtherCompanyLocation } from "data/api/register/otherCompanyLocation/get";
-import { deleteOperationalAddress } from "data/api/dashboard/operationalAddress/delete";
-import { deleteOtherAddressApi } from "data/api/dashboard/other_address/delete";
-import { mapLocationCompanyEntityToCommand } from "common/domain/mapper/location_comapny_mapper";
-import AddPointMap, { mcenter } from "../addPointMap";
-import { NextButton } from "components/button/next/next";
-import DeleteButton from "components/button/delete_button";
+
+import {
+  mapEntityToScadule,
+  OperationalAddressEntity,
+} from "common/domain/entity/operational_address_entity";
+
+import { mcenter } from "../addPointMap";
+
 import { OperationalAddressCommand } from "common/domain/command/operational_address_command";
 import { addOperationalAddress } from "data/api/register/operationalAddress/add";
 import { editOperationalAddress } from "data/api/register/operationalAddress/edit";
 import { SearchBox } from "cmp-core/src/Component/SearchBox";
 import CustomSelector from "components/dropDown/customSelect";
 import { GOOGLE_MAPS_API_KEY } from "core/src/utils/url";
+import WeeklyTimePicker from "uikit/src/WeeklyTimePicker";
+import { Schedule } from "uikit/src/WeeklyTimePicker";
+import Gap from "uikit/src/Gap";
+import { mapScaduleToCommand } from "common/domain/command/location_datetime_command";
 
 const libraries = ["places"];
 const containerStyle = {
@@ -133,6 +126,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
         contactFirstName: "",
         contactLastName: "",
       });
+      setSchedules([]);
     } else {
       reset({
         name: model?.Name,
@@ -147,6 +141,9 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
         contactLastName: model?.LastName,
       });
       setSelectedValue(options[model != null ? model?.BusinessId! - 1 : 0]);
+      setSchedules(
+        model?.LocationDateTimes?.map((x) => mapEntityToScadule(x)) ?? []
+      );
       if (model == null) {
         setCurrentLocation();
       }
@@ -214,7 +211,8 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
         data.contactFirstName,
         data.contactLastName,
         mapCenter.lat,
-        mapCenter.lng
+        mapCenter.lng,
+        schedules.map((x) => mapScaduleToCommand(x))
       );
       var result = await addOperationalAddress(operationalAddressCommand);
       result.fold(
@@ -246,7 +244,8 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
         data.contactFirstName,
         data.contactLastName,
         mapCenter.lat,
-        mapCenter.lng
+        mapCenter.lng,
+        schedules.map((x) => mapScaduleToCommand(x))
       );
 
       var result = await editOperationalAddress(
@@ -303,6 +302,21 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
   const sanitizePhoneNumber = (value) => {
     return value.replace(/\D/g, ""); // Removes all non-digit characters
   };
+  const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+
+  if (!isLoaded) {
+    return <div>Loading Google Maps...</div>;
+  }
 
   return (
     <>
@@ -328,7 +342,15 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
         </div>
         <div className={styles.mapSection}>
           <SearchBox
-            onSelectAddress={(address, latitude, longitude, city, state, county, bounds) => {
+            onSelectAddress={(
+              address,
+              latitude,
+              longitude,
+              city,
+              state,
+              county,
+              bounds
+            ) => {
               setValue("address", address);
               setValue("latitude", latitude);
               setValue("longitude", longitude);
@@ -388,7 +410,15 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
             >
               <SearchBox
                 isForm={true}
-                onSelectAddress={(address, latitude, longitude, city, state, county, bounds) => {
+                onSelectAddress={(
+                  address,
+                  latitude,
+                  longitude,
+                  city,
+                  state,
+                  county,
+                  bounds
+                ) => {
                   setValue("address", address);
                   setValue("latitude", latitude);
                   setValue("longitude", longitude);
@@ -419,6 +449,29 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
             placeholder="County"
             {...register("county", { required: true })}
           />
+
+          <label className={styles.smallText}>Type of Business:</label>
+          <div className={errors.select && styles.inputError}>
+            <Controller
+              name="select"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomSelector
+                  options={options}
+                  select={"specify whether"}
+                  initialValue={selectedValue ?? ""}
+                  selectValue={(value) => {
+                    setSelectedValue(value);
+                    field.onChange(value);
+                  }}
+                />
+              )}
+            />
+          </div>
+          <Gap />
+          <WeeklyTimePicker schedules={schedules} setSchedules={setSchedules} />
+          <Gap />
           <label className={styles.smallText}>Location Phone:</label>
           <Controller
             name="phoneNumber"
@@ -448,25 +501,6 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
               />
             )}
           />
-          <label className={styles.smallText}>Type of Business:</label>
-          <div className={errors.select && styles.inputError}>
-            <Controller
-              name="select"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomSelector
-                  options={options}
-                  select={"specify whether"}
-                  initialValue={selectedValue ?? ""}
-                  selectValue={(value) => {
-                    setSelectedValue(value);
-                    field.onChange(value);
-                  }}
-                />
-              )}
-            />
-          </div>
           <label className={styles.smallText}>Location Contact Person: </label>
           <div className={styles.personInput}>
             <input
@@ -486,6 +520,7 @@ const addAdressMap: React.FC<AddPointMapProps> = ({
               {...register("contactLastName", { required: true })}
             />
           </div>
+
           <div className={styles.submitButtons}>
             <button className={styles.cancel} type="button" onClick={onCancel}>
               Cancel

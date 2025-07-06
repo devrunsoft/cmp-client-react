@@ -19,6 +19,7 @@ import { NextButton } from "components/button/next/next";
 import AddPointMap, { mcenter } from "components/map/addPointMap";
 import AddAddressMap from "components/map/AddAddressMap";
 import Gap from "uikit/src/Gap";
+import SignUpStep from "uikit/src/Stepper";
 
 export default function OperationalAddress({
   setIndex,
@@ -166,15 +167,26 @@ export default function OperationalAddress({
   };
   const info = ["random", "infom"];
   const onSubmit = () => {
-    setIndex!(3);
+    setIndex!(4);
   };
 
   const operationalAddressCenter = operationalAddress
-    ? { lat: operationalAddress.Lat??mcenter.lat, lng: operationalAddress.Long??mcenter.lng, }
+    ? {
+        lat: operationalAddress.Lat ?? mcenter.lat,
+        lng: operationalAddress.Long ?? mcenter.lng,
+      }
     : center;
 
   return (
     <>
+      <SignUpStep
+        step={1}
+        count={3}
+        onTap={(s) => {
+          setIndex!(s + 2);
+        }}
+      />
+
       <Title title={"Professional Information"} />
       <div className={styles.form}>
         <div className={styles.formSection}>
@@ -210,8 +222,8 @@ export default function OperationalAddress({
                 isOpen={modalIsOpen.operational}
                 onClose={() => closeModal("operational")}
                 center={{
-                  lat: operationalAddress.Lat??mcenter.lat,
-                  lng: operationalAddress.Long??mcenter.lng,
+                  lat: operationalAddress.Lat ?? mcenter.lat,
+                  lng: operationalAddress.Long ?? mcenter.lng,
                 }}
                 model={operationalAddress}
               />

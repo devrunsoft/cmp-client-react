@@ -9,7 +9,7 @@ import { PiIdentificationBadge, PiInvoice } from "react-icons/pi";
 import { Box } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { ProviderEntity } from "cmp-core/entity/ProviderEntity";
-import { InvoiceEntity } from "common/domain/entity/invoice_entity";
+import { InvoiceEntity } from "cmp-core/src/entity/InvoiceEntity";
 import { dateOnlyFormat } from "cmp-core/src/utils/date";
 import {
   InvoiceStatus,

@@ -2,6 +2,7 @@ import React from "react";
 
 import { Home, Inbox, LucideProps } from "lucide-react";
 import { APP_ROUTES } from "../../routes/app_route";
+import { PiTerminalWindowLight } from "react-icons/pi";
 
 export enum LinkEnum {
   Home = 1,
@@ -21,6 +22,9 @@ export enum LinkEnum {
   Activation = 15,
   ForgotPassword = 16,
   ClientServiceLog = 17,
+  RequestTerminate = 18,
+  ActivationToken = 19,
+  ClientManifest = 20,
 }
 
 export type LinkInfo = {
@@ -120,6 +124,22 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
     icon: "/assets/images/white_services_icon.svg",
     href: `/service-log`,
   },
+  [LinkEnum.RequestTerminate]: {
+    title: "Terminate Request",
+    icon: PiTerminalWindowLight,
+    href: `/request-terminate`,
+  },
+  [LinkEnum.ActivationToken]: {
+    title: "ActivationToken",
+    icon: PiTerminalWindowLight,
+    href: `/activationToken/:token`,
+  },
+  [LinkEnum.ClientManifest]: {
+    title: "Manifests",
+    icon: PiTerminalWindowLight,
+    href: "/client-manifest/:clientId/:oprAddress",
+    countKey: "Manifests",
+  },
 };
 
 export type SidebarGroupType = { key: LinkEnum; children: LinkEnum[] };
@@ -129,8 +149,10 @@ export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Services, children: [] },
   { key: LinkEnum.Requestservice, children: [] },
   { key: LinkEnum.invoices, children: [] },
+  { key: LinkEnum.ClientManifest, children: [] },
   { key: LinkEnum.Contract, children: [] },
   { key: LinkEnum.ClientServiceLog, children: [] },
+  { key: LinkEnum.RequestTerminate, children: [] },
   { key: LinkEnum.Inbox, children: [] },
   { key: LinkEnum.Statistics, children: [] },
   { key: LinkEnum.Help, children: [] },

@@ -11,7 +11,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import useRoleAccess from "hooks/useRoleAccess";
 import { GridFilter } from "uikit/src/GridFilter";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
-import { InvoiceEntity } from "common/domain/entity/invoice_entity";
+import { InvoiceEntity } from "cmp-core/src/entity/InvoiceEntity";
 import { InvoiceStatus } from "common/domain/enum/invoice_enum";
 import { useAppSelector } from "state/index";
 import ConfirmDialog from "uikit/src/Dialog/ConfirmDialog";
@@ -46,14 +46,8 @@ export default function Requests() {
   };
 
   useEffect(() => {
-    if (status !== null) {
-      refresh();
-    }
-  }, [status]);
-
-  useEffect(() => {
     refresh();
-  }, [refreshAddress.Id]);
+  }, [status, refreshAddress.Id]);
 
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({

@@ -13,7 +13,7 @@ import {
   InvoiceStatusDescriptions,
   InvoiceStatusStyles,
 } from "common/domain/enum/invoice_enum";
-import { InvoiceEntity } from "common/domain/entity/invoice_entity";
+import { InvoiceEntity } from "cmp-core/src/entity/InvoiceEntity";
 
 // type StatusCallback = (Id: number) => React.ReactNode;
 

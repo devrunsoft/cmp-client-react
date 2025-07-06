@@ -1,7 +1,7 @@
 import { String_Const } from "common/constants/string_constants";
 import { CusomerError, Either, left, right, UnAuthorize } from "common/core/either";
 import { BaseResponse } from "common/core/response/api_response";
-import { BillingInfromationCommand } from "common/domain/command/billing_information_command";
+import { BillingInfromationCommand, InfromationCommand } from "common/domain/command/billing_information_command";
 import { AddServiceAppointmentCommand } from "common/domain/command/service_appointment/add_service_appointment_command";
 import { SignCompanyContractCommand } from "common/domain/command/sign_contract_command";
 import { CapacityEntity } from "common/domain/entity/capacity_entity";
@@ -14,7 +14,7 @@ import { Api_URL } from "core/src/utils/url";
 import { header } from "core/src/utils/auth";
 
 
-export async function addBilling(command: BillingInfromationCommand): Promise<Either<Error, BaseResponse<object>>> {
+export async function addBilling(command: InfromationCommand): Promise<Either<Error, BaseResponse<object>>> {
     try {
         var h = header();
         const response = await fetch(`${Api_URL}/BilingInformation`, {

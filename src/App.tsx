@@ -32,7 +32,7 @@ function App() {
                     <Route />
                     {/* <AppVersion /> */}
                     <ToastContainer
-                      position="bottom-center"
+                      position="top-center"
                       autoClose={2000}
                       hideProgressBar={true}
                       newestOnTop={true}
