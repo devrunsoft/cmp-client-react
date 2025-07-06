@@ -20,7 +20,7 @@ export default function Sidebar({
   return (
     <Drawer
       anchor="left"
-      sx={{ zIndex: "0" }}
+      // sx={{ zIndex: "0" }}
       open={open}
       onClose={() => onClose()} // needed for temporary drawer
       variant={isSmallScreen ? "temporary" : "permanent"}

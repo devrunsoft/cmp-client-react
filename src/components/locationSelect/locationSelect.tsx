@@ -5,6 +5,7 @@ import { APP_ROUTES } from "../../routes/app_route";
 import { useAppDispatch, useAppSelector } from "state/index";
 import { setAddress } from "state/slice/address";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
+import Gap from "uikit/src/Gap";
 
 export default function LocationSelect() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function LocationSelect() {
           </p>
           {/* <p>{selectedAddresses?.Address}</p> */}
         </div>
+        <Gap />
         <svg
           width="8"
           height="7"

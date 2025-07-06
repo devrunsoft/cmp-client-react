@@ -15,6 +15,7 @@ import { Api_URL, Site_URL } from "core/src/utils/url";
 import { useNavigate } from "react-router-dom";
 import LocationSelect from "components/locationSelect/locationSelect";
 import ShoppingCardIcon from "views/ShoppingCard/shopping_card_icon";
+import Gap from "uikit/src/Gap";
 
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
@@ -65,13 +66,15 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
         <Box
           sx={{
             display: "flex",
-            flexDirection: isSmallScreen ? "column" : "row",
+            flexDirection: "row",
             gap: isSmallScreen ? "4px" : "8px",
             alignItems: isSmallScreen ? "flex-start" : "center",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
+            {!isSmallScreen && (
+              <img src={`${Api_URL}/Common/Logo`} width={40} height={40} />
+            )}
             <Box
               className="flex"
               flexDirection="column"
@@ -86,15 +89,17 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
                     <MenuIcon />
                   </IconButton>
                 )}
-                <Link href="/" className="flex">
-                  <Typography
-                    color="text.tooltip"
-                    variant="titleLg"
-                    sx={{ mr: "24px" }}
-                  >
-                    CLIENT PORTAL
-                  </Typography>
-                </Link>
+                {!isSmallScreen && (
+                  <Link href="/" className="flex">
+                    <Typography
+                      color="text.tooltip"
+                      variant="titleLg"
+                      sx={{ mr: "24px" }}
+                    >
+                      CLIENT PORTAL
+                    </Typography>
+                  </Link>
+                )}
               </Box>
 
               {!isSmallScreen && (
@@ -123,6 +128,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           >
             <LocationSelect />
           </Box>
+          <Gap />
         </Box>
 
         <div className={styles.navigSec}>
@@ -133,15 +139,6 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
           >
             <ShoppingCardIcon />
           </Box>
-
-          {/* <button className={styles.notifiButton}>
-            <img
-              src="/assets/heroicons_bell.svg"
-              alt="notifications"
-              width={"24"}
-              height={"24"}
-            />
-          </button> */}
 
           <Link href={`${APP_ROUTES.EditProfile}`}>
             {profile == null ? (

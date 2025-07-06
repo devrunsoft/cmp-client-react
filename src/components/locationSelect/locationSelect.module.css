@@ -1,6 +1,6 @@
 .dropDownContainer {
     position: relative;
-    width: 250px; /* or auto/full-width if needed */
+    min-width: 250px; /* or auto/full-width if needed */
   }
   
   .dropDownHeader {
