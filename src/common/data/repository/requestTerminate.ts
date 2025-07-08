@@ -16,7 +16,7 @@ enum ApiType {
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
-  [ApiType.getAll]: (_: any) => `ClientRequestTerminate`,
+  [ApiType.getAll]: (quey: any) => `ClientRequestTerminate/${quey}`,
   [ApiType.post]: (quey: any) => `ClientRequestTerminate`,
 };
 
@@ -35,7 +35,9 @@ const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
   return config;
 };
 
-export function useRequestTerminateGetAll(): UseApiOutputType<
+export function useRequestTerminateGetAll(
+  oprAddress: number
+): UseApiOutputType<
   PaginatedDataType<RequestTerminateEntity>,
   PaginationSearchParamsType
 > {
@@ -43,7 +45,7 @@ export function useRequestTerminateGetAll(): UseApiOutputType<
     PaginatedDataType<RequestTerminateEntity>,
     PaginationSearchParamsType
   >({
-    ...getConfig(ApiType.getAll),
+    ...getConfig(ApiType.getAll, oprAddress),
   });
 }
 

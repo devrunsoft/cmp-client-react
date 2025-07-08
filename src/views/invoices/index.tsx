@@ -38,14 +38,8 @@ export default function Invoices() {
   };
 
   useEffect(() => {
-    if (status !== null) {
-      refresh();
-    }
-  }, [status]);
-
-  useEffect(() => {
     refresh();
-  }, [refreshAddress.Id]);
+  }, [refreshAddress.Id, status]);
 
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({

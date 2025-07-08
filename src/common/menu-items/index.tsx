@@ -81,7 +81,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   [LinkEnum.Contract]: {
     title: "Contracts",
     icon: "/assets/images/invoices_icon.svg",
-    href: "/dashboard/contract",
+    href: "/dashboard/:oprAddress/contract",
     countKey: "Contract",
   },
   [LinkEnum.Inbox]: {
@@ -122,12 +122,12 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   [LinkEnum.ClientServiceLog]: {
     title: "Log of services",
     icon: "/assets/images/white_services_icon.svg",
-    href: `/service-log`,
+    href: `dashboard/:oprAddress/service-log`,
   },
   [LinkEnum.RequestTerminate]: {
     title: "Terminate Requests",
     icon: PiTerminalWindowLight,
-    href: `/request-terminate`,
+    href: `/dashboard/:oprAddress/request-terminate`,
   },
   [LinkEnum.ActivationToken]: {
     title: "ActivationToken",
@@ -137,7 +137,7 @@ export const mapLinkInfo: Record<LinkEnum, LinkInfo> = {
   [LinkEnum.ClientManifest]: {
     title: "Manifests",
     icon: PiTerminalWindowLight,
-    href: "/client-manifest/:clientId/:oprAddress",
+    href: "/dashboard/:oprAddress/manifest",
     countKey: "Manifests",
   },
 };
@@ -153,9 +153,9 @@ export const sidebarTree: SidebarGroupType[] = [
   { key: LinkEnum.Contract, children: [] },
   { key: LinkEnum.ClientServiceLog, children: [] },
   { key: LinkEnum.RequestTerminate, children: [] },
-  { key: LinkEnum.Inbox, children: [] },
-  { key: LinkEnum.Statistics, children: [] },
-  { key: LinkEnum.Help, children: [] },
+  // { key: LinkEnum.Inbox, children: [] },
+  // { key: LinkEnum.Statistics, children: [] },
+  // { key: LinkEnum.Help, children: [] },
 ];
 
 export function getSidebarChildrenFromParent(

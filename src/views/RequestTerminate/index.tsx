@@ -18,9 +18,11 @@ import {
   RequestTerminateOptions,
 } from "cmp-core/src/Enum/requestTerminateStatus";
 import { useRequestTerminateGetAll } from "data/repository/requestTerminate";
+import { useAppSelector } from "state/index";
 
 export default function Invoices() {
-  const request = useRequestTerminateGetAll();
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+  const request = useRequestTerminateGetAll(refreshAddress.Id ?? 0);
   const [statusDialog, setStatusDialog] =
     useState<RequestTerminateEntity | null>(null);
   const [status, setstatus] = useState<RequestTerminateEnum | null>(null);
@@ -44,15 +46,14 @@ export default function Invoices() {
   };
 
   useEffect(() => {
-    if (status !== null) {
-      refresh();
-    }
-  }, [status]);
+    refresh();
+  }, [refreshAddress.Id, status]);
 
   const { setFilter, setPage, refresh, page } =
     useFilterData<PaginationSearchParamsType>({
       initData: FILTER_INIT,
       handleFetchFn: loadData,
+      autoFetch: false,
     });
 
   function open(data: RequestTerminateEntity) {

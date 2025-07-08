@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import HasAccess from "uikit/src/HasAccess";
 import Box from "@mui/material/Box";
 import Sidebar from "components/layouts/MainLayout/Sidebar";
@@ -43,7 +43,7 @@ export default function MainLayout() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const request = useGetAllOperationalAddress();
   var dispatch = useAppDispatch();
-
+  const { oprAddress } = useParams();
   useEffect(() => {
     loadData();
   }, []);
@@ -53,7 +53,11 @@ export default function MainLayout() {
       onSuccess: (d) => {
         dispatch(
           setAddress(
-            d.data.length == 0 ? ({} as OperationalAddressEntity) : d.data[0]
+            d.data.length == 0
+              ? ({} as OperationalAddressEntity)
+              : oprAddress
+              ? d.data.find((e) => e.Id === Number(oprAddress))!
+              : d.data[0]
           )
         );
       },
@@ -76,7 +80,11 @@ export default function MainLayout() {
             <AddressProvider
               address={request.data.data}
               defaultAddress={
-                request.data.data.length == 0 ? {} : request.data.data[0]
+                request.data.data.length == 0
+                  ? ({} as OperationalAddressEntity)
+                  : oprAddress
+                  ? request.data.data.find((e) => e.Id === Number(oprAddress))!
+                  : request.data.data[0]
               }
             >
               <AppBar onMenuClick={toggleDrawer} />

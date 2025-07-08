@@ -6,27 +6,45 @@ import { useAppDispatch, useAppSelector } from "state/index";
 import { setAddress } from "state/slice/address";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
 import Gap from "uikit/src/Gap";
+import { useParams } from "react-router-dom";
 
 export default function LocationSelect() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const { addresses, selectedAddresses, setSelectedAddresses } = useAddress();
-
+  const { oprAddress } = useParams();
   const [address, setAddresse] = useState<OperationalAddressEntity[]>([]);
   const toggling = () => setIsOpen(!isOpen);
   var dispatch = useAppDispatch();
 
+  // const location = useLocation();
+  // const navigate = useNavigate();
+
   const onOptionClicked = (value) => () => {
+    selectTheAddress(value);
+    setIsOpen(false);
+
+    const currentPath = location.pathname;
+
+    // Match only routes like /dashboard/{oprAddress}/...
+    const match = currentPath.match(/^\/dashboard\/[^/]+(\/.*)?$/);
+
+    if (match) {
+      // Replace current oprAddress with new one
+      const newPath = currentPath.replace(
+        /^\/dashboard\/[^/]+/,
+        `/dashboard/${value.Id}`
+      );
+
+      window.history.replaceState(null, "", newPath);
+    }
+  };
+
+  const selectTheAddress = (value: OperationalAddressEntity) => {
     setSelectedAddresses(value);
     dispatch(setAddress(value));
-    setIsOpen(false);
-    const newUrl = `${APP_ROUTES.Service.replace(
-      ":oprAddress",
-      value.Id.toString()
-    )}`;
-    window.history.replaceState(null, "", newUrl);
-    console.log(value);
   };
+
   useEffect(() => {
     const hasAll = addresses.some((x) => x.Id === 0);
     var allAddress: OperationalAddressEntity = {
@@ -37,6 +55,9 @@ export default function LocationSelect() {
       LocationDateTimes: [],
     };
     setAddresse([...[allAddress], ...addresses]);
+    if (oprAddress) {
+      selectTheAddress(addresses.find((e) => e.Id === Number(oprAddress))!);
+    }
   }, []);
 
   return (
