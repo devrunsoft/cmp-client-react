@@ -113,7 +113,7 @@ const ShoppingCard = () => {
       <Box className="flex justify-between">
         <AppTitle title={"Shopping Cart"} icon={<></>} />
         <AppDropDown
-          hint="Please select an billing address"
+          hint="Please select a billing address"
           handleChange={handleChange}
           options={billingList}
           selected={selectedBilling}

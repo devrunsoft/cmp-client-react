@@ -283,7 +283,7 @@ export default function Services() {
                               setConfirmDelete(getInvoiceNumber(item))
                             }
                           >
-                            {"terminate the contract"}
+                            {"edit"}
                             {requestTerminate.loading ? (
                               <FaSpinner
                                 size={17}
@@ -306,7 +306,7 @@ export default function Services() {
                               // add your logic here, e.g., open request details modal
                             }}
                           >
-                            {"view termination request"}
+                            {"view edit request"}
                             {requestTerminate.loading ? (
                               <FaSpinner
                                 size={17}
