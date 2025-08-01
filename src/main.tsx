@@ -13,7 +13,6 @@ import ErrorPage from "uikit/src/Error";
 import { store } from "state";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
     <Provider store={store}>
     <BrowserRouter>
       <HelmetProvider>
@@ -23,5 +22,4 @@ createRoot(document.getElementById("root")!).render(
       </HelmetProvider>
     </BrowserRouter>
     </Provider>
-</StrictMode>
 );

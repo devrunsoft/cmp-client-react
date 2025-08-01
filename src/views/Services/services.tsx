@@ -32,6 +32,9 @@ import { TerminateStatusEnum } from "common/domain/enum/terminate_status";
 
 export default function Services() {
   const { selectedAddresses } = useAddress();
+  if (!selectedAddresses) {
+    return;
+  }
   const [appointmentservices, setAppointmentservices] = useState<
     ClientServiceAppointment[]
   >([]);
@@ -39,6 +42,7 @@ export default function Services() {
   const [itemsService, setItemsService] = useState<ServiceEntity[]>([]);
   const [itemsProduct, setItemsProduct] = useState<ServiceEntity[]>([]);
   const navigate = useNavigate();
+
   var request = useGetAllServiceAppointmentApi(selectedAddresses.Id);
   var requestTerminate = useRequestTerminate();
   var requestService = useGetAllServiceApi();

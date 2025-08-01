@@ -12,6 +12,14 @@ import {
   useChatMessageGetAll,
   useChatMessageSend,
 } from "data/repository/chat/chatMessageApi";
+import { connection } from "cmp-core/src/service/hub";
+import {
+  ChatMessageEntity,
+  mapChatMessage,
+} from "cmp-core/src/entity/chatMessage";
+import { flushSync } from "react-dom";
+const receivedSound = new Audio("/sounds/message-received.mp3");
+const sentSound = new Audio("/sounds/message-sent.mp3");
 
 const FloatingChat = () => {
   const requestGet = useChatMessageGetAll();
@@ -23,17 +31,59 @@ const FloatingChat = () => {
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [open, setOpen] = useState(false);
 
-  var scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const loading = requestGet.loading;
 
   useEffect(() => {
-    if (open) {
-      setMessages([]);
-      setPage(0);
-      setHasMore(true);
-      loadData(0);
+    setMessages([]);
+    setPage(0);
+    setHasMore(true);
+    loadData(0);
+  }, []);
+
+  const [connectionLost, setConnectionLost] = useState(false);
+  const [reconnecting, setReconnecting] = useState(false);
+
+  useEffect(() => {
+    connection.on("SendMessage", (type: string, message: string) => {
+      const parsed: ChatMessageEntity = JSON.parse(message);
+      var newMessage = mapChatMessage(parsed);
+      receivedSound.play();
+      setMessages((prev) => [...prev, newMessage]);
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleReconnect = () => {
+      setConnectionLost(false);
+      setReconnecting(false);
+    };
+    const handleReconnecting = () => {
+      setConnectionLost(true);
+      setReconnecting(true);
+    };
+    const handleDisconnected = () => {
+      setConnectionLost(true);
+      setReconnecting(false);
+    };
+
+    window.addEventListener("chat-reconnected", handleReconnect);
+    window.addEventListener("chat-reconnecting", handleReconnecting);
+    window.addEventListener("chat-disconnected", handleDisconnected);
+
+    return () => {
+      window.removeEventListener("chat-reconnected", handleReconnect);
+      window.removeEventListener("chat-reconnecting", handleReconnecting);
+      window.removeEventListener("chat-disconnected", handleDisconnected);
+    };
+  }, []);
+
+  const scrollToBottom = () => {
+    const el = scrollRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
     }
-  }, [open]);
+  };
 
   const loadData = (targetPage: number) => {
     if (!hasMore || loading) return;
@@ -48,20 +98,12 @@ const FloatingChat = () => {
 
         if (data.length < size) setHasMore(false);
 
-        const formatted = data
-          .map((m) => ({
-            message: m.Content,
-            sentTime: new Date(m.SentAt).toLocaleTimeString(),
-            sender: m.SenderType === "Client" ? "You" : m.SenderType,
-            direction: m.SenderType === "Client" ? "outgoing" : "incoming",
-            position: "single",
-          }))
-          .reverse();
+        const formatted = data.map((m) => mapChatMessage(m)).reverse();
 
         setMessages((prev) => [...formatted, ...prev]);
         setPage((prev) => prev + 1);
 
-        // Maintain scroll position
+        // Maintain scroll position after loading more
         setTimeout(() => {
           if (el) {
             const newHeight = el.scrollHeight;
@@ -72,43 +114,100 @@ const FloatingChat = () => {
     });
   };
 
-  const send = (text: string) => {
+  const send = (text: string, uniqueId: string) => {
     requestSend.call({
       data: { Message: text },
-      onSuccess: () => {},
+      onSuccess(d) {
+        console.log(`${text} ${uniqueId} A`);
+        sentSound.play();
+
+        // ✅ Update status to "sent" for the message with the matching ID
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.tempId === uniqueId ? { ...msg, status: "sent" } : msg
+          )
+        );
+      },
+      onError() {
+        // ✅ Optional: Mark as error if sending failed
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.tempId === uniqueId ? { ...msg, status: "error" } : msg
+          )
+        );
+      },
     });
   };
 
   const handleSend = (text: string) => {
+    if (requestSend.loading) return;
     if (!text.trim()) return;
-
+    const id = crypto.randomUUID();
     const newMessage: MessageModel = {
       message: text,
       sentTime: new Date().toLocaleTimeString(),
       sender: "You",
       direction: "outgoing",
       position: "single",
+      tempId: id,
+      status: "sending",
     };
+    console.log(`${text} ${id} B`);
+    flushSync(() => {
+      setMessages((prev) => [...prev, newMessage]);
+    });
 
-    setMessages((prev) => [...prev, newMessage]);
-    send(text);
+    send(text, id);
 
-    // Scroll to bottom
-    setTimeout(() => {
-      const el = scrollRef.current;
-      if (el) el.scrollTop = el.scrollHeight;
-    }, 100);
-  };
-
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (el && el.scrollTop === 0 && hasMore && !loading) {
-      loadData(page);
-    }
+    // Scroll to bottom after sending
+    // setTimeout(scrollToBottom, 100);
   };
 
   return (
     <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 9999 }}>
+      {connectionLost && (
+        <div
+          style={{
+            backgroundColor: reconnecting ? "#FFF3CD" : "#F8D7DA",
+            color: reconnecting ? "#856404" : "#721C24",
+            padding: "10px 12px",
+            textAlign: "center",
+            fontSize: 14,
+            fontWeight: 500,
+            borderBottom: "1px solid rgba(0,0,0,0.1)",
+          }}
+        >
+          {reconnecting ? (
+            "Reconnecting to chat..."
+          ) : (
+            <>
+              Disconnected from chat.
+              <button
+                style={{
+                  marginLeft: 8,
+                  color: "#721C24",
+                  background: "none",
+                  border: "none",
+                  fontWeight: "bold",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+                onClick={async () => {
+                  try {
+                    await connection.start();
+                    setConnectionLost(false);
+                  } catch (err) {
+                    console.error("Retry failed", err);
+                  }
+                }}
+              >
+                Retry
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -167,25 +266,24 @@ const FloatingChat = () => {
             </button>
           </div>
 
-          {/* Chat body with scroll */}
-          <div style={{ flexGrow: 1, overflowY: "auto" }}>
+          {/* Chat body */}
+          <div style={{ flexGrow: 1, overflowY: "auto" }} ref={scrollRef}>
             <MainContainer>
               <ChatContainer>
                 <MessageList
-                  onYReachStart={(e) => {
-                    scrollRef = e;
-                    if (hasMore && !requestGet.loading) {
+                  autoScrollToBottom={true}
+                  onYReachStart={() => {
+                    if (hasMore && !loading) {
                       loadData(page);
                     }
                   }}
-                  loadingMore={requestGet.loading}
+                  loadingMore={loading}
                   loadingMorePosition="top"
-                  autoScrollToBottom={true}
-                  autoScrollToBottomOnMount={true}
-                  style={{ overflowY: "auto", height: "100%" }}
                 >
                   {messages.map((m, i) => (
-                    <Message key={i} model={m} />
+                    <div key={i} style={{ position: "relative" }}>
+                      <Message model={m} />
+                    </div>
                   ))}
                 </MessageList>
                 <MessageInput
