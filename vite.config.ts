@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
         types: path.resolve(__dirname, "src/types"),
         data: path.resolve(__dirname, "src/common/data"),
         common: path.resolve(__dirname, "src/common"),
+        "chat-ui-kit-react": path.resolve(__dirname, "../chat-ui-kit-react/src"),
       },
     },
     define: {

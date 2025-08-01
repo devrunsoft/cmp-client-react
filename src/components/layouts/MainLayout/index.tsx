@@ -19,6 +19,8 @@ import TermConditionModal from "components/term";
 import { useAppDispatch, useAppSelector } from "state/index";
 import { setAddress } from "state/slice/address";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
+import connectToChat from "cmp-core/src/service/hub";
+import FloatingChat from "components/chat/chat";
 
 export default function MainLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -46,6 +48,7 @@ export default function MainLayout() {
   const { oprAddress } = useParams();
   useEffect(() => {
     loadData();
+    connectToChat();
   }, []);
 
   const loadData = async () => {
@@ -101,6 +104,7 @@ export default function MainLayout() {
 
                 <TermsAndConditionProvider>
                   <Outlet />
+                  <FloatingChat />
                   <TermConditionModal />
                 </TermsAndConditionProvider>
               </Main>

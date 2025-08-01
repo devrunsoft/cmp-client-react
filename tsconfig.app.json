@@ -37,7 +37,8 @@
       "types/*": ["./src/types/*"],
       "data/*": ["./src/common/data/*"],
       "common/*": ["./src/common/*"],
-      "cmp-core/*": ["../cmp-core-react/src/*"]
+      "cmp-core/*": ["../cmp-core-react/src/*"],
+      "chat-ui-kit-react/*": ["../chat-ui-kit-react/src/*"]
     },
     "allowSyntheticDefaultImports": true
   },
