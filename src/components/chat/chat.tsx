@@ -18,12 +18,15 @@ import {
   mapChatMessage,
 } from "cmp-core/src/entity/chatMessage";
 import { flushSync } from "react-dom";
+import { useAppSelector } from "state/index";
 const receivedSound = new Audio("/sounds/message-received.mp3");
 const sentSound = new Audio("/sounds/message-sent.mp3");
 
 const FloatingChat = () => {
-  const requestGet = useChatMessageGetAll();
-  const requestSend = useChatMessageSend();
+  const refreshAddress = useAppSelector((state) => state.addressSlice);
+
+  const requestGet = useChatMessageGetAll(refreshAddress.Id);
+  const requestSend = useChatMessageSend(refreshAddress.Id);
   const size = 10;
 
   const [page, setPage] = useState(0);
@@ -33,13 +36,15 @@ const FloatingChat = () => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const loading = requestGet.loading;
+  const refreshAddressRef = useRef<number>(0);
 
   useEffect(() => {
     setMessages([]);
     setPage(0);
     setHasMore(true);
-    loadData(0);
-  }, []);
+    loadData(0, true);
+    if (refreshAddress.Id) refreshAddressRef.current = refreshAddress.Id;
+  }, [refreshAddress.Id]);
 
   const [connectionLost, setConnectionLost] = useState(false);
   const [reconnecting, setReconnecting] = useState(false);
@@ -47,6 +52,7 @@ const FloatingChat = () => {
   useEffect(() => {
     connection.on("SendMessage", (type: string, message: string) => {
       const parsed: ChatMessageEntity = JSON.parse(message);
+      if (refreshAddressRef.current != parsed.OperationalAddressId) return;
       var newMessage = mapChatMessage(parsed);
       receivedSound.play();
       setMessages((prev) => [...prev, newMessage]);
@@ -85,7 +91,7 @@ const FloatingChat = () => {
     }
   };
 
-  const loadData = (targetPage: number) => {
+  const loadData = (targetPage: number, hasMore) => {
     if (!hasMore || loading) return;
 
     const el = scrollRef.current;
@@ -162,6 +168,8 @@ const FloatingChat = () => {
     // Scroll to bottom after sending
     // setTimeout(scrollToBottom, 100);
   };
+
+  if (refreshAddress.Id == 0) return;
 
   return (
     <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 9999 }}>
@@ -274,7 +282,7 @@ const FloatingChat = () => {
                   autoScrollToBottom={true}
                   onYReachStart={() => {
                     if (hasMore && !loading) {
-                      loadData(page);
+                      loadData(page, hasMore);
                     }
                   }}
                   loadingMore={loading}

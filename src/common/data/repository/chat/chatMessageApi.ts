@@ -3,7 +3,10 @@ import { UseApiOutputType } from "core/src/hooks/useApi";
 import { AxiosRequestConfig, Method } from "axios";
 import { BASE_URL, Client_URL } from "core/src/utils/url";
 import { ChatMessageEntity } from "cmp-core/src/entity/chatMessage";
-import { PaginatedDataType, PaginationSearchParamsType } from "core/src/types/api";
+import {
+  PaginatedDataType,
+  PaginationSearchParamsType,
+} from "core/src/types/api";
 import { ChatMessageCommand } from "common/domain/command/chatMessageCommand";
 
 enum ApiType {
@@ -12,15 +15,15 @@ enum ApiType {
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
-  [ApiType.getAll]: (ClientId: any) => `ClientChatMessage/Messages`,
-  [ApiType.send]: (ClientId: any) => `ClientChatMessage/Send`,
-
+  [ApiType.getAll]: (operationalAddressId: any) =>
+    `ClientChatMessage/Messages/${operationalAddressId}`,
+  [ApiType.send]: (operationalAddressId: any) =>
+    `ClientChatMessage/Send/${operationalAddressId}`,
 };
 
 const method: Record<ApiType, Method> = {
   [ApiType.getAll]: "GET",
   [ApiType.send]: "POST",
-
 };
 
 const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
@@ -33,19 +36,24 @@ const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
   return config;
 };
 
-export function useChatMessageGetAll(): UseApiOutputType<
+export function useChatMessageGetAll(
+  operationalAddressId?: number
+): UseApiOutputType<
   PaginatedDataType<ChatMessageEntity>,
   PaginationSearchParamsType
 > {
-  return useApi<PaginatedDataType<ChatMessageEntity>, PaginationSearchParamsType>({
-    ...getConfig(ApiType.getAll),
+  return useApi<
+    PaginatedDataType<ChatMessageEntity>,
+    PaginationSearchParamsType
+  >({
+    ...getConfig(ApiType.getAll, operationalAddressId),
   });
 }
 
 export function useChatMessageSend(
-  Id?: number
+  operationalAddressId?: number
 ): UseApiOutputType<ChatMessageEntity, ChatMessageCommand> {
-  const config = getConfig(ApiType.send, Id);
+  const config = getConfig(ApiType.send, operationalAddressId);
   return useApi<ChatMessageEntity, ChatMessageCommand>({
     ...config,
   });
