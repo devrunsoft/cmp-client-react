@@ -12,6 +12,7 @@ import { ChatMessageCommand } from "common/domain/command/chatMessageCommand";
 enum ApiType {
   getAll = "getAll",
   send = "send",
+  seen = "seen",
 }
 
 const urls: Record<ApiType, (queryPath?: any) => string> = {
@@ -19,11 +20,14 @@ const urls: Record<ApiType, (queryPath?: any) => string> = {
     `ClientChatMessage/Messages/${operationalAddressId}`,
   [ApiType.send]: (operationalAddressId: any) =>
     `ClientChatMessage/Send/${operationalAddressId}`,
+    [ApiType.seen]: (ChatMessageId: any) =>
+    `ClientChatMessage/Seen`,
 };
 
 const method: Record<ApiType, Method> = {
   [ApiType.getAll]: "GET",
   [ApiType.send]: "POST",
+  [ApiType.seen]: "POST",
 };
 
 const getConfig = (type: ApiType, queryPath?: any): AxiosRequestConfig => {
@@ -55,6 +59,14 @@ export function useChatMessageSend(
 ): UseApiOutputType<ChatMessageEntity, ChatMessageCommand> {
   const config = getConfig(ApiType.send, operationalAddressId);
   return useApi<ChatMessageEntity, ChatMessageCommand>({
+    ...config,
+  });
+}
+
+export function useChatMessageSeen(
+): UseApiOutputType<ChatMessageEntity, any> {
+  const config = getConfig(ApiType.seen);
+  return useApi<ChatMessageEntity, any>({
     ...config,
   });
 }

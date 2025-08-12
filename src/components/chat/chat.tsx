@@ -7,9 +7,11 @@ import {
   Message,
   MessageInput,
   MessageModel,
+  TypingIndicator,
 } from "chat-ui-kit-react/components";
 import {
   useChatMessageGetAll,
+  useChatMessageSeen,
   useChatMessageSend,
 } from "data/repository/chat/chatMessageApi";
 import { connection } from "cmp-core/src/service/hub";
@@ -19,6 +21,9 @@ import {
 } from "cmp-core/src/entity/chatMessage";
 import { flushSync } from "react-dom";
 import { useAppSelector } from "state/index";
+import { ChatEnum } from "cmp-core/src/Enum/chat_enum";
+import { getToken } from "core/src/utils/auth";
+import { jwtDecode } from "jwt-decode";
 const receivedSound = new Audio("/sounds/message-received.mp3");
 const sentSound = new Audio("/sounds/message-sent.mp3");
 
@@ -27,6 +32,7 @@ const FloatingChat = () => {
 
   const requestGet = useChatMessageGetAll(refreshAddress.Id);
   const requestSend = useChatMessageSend(refreshAddress.Id);
+  const requestSeen = useChatMessageSeen();
   const size = 10;
 
   const [page, setPage] = useState(0);
@@ -50,14 +56,39 @@ const FloatingChat = () => {
   const [reconnecting, setReconnecting] = useState(false);
 
   useEffect(() => {
-    connection.on("SendMessage", (type: string, message: string) => {
-      const parsed: ChatMessageEntity = JSON.parse(message);
-      if (refreshAddressRef.current != parsed.OperationalAddressId) return;
-      var newMessage = mapChatMessage(parsed);
-      receivedSound.play();
-      setMessages((prev) => [...prev, newMessage]);
+    connection.on("SendMessage", (type: ChatEnum, message: string) => {
+      if (type == ChatEnum.message) {
+        onMessageType(type, message);
+      } else if (type == ChatEnum.seen) {
+        onSeenType(type, message);
+      } else if (type == ChatEnum.isTyping) {
+        onTyping(message);
+      }
     });
   }, []);
+
+  const onMessageType = (type: ChatEnum, message: string) => {
+    const parsed: ChatMessageEntity = JSON.parse(message);
+    if (refreshAddressRef.current != parsed.OperationalAddressId) return;
+    var newMessage = mapChatMessage(parsed);
+    requestSeen.call({
+      data: {
+        ChatMessageId: parsed.Id,
+      },
+    });
+    receivedSound.play();
+    setMessages((prev) => [...prev, newMessage]);
+    offTyping();
+  };
+
+  const onSeenType = (type: ChatEnum, message: string) => {
+    const parsed: ChatMessageEntity = JSON.parse(message);
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.Id === parsed.Id ? { ...msg, status: "read" } : msg
+      )
+    );
+  };
 
   useEffect(() => {
     const handleReconnect = () => {
@@ -84,11 +115,91 @@ const FloatingChat = () => {
     };
   }, []);
 
-  const scrollToBottom = () => {
-    const el = scrollRef.current;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
+  const [typingUsers, setTypingUsers] = useState<Record<string, number>>({});
+  const lastTypingSentAtRef = useRef<number>(0);
+
+  useEffect(() => {
+    const i = setInterval(() => {
+      const now = Date.now();
+      setTypingUsers((prev) => {
+        const next: Record<string, number> = {};
+        let changed = false;
+        for (const [name, expiry] of Object.entries(prev)) {
+          if (expiry > now) next[name] = expiry;
+          else changed = true;
+        }
+        return changed ? next : prev;
+      });
+    }, 800);
+    return () => clearInterval(i);
+  }, []);
+
+  function personId(): string {
+    try {
+      var token = getToken();
+      var decoded = jwtDecode(token?.token ?? "");
+      var PersonId = decoded["PersonId"];
+      return PersonId;
+    } catch (error) {
+      return "";
     }
+  }
+  function fullName(): string {
+    try {
+      var token = getToken();
+      var decoded = jwtDecode(token?.token ?? "");
+      var PersonId = decoded["FullName"];
+      return PersonId;
+    } catch (error) {
+      return "";
+    }
+  }
+  const onTyping = (message: string) => {
+    try {
+      const payload = JSON.parse(message) as {
+        IsTyping: boolean;
+        Name: string;
+        PersonId: string;
+        OperationalAddressId: number;
+      };
+
+      // only show typing for the active session
+      const activeId = refreshAddress.Id;
+      if (!activeId || payload.OperationalAddressId !== activeId) return;
+      if (personId() == payload.PersonId) return;
+
+      if (payload.IsTyping && payload.Name) {
+        // set/refresh expiry to 3s from now
+        setTypingUsers((prev) => ({
+          ...prev,
+          [payload.Name]: Date.now() + 3000,
+        }));
+      } else if (!payload.IsTyping && payload.Name) {
+        setTypingUsers((prev) => {
+          if (!(payload.Name in prev)) return prev;
+          const { [payload.Name]: _, ...rest } = prev;
+          return rest;
+        });
+      }
+    } catch {
+      /* ignore parse errors */
+    }
+  };
+
+  const offTyping = () => {
+    setTypingUsers({});
+  };
+
+  const isTyping = () => {
+    const now = Date.now();
+    if (now - lastTypingSentAtRef.current < 1000) return; // 1s throttle
+    lastTypingSentAtRef.current = now;
+
+    connection.invoke("ClientUserTyping", {
+      OperationalAddressId: refreshAddress.Id,
+      isTyping: true,
+      name: `${fullName()}`.trim(),
+    });
   };
 
   const loadData = (targetPage: number, hasMore) => {
@@ -123,14 +234,16 @@ const FloatingChat = () => {
   const send = (text: string, uniqueId: string) => {
     requestSend.call({
       data: { Message: text },
-      onSuccess(d) {
+      onSuccess(e) {
         console.log(`${text} ${uniqueId} A`);
         sentSound.play();
 
         // ✅ Update status to "sent" for the message with the matching ID
         setMessages((prev) =>
           prev.map((msg) =>
-            msg.tempId === uniqueId ? { ...msg, status: "sent" } : msg
+            msg.tempId === uniqueId
+              ? { ...msg, status: "sent", Id: e.data.Id }
+              : msg
           )
         );
       },
@@ -170,7 +283,7 @@ const FloatingChat = () => {
   };
 
   if (refreshAddress.Id == 0) return;
-
+  const typingNames = Object.keys(typingUsers);
   return (
     <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 9999 }}>
       {connectionLost && (
@@ -279,6 +392,15 @@ const FloatingChat = () => {
             <MainContainer>
               <ChatContainer>
                 <MessageList
+                  typingIndicator={
+                    typingNames.length > 0 && (
+                      <TypingIndicator
+                        content={`${typingNames.join(", ")} ${
+                          typingNames.length > 1 ? "are" : "is"
+                        } typing...`}
+                      />
+                    )
+                  }
                   autoScrollToBottom={true}
                   onYReachStart={() => {
                     if (hasMore && !loading) {
@@ -297,6 +419,7 @@ const FloatingChat = () => {
                 <MessageInput
                   placeholder="Type a message..."
                   onSend={handleSend}
+                  onChange={isTyping}
                 />
               </ChatContainer>
             </MainContainer>
