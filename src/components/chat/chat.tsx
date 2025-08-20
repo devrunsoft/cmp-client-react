@@ -285,7 +285,7 @@ const FloatingChat = () => {
   if (refreshAddress.Id == 0) return;
   const typingNames = Object.keys(typingUsers);
   return (
-    <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 9999 }}>
+    <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 1299 }}>
       {connectionLost && (
         <div
           style={{

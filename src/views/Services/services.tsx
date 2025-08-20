@@ -110,31 +110,13 @@ export default function Services() {
       );
   }
 
-  // function onRouteAll(
-  //   item: ServiceEntity,
-  //   serviceappoitnment: ServiceAppointmentEntity
-  // ) {
-  //   if (serviceappoitnment)
-  //     navigate(
-  //       `${APP_ROUTES.ServiceItem}?data=${serviceappoitnment.Id}&serviceId=${item.Id}&type=${item.Name}`,
-  //       undefined
-  //     );
-  //   else
-  //     navigate(
-  //       `${APP_ROUTES.ServiceItem}?serviceId=${item.Id}&type=${item.Name}`
-  //     );
-  // }
-
-  // function existService(service: ServiceEntity[], id: number): boolean {
-  //   return service.find((appointment) => appointment.Id === id) != null;
-  // }
-
   function hasDraft(service: ServiceEntity): ServiceAppointmentEntity | null {
     return (
       appointmentservices.find((e) => e.Draft?.ProductId == service.Id)
         ?.Draft ?? null
     );
   }
+
   function hasRegistered(
     service: ServiceEntity
   ): ServiceAppointmentEntity | null {
@@ -143,6 +125,7 @@ export default function Services() {
         ?.Current ?? null
     );
   }
+
   function hasNext(service: ServiceEntity): ServiceAppointmentEntity | null {
     return (
       appointmentservices.find((e) => e.Next?.ProductId == service.Id)?.Next ??
@@ -162,6 +145,16 @@ export default function Services() {
     );
   }
 
+  if (!selectedAddresses) {
+    return (
+      <>
+        <Empty
+          title="Please add an address before continuing with service registration."
+          mt="60px"
+        />
+      </>
+    );
+  }
   if (selectedAddresses.Id == 0) {
     return (
       <Empty
@@ -175,15 +168,6 @@ export default function Services() {
     <DataFetchingWrapper loading={isloading}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          {/* <div className={styles.sectLocation}>
-            <img
-              src="/assets/fluent_location-regular.svg"
-              alt="location icon"
-              width={36}
-              height={36}
-              style={{ width: "auto", height: "auto" }}
-            />
-          </div> */}
           <div className={styles.scrollStaff}>
             <div className={styles.mainText}>
               <img

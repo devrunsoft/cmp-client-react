@@ -77,11 +77,11 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
           ></ApiTable>
           {invoiceModel && (
             <SignContract
-              isOpen={!!invoiceModel}
+              open={!!invoiceModel}
               onClose={() => {
                 setInvoiceModel(null);
               }}
-              onSubmit={() => {
+              refresh={() => {
                 refresh();
               }}
               model={invoiceModel}

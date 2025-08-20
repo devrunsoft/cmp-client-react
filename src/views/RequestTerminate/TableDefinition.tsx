@@ -27,30 +27,30 @@ const TableDefinition: ColumnDef<RequestTerminateEntity>[] = [
     ),
   },
 
-  {
-    cell: (info) => {
-      const type = info.getValue() as RequestTerminateEnum;
-      const status = type!;
-      return (
-        <Box
-          className="Status"
-          sx={{
-            backgroundColor: getRequestTerminateStyle(status).background,
-            color: getRequestTerminateStyle(status).color,
-          }}
-        >
-          {RequestTerminateDescriptions[status]}
-        </Box>
-      );
-    },
-    accessorKey: "Status",
-    header: () => (
-      <>
-        Status
-        <Hotel />
-      </>
-    ),
-  },
+  // {
+  //   cell: (info) => {
+  //     const type = info.getValue() as RequestTerminateEnum;
+  //     const status = type!;
+  //     return (
+  //       <Box
+  //         className="Status"
+  //         sx={{
+  //           backgroundColor: getRequestTerminateStyle(status).background,
+  //           color: getRequestTerminateStyle(status).color,
+  //         }}
+  //       >
+  //         {RequestTerminateDescriptions[status]}
+  //       </Box>
+  //     );
+  //   },
+  //   accessorKey: "Status",
+  //   header: () => (
+  //     <>
+  //       Status
+  //       <Hotel />
+  //     </>
+  //   ),
+  // },
   {
     cell: (info) => {
       const type = info.getValue() as RequestTerminateProcessEnum | null;
