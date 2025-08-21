@@ -4,9 +4,9 @@ import { MdDone } from "react-icons/md";
 import { GoClock } from "react-icons/go";
 import styles from "../invoices/invoicesTable/invoicesTable.module.css";
 import { CompanyContractEntity } from "common/domain/entity/contract_entity";
-import { ContractStatis } from "common/domain/enum/contract_status";
 import { Box } from "@mui/material";
 import {
+  Cancel,
   Check,
   Visibility,
   Warning,
@@ -14,6 +14,7 @@ import {
   X,
 } from "@mui/icons-material";
 import { ActivitySquare, Clock, Hotel } from "lucide-react";
+import { CompanyContractEnum } from "common/domain/enum/contract_status";
 
 export const TableDefinition: ColumnDef<CompanyContractEntity>[] = [
   {
@@ -25,7 +26,7 @@ export const TableDefinition: ColumnDef<CompanyContractEntity>[] = [
     accessorKey: "Status",
     header: () => <>Status</>,
     cell: (info) => {
-      const status = info.getValue() as ContractStatis;
+      const status = info.getValue() as CompanyContractEnum;
       const row = info.row.original;
 
       return <>{getStatus(status)}</>;
@@ -33,41 +34,74 @@ export const TableDefinition: ColumnDef<CompanyContractEntity>[] = [
   },
 ];
 
-const getStatus = (status: ContractStatis) => {
+const getStatus = (status: CompanyContractEnum) => {
   switch (status) {
-    case ContractStatis.Send:
-    case ContractStatis.Visit:
-      return (
-        <div className={styles.buttonsDraft}>
-          <a className={styles.buttonPayable2}>
-            <IoCardOutline size={"24px"} />
-            Ready for Sign
-          </a>
-        </div>
-      );
-
-    case ContractStatis.Signed:
+    case CompanyContractEnum.Created:
       return (
         <Box
+          component="span"
+          sx={{
+            color: (theme) => theme.palette.warning.main,
+          }}
+        >
+          <Clock /> Contract Created
+        </Box>
+      );
+    case CompanyContractEnum.Send:
+      return (
+        <Box
+          component="span"
+          sx={{
+            color: (theme) => theme.palette.warning.main,
+          }}
+        >
+          <Clock /> Sent To Client
+        </Box>
+      );
+    // case CompanyContractEnum.Visit:
+    //   return (
+    //     <Box
+    //       component="span"
+    //       sx={{
+    //         color: (theme) => theme.palette.primary.main,
+    //       }}
+    //     >
+    //       <Visibility /> Visit
+    //     </Box>
+    //   );
+    case CompanyContractEnum.Signed:
+      return (
+        <Box
+          component="span"
           sx={{
             color: (theme) => theme.palette.primary.main,
-            textAlign: "center",
           }}
         >
           <Check /> Signed
         </Box>
       );
-    case ContractStatis.NeedsAdminSignature:
+    case CompanyContractEnum.NeedsAdminSignature:
       return (
         <Box
+          component="span"
           sx={{
-            color: (theme) => theme.palette.warning.main,
-            textAlign: "center",
+            color: (theme) => "#1E90FF",
           }}
         >
-          <Clock /> Pending
+          <WarningAmber /> Needs Admin Signature
         </Box>
       );
+      case CompanyContractEnum.Canceled:
+        return (
+          <Box
+            component="span"
+            sx={{
+              color: (theme) => "#808080",
+            }}
+          >
+            <Cancel /> Canceled
+          </Box>
+        );
     default:
       return <span className="text-gray-500">---</span>;
   }

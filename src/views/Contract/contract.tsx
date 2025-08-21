@@ -11,14 +11,22 @@ import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
 import SignContract from "./signContract/signContract";
 import { TableDefinition } from "./TableDefinition";
 import { useAppSelector } from "state/index";
+import { GridFilter } from "uikit/src/GridFilter";
+import {
+  CompanyContractEnum,
+  CompanyContractOptions,
+} from "common/domain/enum/contract_status";
 
 export default function ContractTable({ contractId }: { contractId?: number }) {
   const refreshAddress = useAppSelector((state) => state.addressSlice);
   const request = useCompanyContractGetAll(refreshAddress.Id ?? 0);
+  const [status, setstatus] = useState<CompanyContractEnum | null>(null);
 
   const navigate = useNavigate();
-  const [invoiceModel, setInvoiceModel] =
-    useState<CompanyContractEntity | null>(null);
+  const [
+    invoiceModel,
+    setInvoiceModel,
+  ] = useState<CompanyContractEntity | null>(null);
 
   const loadData = (
     filter: PaginationSearchParamsType,
@@ -30,6 +38,7 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
         ...filter,
       },
       params: {
+        Status: status,
         Size: PAGE_SIZE,
         Page: page,
         allField: filter.allField,
@@ -39,20 +48,24 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
 
   useEffect(() => {
     refresh();
-  }, [refreshAddress.Id]);
+  }, [refreshAddress.Id, status]);
 
-  const { setFilter, setPage, refresh, page } =
-    useFilterData<PaginationSearchParamsType>({
-      initData: FILTER_INIT,
-      handleFetchFn: loadData,
-      autoFetch: false,
-    });
+  const { setFilter, setPage, refresh, page } = useFilterData<
+    PaginationSearchParamsType
+  >({
+    initData: FILTER_INIT,
+    handleFetchFn: loadData,
+    autoFetch: false,
+  });
 
   const openContract = (data) => {
     // if (data.Status == 3) return;
     setInvoiceModel(data);
     // setInvoiceModalIsOpen(true);
   };
+  function handleChange(status: CompanyContractEnum) {
+    setstatus(status);
+  }
 
   return (
     <>
@@ -73,6 +86,13 @@ export default function ContractTable({ contractId }: { contractId?: number }) {
             onSingleRowSelection={(s) => {
               openContract(s);
             }}
+            endChildren={[
+              <GridFilter
+                handleChange={handleChange}
+                options={CompanyContractOptions}
+                selected={status}
+              />,
+            ]}
             loading={request.loading}
           ></ApiTable>
           {invoiceModel && (
