@@ -1,4 +1,4 @@
-import { ContractStatis } from "../enum/contract_status";
+import { CompanyContractEnum } from "../enum/contract_status";
 
 export type CompanyContractEntity = {
   Id?: number;
@@ -7,7 +7,7 @@ export type CompanyContractEntity = {
   CompanyId: number;
   InvoiceId: string;
   Sign?: string | null;
-  Status: ContractStatis;
+  Status: CompanyContractEnum;
   ContractNumber: string;
   CreatedAt: Date;
 };
