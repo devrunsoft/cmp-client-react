@@ -64,7 +64,7 @@ export const BusinessLicense = ({
           toast.error(error.message);
         },
         (_) => {
-          setIndex!(4);
+          navigate("/", { replace: true });
         }
       );
     } finally {
