@@ -23,17 +23,22 @@ import { mapLocationCompanyEntityToCommand } from "common/domain/mapper/location
 import { getOperationalAddress } from "data/api/dashboard/operationalAddress/get_by_id";
 import DeleteButton from "components/button/delete_button";
 import { NextButton } from "components/button/next/next";
+import { APP_ROUTES } from "../../routes/app_route";
 
 type AddNewAddressFormProps = {
   Id?: number | null;
 };
 
 export default function AddNewAddressForm(porp: AddNewAddressFormProps) {
-  const [operationalAddress, setoperationalAddress] =
-    useState<OperationalAddressEntity | null>(null);
+  const [
+    operationalAddress,
+    setoperationalAddress,
+  ] = useState<OperationalAddressEntity | null>(null);
   const [otherAddress, setotherAddress] = useState<LocationCompanyEntity[]>([]);
-  const [otherAddressCommand, setotherAddressCommand] =
-    useState<OtherCompanyLocationCommand | null>(null);
+  const [
+    otherAddressCommand,
+    setotherAddressCommand,
+  ] = useState<OtherCompanyLocationCommand | null>(null);
   const { setLoading } = useLoading();
   const [openEditOtherAddressModal, setOpenEditOtherAddressModal] = useState<
     number | null
@@ -204,6 +209,7 @@ export default function AddNewAddressForm(porp: AddNewAddressFormProps) {
                 onSubmitAddress={(data) => {
                   setoperationalAddress(data);
                   setotherCommand(data);
+                  refreshAdr();
                 }}
                 isOpen={modalIsOpen.operational}
                 onClose={() => closeModal("operational")}
@@ -225,9 +231,17 @@ export default function AddNewAddressForm(porp: AddNewAddressFormProps) {
                 <GoPlusCircle size={"24"} /> ADD ADDRESS
               </button>
               <AddAddressMap
-                onSubmitAddress={(data) => addArray("operationalAddress", data)}
+                onSubmitAddress={(data) => {
+                  addArray("operationalAddress", data);
+                  navigate(`${APP_ROUTES.Address}/${data.Id}`, {
+                    replace: true,
+                  });
+                  refreshAdr();
+                }}
                 isOpen={modalIsOpen.operational}
-                onClose={() => closeModal("operational")}
+                onClose={() => {
+                  closeModal("operational");
+                }}
                 center={operationalAddressCenter}
               />
             </>

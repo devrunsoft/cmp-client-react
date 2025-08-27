@@ -46,19 +46,32 @@ export default function LocationSelect() {
   };
 
   useEffect(() => {
-    const hasAll = addresses.some((x) => x.Id === 0);
-    var allAddress: OperationalAddressEntity = {
-      LocationCompany: [],
-      Name: "All",
-      Id: 0,
-      Address: "",
-      LocationDateTimes: [],
-    };
-    setAddresse([...[allAddress], ...addresses]);
-    if (oprAddress) {
-      selectTheAddress(addresses.find((e) => e.Id === Number(oprAddress))!);
+    if (addresses && addresses.length > 0) {
+      const allAddress: OperationalAddressEntity = {
+        LocationCompany: [],
+        Name: "All",
+        Id: 0,
+        Address: "",
+        LocationDateTimes: [],
+      };
+      setAddresse([allAddress, ...(addresses ?? [])]);
+      if (oprAddress) {
+        selectTheAddress(addresses?.find((e) => e.Id === Number(oprAddress))!);
+      } else {
+        selectTheAddress(address[0]);
+      }
     }
-  }, []);
+  }, [address?.length]);
+
+  useEffect(() => {
+    if (addresses) {
+      if (oprAddress) {
+        selectTheAddress(address?.find((e) => e.Id === Number(oprAddress))!);
+      } else {
+        selectTheAddress(addresses[0]);
+      }
+    }
+  }, [address?.length]);
 
   return (
     <div className={styles.dropDownContainer}>

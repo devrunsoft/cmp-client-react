@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoading } from "components/loading/loading_context";
 
 import { APP_ROUTES } from "../../routes/app_route";
-import { Link } from "@mui/material";
+import { Box, Button, Link } from "@mui/material";
 import LocationSelect from "components/locationSelect/locationSelect";
 import { useGetAllServiceAppointmentApi } from "data/repository/service";
 import {
@@ -29,12 +29,11 @@ import { RequestTerminateCommand } from "common/domain/command/requestTerminateC
 import TerminateContractDialog from "cmp-core/src/ui/dialog/terminateContract";
 import Empty from "cmp-core/src/Empty";
 import { TerminateStatusEnum } from "common/domain/enum/terminate_status";
+import { Plus } from "lucide-react";
 
 export default function Services() {
-  const { selectedAddresses } = useAddress();
-  if (!selectedAddresses) {
-    return;
-  }
+  const { selectedAddresses , addresses } = useAddress();
+
   const [appointmentservices, setAppointmentservices] = useState<
     ClientServiceAppointment[]
   >([]);
@@ -43,7 +42,7 @@ export default function Services() {
   const [itemsProduct, setItemsProduct] = useState<ServiceEntity[]>([]);
   const navigate = useNavigate();
 
-  var request = useGetAllServiceAppointmentApi(selectedAddresses.Id);
+  var request = useGetAllServiceAppointmentApi(selectedAddresses?.Id);
   var requestTerminate = useRequestTerminate();
   var requestService = useGetAllServiceApi();
   const [configDelete, setConfirmDelete] = useState<string | null>(null);
@@ -145,17 +144,40 @@ export default function Services() {
     );
   }
 
-  if (!selectedAddresses) {
+  if (addresses.length==0 || !selectedAddresses) {
     return (
       <>
-        <Empty
-          title="Please add an address before continuing with service registration."
-          mt="60px"
-        />
+        <Box className="flex flex-col items-center" sx={{ gap: 2 }}>
+          <Empty
+            title="Please add an address before continuing with service registration."
+            mt="60px"
+          />
+          <Button
+            onClick={(_) => navigate(APP_ROUTES.Address, undefined)}
+            startIcon={<Plus />}
+            variant="contained"
+            className="appButton"
+            sx={{
+              width: "auto",
+              alignSelf: "center",
+              px: 10,
+            }}
+          >
+            Add Location
+          </Button>
+        </Box>
+        {/* <ClientLocationWindow
+          open={!!selected}
+          onClose={closeStatusDialog}
+          selected={selected}
+          refresh={() => {
+            loadData();
+          }}
+        /> */}
       </>
     );
   }
-  if (selectedAddresses.Id == 0) {
+  if (selectedAddresses.Id == 0 || selectedAddresses.Id == null) {
     return (
       <Empty
         title="Select an address to continue with service registration."

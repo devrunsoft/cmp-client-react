@@ -33,15 +33,15 @@ function ServicesPageCm(oprAddress: EditProjectProps) {
       setSelectedAddresses(data);
       dispatch(setAddress(data));
     } else if (addresses.length) {
-      var d = addresses[0];
-      setSelectedAddresses(d);
-      dispatch(setAddress(d));
-      if (oprAddress.Id == 0) {
-        navigate(
-          APP_ROUTES.Service.replace(":oprAddress", d?.Id?.toString() ?? ""),
-          { replace: true }
-        );
-      }
+      // var d = addresses[0];
+      // setSelectedAddresses(d);
+      // dispatch(setAddress(d));
+      // if (oprAddress.Id == 0) {
+      //   navigate(
+      //     APP_ROUTES.Service.replace(":oprAddress", d?.Id?.toString() ?? ""),
+      //     { replace: true }
+      //   );
+      // }
     }
   }, [addresses]);
 
