@@ -139,7 +139,7 @@ const MultiPaymentAddressCm: React.FC<PaymentAddressProps> = ({
         />
       </div>
 
-      <div className={isColumn ? styles.formSectionColumn : styles.formSection} style={{ marginTop: "1rem" }}>
+      {/* <div className={isColumn ? styles.formSectionColumn : styles.formSection} style={{ marginTop: "1rem" }}>
         <LoadingButton
           variant="outlined"
           color="error"
@@ -150,7 +150,7 @@ const MultiPaymentAddressCm: React.FC<PaymentAddressProps> = ({
         >
           Delete
         </LoadingButton>
-      </div>
+      </div> */}
     </>
   );
 };
