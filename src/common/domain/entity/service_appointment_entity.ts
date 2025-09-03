@@ -1,4 +1,4 @@
-import { ServiceStatusEnum } from "../enum/service_status_enum";
+import { ServiceStatus } from "cmp-core/src/Enum/serviceStatus";
 import { TerminateStatusEnum } from "../enum/terminate_status";
 import { LocationCompanyEntity } from "./location_company_entity";
 import { ServiceEntity } from "./service_entity";
@@ -17,7 +17,7 @@ export type ServiceAppointmentEntity = {
   FrequencyType: string;
   IsEmegency: string;
   Qty: number;
-  Status: ServiceStatusEnum;
+  Status: ServiceStatus;
   DayOfWeek: string;
   FromHour: number;
   ToHour: number;

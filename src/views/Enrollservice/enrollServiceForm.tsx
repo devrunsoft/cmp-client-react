@@ -43,8 +43,8 @@ import { ProductType } from "common/domain/enum/product_type";
 import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
-import { ServiceStatusEnum } from "common/domain/enum/service_status_enum";
 import { useCancelRequest } from "data/repository/invoice";
+import { ServiceStatus } from "cmp-core/src/Enum/serviceStatus";
 
 type EnrollServiceFormProps = {
   Id?: number | null;
@@ -506,7 +506,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
               status={"save"}
               onClick={handleSubmit(registerService)}
             />
-          ) : model.Status == ServiceStatusEnum.Draft ? (
+          ) : model.Status == ServiceStatus.Draft ? (
             <ButtonsForm
               isActive={formisValid}
               hasCancel={false}
