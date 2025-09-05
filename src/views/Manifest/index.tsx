@@ -15,6 +15,8 @@ import {
 import { useAppSelector } from "state/index";
 import { useClientManifestGetPaginate } from "data/repository/manifest";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";
+import ShowManifest from "cmp-core/src/ui/manifest";
+import ManifestWindow from "./Window";
 
 export default function Invoices() {
   const [statusDialog, setStatusDialog] = useState<ManifestEntity | null>(null);
@@ -92,7 +94,7 @@ export default function Invoices() {
             ]}
           ></ApiTable>
         </GridDataFetchingWrapper>
-        {/* {statusDialog && (
+        {statusDialog && (
           <ManifestWindow
             open={!!statusDialog}
             onClose={() => {
@@ -101,7 +103,7 @@ export default function Invoices() {
             selected={statusDialog!}
             refresh={() => refresh()}
           />
-        )} */}
+        )}
       </Box>
     </>
   );
