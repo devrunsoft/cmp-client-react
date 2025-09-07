@@ -5,7 +5,6 @@ import { Api_URL } from "core/src/utils/url";
 import {
   BaseServiceAppointmentEntity,
   ClientServiceAppointment,
-  ServiceAppointmentEntity,
 } from "common/domain/entity/service_appointment_entity";
 import {
   PaginatedDataType,

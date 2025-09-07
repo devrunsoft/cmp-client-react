@@ -9,7 +9,7 @@ import { Plus } from "lucide-react";
 import { GridFilter } from "uikit/src/GridFilter";
 import {
   BaseServiceAppointmentEntity,
-  ServiceAppointmentEntity,
+
 } from "common/domain/entity/service_appointment_entity";
 import { useClientServiceGetAll } from "data/repository/service";
 import { FILTER_INIT, PaginationSearchParamsType } from "core/src/types/api";

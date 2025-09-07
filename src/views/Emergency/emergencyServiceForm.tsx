@@ -19,7 +19,6 @@ import { ServiceEntity } from "common/domain/entity/service_entity";
 import { useAddress } from "common/context/address_context";
 import { ServicePriceEntity } from "common/domain/entity/service_price_entity";
 import { useNavigate } from "react-router-dom";
-import { ServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
 import { useCard } from "components/context_api/shopping_card_context";
 import { getServiceAppointmentEmergencyApi } from "data/api/service_appointment_emergency/get_service_appointment_api";
 import { toast } from "react-toastify";
@@ -41,6 +40,7 @@ import { ButtonsForm } from "components/signUpButtons/signUpButtons";
 import { useTerms } from "components/context_api/terms_and_conditions";
 import { useAddShoppingCard } from "data/repository/shopingCard";
 import { useGetAllServiceApi } from "data/repository/serviceV2";
+import { ClientBaseServiceEntity } from "cmp-core/src/entity/clientBaseService";
 
 type EmergencyServiceFormProps = {
   Id?: number | null;
@@ -86,7 +86,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
   const [selectedPriceValue, setSelectedPriceValue] =
     useState<ServicePriceEntity | null>(null);
   const navigate = useNavigate();
-  const [model, setModel] = useState<ServiceAppointmentEntity | null>(null);
+  const [model, setModel] = useState<ClientBaseServiceEntity | null>(null);
   var { refreshCard } = useCard();
 
   const [adresses, setadresses] = useState<LocationCompanyEntity[]>([]);
@@ -150,7 +150,7 @@ export default function EmergencyServiceForm(props: EmergencyServiceFormProps) {
   }
 
   function initData(
-    entityModel: ServiceAppointmentEntity,
+    entityModel: ClientBaseServiceEntity,
     serviceModel: ServiceEntity[],
     servicesPriceModel: ServicePriceEntity[]
   ) {
