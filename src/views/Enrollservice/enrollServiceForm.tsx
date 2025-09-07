@@ -24,7 +24,7 @@ import { useLoading } from "components/loading/loading_context";
 import { useNavigate } from "react-router-dom";
 import { useAddress } from "common/context/address_context";
 import { useCard } from "components/context_api/shopping_card_context";
-import { ServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
+import { ClientBaseServiceEntity } from "cmp-core/src/entity/clientBaseService";
 import { getServiceApi } from "data/api/service/get_all_service_by_id_api";
 import { getAllServicePriceApi } from "data/api/service/get_all_service_price_api";
 import { toast } from "react-toastify";
@@ -54,7 +54,7 @@ type EnrollServiceFormProps = {
 const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   const [servicesPrice, setservicesPrice] = useState<ServicePriceEntity[]>([]);
   const [services, setservices] = useState<Partial<ServiceEntity>>({});
-  const [model, setModel] = useState<Partial<ServiceAppointmentEntity>>({});
+  const [model, setModel] = useState<Partial<ClientBaseServiceEntity>>({});
 
   const {
     handleSubmit,
@@ -286,7 +286,7 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
   }
 
   function initData(
-    entityModel: ServiceAppointmentEntity | null,
+    entityModel: ClientBaseServiceEntity | null,
     services: ServicePriceEntity[]
   ) {
     if (entityModel != null) {
@@ -297,8 +297,8 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
       setSelectedValue(
         services.find((p) => p.Id === entityModel.ProductPriceId)!
       );
-      setValue("startDate", new Date(entityModel.StartDate));
-      setStartDate(new Date(entityModel.StartDate));
+      setValue("startDate", new Date(entityModel.StartDate!));
+      setStartDate(new Date(entityModel.StartDate!));
       setFromTime(convertMinutesToTime(entityModel.FromHour));
       setToTime(convertMinutesToTime(entityModel.ToHour));
       setDayOfWeek(entityModel.DayOfWeek?.split(",") ?? []);

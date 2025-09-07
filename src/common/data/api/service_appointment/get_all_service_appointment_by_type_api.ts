@@ -1,3 +1,4 @@
+import { ClientBaseServiceEntity } from "cmp-core/src/entity/clientBaseService";
 import { String_Const } from "common/constants/string_constants";
 import { CusomerError, Either, left, right, UnAuthorize } from "common/core/either";
 import { BaseResponse } from "common/core/response/api_response";
@@ -10,12 +11,11 @@ import { CompanyContractEntity } from "common/domain/entity/contract_entity";
 import { DocumentEntity } from "common/domain/entity/document_entity";
 import { InvoiceEntity } from "common/domain/entity/invoice_entity";
 import { OperationalAddressEntity } from "common/domain/entity/operational_address_entity";
-import { ServiceAppointmentEntity } from "common/domain/entity/service_appointment_entity";
 import { ServiceTypeEnum } from "common/domain/enum/service_type_enum";
 import { header, saveToken, tokenheader } from "core/src/utils/auth";
 import { Api_URL } from "core/src/utils/url";
 
-export async function getAllServiceAppointmentByTypeApi(OperationalAddressId: number, ServiceCrmId: string): Promise<Either<Error, ServiceAppointmentEntity[]>> {
+export async function getAllServiceAppointmentByTypeApi(OperationalAddressId: number, ServiceCrmId: string): Promise<Either<Error, ClientBaseServiceEntity[]>> {
     try {
         var h = header();
         const response = await fetch(`${Api_URL}/ServiceAppointment/OperationalAddress/${OperationalAddressId}/${ServiceCrmId}`, {
@@ -23,7 +23,7 @@ export async function getAllServiceAppointmentByTypeApi(OperationalAddressId: nu
             headers: h,
         });
         const data = await response.json();
-        const result: BaseResponse<ServiceAppointmentEntity[]> = data;
+        const result: BaseResponse<ClientBaseServiceEntity[]> = data;
 
         if (result.Success) {
             return right(result.Data);
