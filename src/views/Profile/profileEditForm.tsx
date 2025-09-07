@@ -43,7 +43,14 @@ import {
   BillingInfromationCommand,
   InfromationCommand,
 } from "common/domain/command/billing_information_command";
-import { Box, Button, Card, Divider, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Gap from "uikit/src/Gap";
 import { addBilling } from "data/api/register/bilingInformation/add";
 
@@ -56,8 +63,10 @@ const ProfileEditForm = () => {
   const [operationalAddress, setOperationalAddress] = useState<
     OperationalAddressEntity[]
   >([]);
-  const [bilingInformation, setBilingInformation] =
-    useState<BilingInformationEntity | null>(null);
+  const [
+    bilingInformation,
+    setBilingInformation,
+  ] = useState<BilingInformationEntity | null>(null);
   const [openEditOtherAddressModal, setOpenEditOtherAddressModal] = useState<
     number | null
   >(null);
@@ -552,51 +561,51 @@ const ProfileEditForm = () => {
             </div>
             <Divider />
             {billingList.map((entry, index) => (
-                <Card
-                  key={index}
-                  variant="outlined"
-                  sx={{ p: 2, borderRadius: 2 }}
+              <Card
+                key={index}
+                variant="outlined"
+                sx={{ p: 2, borderRadius: 2 }}
+              >
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={2}
                 >
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb={2}
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Billing Address #{index + 1}
+                  </Typography>
+                  <Button
+                    size="small"
+                    color="error"
+                    disabled={requestDelete.loading}
+                    onClick={() => deleteInformation(index, entry.Id ?? null)}
                   >
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      Billing Address #{index + 1}
-                    </Typography>
-                    <Button
-                      size="small"
-                      color="error"
-                      disabled={requestDelete.loading}
-                      onClick={() => deleteInformation(index, entry.Id ?? null)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                  <Box display="flex" flexDirection="column" gap={2}>
-                    <MultiPaymentAddressCm
-                      isDeleting={requestDelete.loading}
-                      // onDelete={() => deleteInformation(index, entry.Id ?? null)}
-                      onSelectAddress={(
-                        address,
-                        lat,
-                        lng,
-                        city,
-                        postalCode,
-                        state
-                      ) => {
-                        updateAddress(index, "Address", address);
-                        updateAddress(index, "City", city);
-                        updateAddress(index, "ZIPCode", postalCode);
-                        updateAddress(index, "State", state);
-                      }}
-                      defaultValue={entry}
-                    />
-                  </Box>
-                </Card>
-              ))}
+                    Delete
+                  </Button>
+                </Box>
+                <Box display="flex" flexDirection="column" gap={2}>
+                  <MultiPaymentAddressCm
+                    isDeleting={requestDelete.loading}
+                    // onDelete={() => deleteInformation(index, entry.Id ?? null)}
+                    onSelectAddress={(
+                      address,
+                      lat,
+                      lng,
+                      city,
+                      postalCode,
+                      state
+                    ) => {
+                      updateAddress(index, "Address", address);
+                      updateAddress(index, "City", city);
+                      updateAddress(index, "ZIPCode", postalCode);
+                      updateAddress(index, "State", state);
+                    }}
+                    defaultValue={entry}
+                  />
+                </Box>
+              </Card>
+            ))}
             <Button
               variant="contained"
               fullWidth

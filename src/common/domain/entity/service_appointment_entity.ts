@@ -3,30 +3,14 @@ import { TerminateStatusEnum } from "../enum/terminate_status";
 import { LocationCompanyEntity } from "./location_company_entity";
 import { ServiceEntity } from "./service_entity";
 import { ServicePriceEntity } from "./service_price_entity";
+import { ClientBaseServiceEntity } from "cmp-core/src/entity/clientBaseService";
 
-export type ServiceAppointmentEntity = {
-  Id: number;
-  CompanyId: number;
-  OperationalAddressId: number;
-  LocationCompanyId: number;
-  ServiceTypeId: number;
-  // ServicePriceId: string;
-  ProductPriceId: number;
-  ProductId: number;
-  StartDate: string;
-  FrequencyType: string;
-  IsEmegency: string;
-  Qty: number;
-  Status: ServiceStatus;
-  DayOfWeek: string;
-  FromHour: number;
-  ToHour: number;
-};
+
 
 export type ClientServiceAppointment = {
-  Draft: ServiceAppointmentEntity | null;
-  Current: ServiceAppointmentEntity | null;
-  Next: ServiceAppointmentEntity | null;
+  Draft: ClientBaseServiceEntity | null;
+  Current: ClientBaseServiceEntity | null;
+  Next: ClientBaseServiceEntity | null;
   TerminateStatus: TerminateStatusEnum;
   ServiceId: number;
   InvoiceNumber: string;

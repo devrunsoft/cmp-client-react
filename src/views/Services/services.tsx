@@ -5,10 +5,7 @@ import { IoListCircleOutline, IoLogInOutline } from "react-icons/io5";
 
 import React, { useEffect, useState } from "react";
 import { useAddress } from "common/context/address_context";
-import {
-  ClientServiceAppointment,
-  ServiceAppointmentEntity,
-} from "common/domain/entity/service_appointment_entity";
+import { ClientServiceAppointment } from "common/domain/entity/service_appointment_entity";
 import { ServiceEntity } from "common/domain/entity/service_entity";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "components/loading/loading_context";
@@ -30,9 +27,10 @@ import TerminateContractDialog from "cmp-core/src/ui/dialog/terminateContract";
 import Empty from "cmp-core/src/Empty";
 import { TerminateStatusEnum } from "common/domain/enum/terminate_status";
 import { Plus } from "lucide-react";
+import { ClientBaseServiceEntity } from "cmp-core/src/entity/clientBaseService";
 
 export default function Services() {
-  const { selectedAddresses , addresses } = useAddress();
+  const { selectedAddresses, addresses } = useAddress();
 
   const [appointmentservices, setAppointmentservices] = useState<
     ClientServiceAppointment[]
@@ -88,7 +86,7 @@ export default function Services() {
 
   function onRoute(
     item: ServiceEntity,
-    serviceappoitnment: ServiceAppointmentEntity
+    serviceappoitnment: ClientBaseServiceEntity
   ) {
     if (serviceappoitnment)
       navigate(
@@ -109,7 +107,7 @@ export default function Services() {
       );
   }
 
-  function hasDraft(service: ServiceEntity): ServiceAppointmentEntity | null {
+  function hasDraft(service: ServiceEntity): ClientBaseServiceEntity | null {
     return (
       appointmentservices.find((e) => e.Draft?.ProductId == service.Id)
         ?.Draft ?? null
@@ -118,14 +116,14 @@ export default function Services() {
 
   function hasRegistered(
     service: ServiceEntity
-  ): ServiceAppointmentEntity | null {
+  ): ClientBaseServiceEntity | null {
     return (
       appointmentservices.find((e) => e.Current?.ProductId == service.Id)
         ?.Current ?? null
     );
   }
 
-  function hasNext(service: ServiceEntity): ServiceAppointmentEntity | null {
+  function hasNext(service: ServiceEntity): ClientBaseServiceEntity | null {
     return (
       appointmentservices.find((e) => e.Next?.ProductId == service.Id)?.Next ??
       null
@@ -144,7 +142,7 @@ export default function Services() {
     );
   }
 
-  if (addresses.length==0 || !selectedAddresses) {
+  if (addresses.length == 0 || !selectedAddresses) {
     return (
       <>
         <Box className="flex flex-col items-center" sx={{ gap: 2 }}>
@@ -220,23 +218,27 @@ export default function Services() {
                           <>
                             <div className={styles.smallStaff}>
                               Frequency:{" "}
-                              <p>{serviceAppoitnemtn?.FrequencyType}x yr</p>
+                              <p>{serviceAppoitnemtn?.ProductPrice?.Name}</p>
                             </div>
-                            <div className={styles.smallStaff}>
-                              Start Date:{" "}
-                              <p>
-                                {new Date(
-                                  serviceAppoitnemtn!.StartDate
-                                ).toLocaleDateString()}
-                              </p>
-                            </div>
+                            {
+                              <div className={styles.smallStaff}>
+                                Start Date:{" "}
+                                <p>
+                                  {serviceAppoitnemtn?.StartDate &&
+                                    new Date(
+                                      serviceAppoitnemtn!.StartDate!
+                                    ).toLocaleDateString()}
+                                </p>
+                              </div>
+                            }
                             {next != null && (
                               <div className={styles.smallStaff}>
                                 Next Service:{" "}
                                 <p>
-                                  {new Date(
-                                    next!.StartDate
-                                  ).toLocaleDateString()}
+                                  {serviceAppoitnemtn?.StartDate &&
+                                    new Date(
+                                      next!.StartDate!
+                                    ).toLocaleDateString()}
                                 </p>
                               </div>
                             )}
@@ -360,15 +362,15 @@ export default function Services() {
                         {!status ? null : (
                           <>
                             <div className={styles.smallStaff}>
-                              Frequency:{" "}
-                              <p>{serviceAppoitnemtn?.FrequencyType}x yr</p>
+                              <p>{serviceAppoitnemtn?.FrequencyType}</p>
                             </div>
                             <div className={styles.smallStaff}>
                               Start date:{" "}
                               <p>
-                                {new Date(
-                                  serviceAppoitnemtn!.StartDate
-                                ).toLocaleDateString()}
+                                {serviceAppoitnemtn!.StartDate &&
+                                  new Date(
+                                    serviceAppoitnemtn!.StartDate
+                                  ).toLocaleDateString()}
                               </p>
                             </div>
                           </>
