@@ -11,7 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import styles from "./sideBar.module.css";
 import { APP_ROUTES } from "../../../../routes/app_route";
 import { jwtDecode } from "jwt-decode";
-import { Api_URL, Site_URL } from "core/src/utils/url";
+import { Api_URL, File_URL, Site_URL } from "core/src/utils/url";
 import { useNavigate } from "react-router-dom";
 import LocationSelect from "components/locationSelect/locationSelect";
 import ShoppingCardIcon from "views/ShoppingCard/shopping_card_icon";
@@ -20,7 +20,7 @@ import Gap from "uikit/src/Gap";
 export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [profile, setPtofile] = useState<string | null>(null);
+  const [profile, setPtofile] = useState<string| null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function AppBar({ onMenuClick }: { onMenuClick?: () => void }) {
       var decoded = jwtDecode(token?.token ?? "");
       var profile = decoded["ProfilePicture"];
       if (profile) {
-        var image = Site_URL + profile;
+        var image = `${File_URL}/${profile}`;
         setPtofile(image);
       }
     } catch (error) {}

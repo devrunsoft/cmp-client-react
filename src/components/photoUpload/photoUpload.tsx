@@ -5,7 +5,7 @@ import { FiTrash } from "react-icons/fi";
 import styles from "../photoUpload/photoUpload.module.css";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "core/src/utils/auth";
-import { Site_URL } from "core/src/utils/url";
+import { File_URL, Site_URL } from "core/src/utils/url";
 import { UploadPictureCommand } from "common/domain/command/upload_picture_command";
 import { uploadPicture } from "data/api/register/company/upload_picture";
 import { toast } from "react-toastify";
@@ -26,7 +26,7 @@ const PhotoUpload = ({ model }: { model: CompanyEntity }) => {
       var decoded = jwtDecode(token?.token ?? "");
       var profile = model.ProfilePicture;
       if (profile) {
-        var image = Site_URL + profile;
+        var image = `${File_URL}/${profile}`;
         setSelectedPhoto(image);
       }
     } catch (error) {}
