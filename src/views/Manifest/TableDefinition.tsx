@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Hotel } from "lucide-react";
 
-import { ManifestEntity } from "common/domain/entity/manifest";
+import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
 import {
-  getManifestStatusDescription,
-  getManifestStatusStyle,
+
   ManifestStatus,
   ManifestStatusDescriptions,
+  ManifestStatusStyles,
 } from "cmp-core/src/Enum/manifestStatus";
 import { Box } from "@mui/material";
 
@@ -37,8 +37,8 @@ const TableDefinition: ColumnDef<ManifestEntity>[] = [
         <Box
           className="Status"
           sx={{
-            backgroundColor: getManifestStatusStyle(status).background,
-            color: getManifestStatusStyle(status).color,
+            backgroundColor: ManifestStatusStyles[status].background,
+            color: ManifestStatusStyles[status].color,
           }}
         >
           {ManifestStatusDescriptions[status]}

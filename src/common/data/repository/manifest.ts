@@ -6,7 +6,7 @@ import {
   PaginatedDataType,
   PaginationSearchParamsType,
 } from "core/src/types/api";
-import { ManifestEntity } from "common/domain/entity/manifest";
+import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
 
 enum ApiType {
   getAll = "getAll",

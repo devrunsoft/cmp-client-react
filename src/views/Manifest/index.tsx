@@ -3,7 +3,7 @@ import useFilterData from "hooks/useFilterData";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import TableDefinition from "./TableDefinition";
-import { ManifestEntity } from "common/domain/entity/manifest";
+import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
 import { GridDataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import { GridFilter } from "uikit/src/GridFilter";
 import {

@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import { ManifestEntity } from "common/domain/entity/manifest";
 import { DataFetchingWrapper } from "cmp-core/src/DataFetchingWrapper";
 import Dialog, { DialogPropsType } from "uikit/src/Dialog";
 
@@ -18,6 +17,7 @@ import {
   useGetManifestAssign,
 } from "data/repository/manifest";
 import { useAppSelector } from "state/index";
+import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
 
 type Props = Omit<DialogPropsType, "size"> & {
   selected: ManifestEntity;
