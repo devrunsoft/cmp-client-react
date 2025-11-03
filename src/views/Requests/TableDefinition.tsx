@@ -76,7 +76,7 @@ const getTableDefinition = (
           </Box>
         );
       },
-      accessorKey: "InvoiceStatus",
+      accessorKey: "Status",
       header: () => (
         <>
           Status

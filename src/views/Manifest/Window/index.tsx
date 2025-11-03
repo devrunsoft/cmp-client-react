@@ -17,7 +17,10 @@ import {
   useGetManifestAssign,
 } from "data/repository/manifest";
 import { useAppSelector } from "state/index";
-import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
+import {
+  ManifestDetailEntity,
+  ManifestEntity,
+} from "cmp-core/src/entity/ManifestEntity";
 
 type Props = Omit<DialogPropsType, "size"> & {
   selected: ManifestEntity;
@@ -39,7 +42,7 @@ export default function ManifestWindow({
   const isLoading = requestGet.loading;
   const { refreshRep } = useRoleAccess();
   const [dialog, setDialog] = useState<boolean>(false);
-  const [model, setModel] = useState<ManifestEntity>(selected);
+  const [model, setModel] = useState<ManifestDetailEntity | null>(null);
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
@@ -48,7 +51,7 @@ export default function ManifestWindow({
     requestGet.call({
       onSuccess: (res) => {
         setModel(res.data);
-        setContent(res.data.Content);
+        setContent("");
         refreshRep();
       },
     });
@@ -83,7 +86,7 @@ export default function ManifestWindow({
     >
       <DataFetchingWrapper loading={isLoading} retry={loadData}>
         <Box ref={contentRef} className="print-content">
-          <ShowManifest invoice={model.Invoice} manifest={model} />
+          {model && <ShowManifest manifest={model} />}
         </Box>
       </DataFetchingWrapper>
     </Dialog>

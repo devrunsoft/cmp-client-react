@@ -6,7 +6,7 @@ import {
   PaginatedDataType,
   PaginationSearchParamsType,
 } from "core/src/types/api";
-import { ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
+import { ManifestDetailEntity, ManifestEntity } from "cmp-core/src/entity/ManifestEntity";
 
 enum ApiType {
   getAll = "getAll",
@@ -46,9 +46,9 @@ export function useClientManifestGetPaginate(
 export function useGetManifestAssign(
   OperationalAddressId?: number,
   Id?: number
-): UseApiOutputType<ManifestEntity> {
+): UseApiOutputType<ManifestDetailEntity> {
   const config = getConfig(ApiType.get, `${OperationalAddressId}/${Id}`);
-  return useApi<ManifestEntity>({
+  return useApi<ManifestDetailEntity>({
     ...config,
   });
 }
