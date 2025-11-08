@@ -1,4 +1,5 @@
 import { createTheme, Theme } from "@mui/material/styles";
+import "@mui/lab/themeAugmentation";
 import lightTheme from "./lightTheme";
 import darkTheme from "./darkTheme";
 import typography from "./typography";

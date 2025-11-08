@@ -5,6 +5,17 @@ import { Opacity } from "@mui/icons-material";
 
 // @ts-ignore
 const components = (theme: Theme): Components => ({
+  MuiButtonBase: {
+    defaultProps: {
+      disableRipple: true,
+    },
+  },
+
+  MuiLoadingButton: {
+    defaultProps: {
+      disableRipple: true,
+    },
+  },
   MuiListItemButton: {
     defaultProps: {},
     styleOverrides: {
@@ -202,7 +213,7 @@ const components = (theme: Theme): Components => ({
         ...(ownerState.color === "default" && {
           borderColor: "rgba(228, 228, 228, 1)",
           "&:hover": {
-            backgroundColor: "rgba(228, 228, 228, 1)"
+            backgroundColor: "rgba(228, 228, 228, 1)",
           },
         }),
         "&.MuiLoadingButton-root": {
