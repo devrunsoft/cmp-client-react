@@ -144,6 +144,7 @@ const MultiPaymentAddressCm: React.FC<PaymentAddressProps> = ({
           variant="outlined"
           color="error"
           loading={isDeleting}
+          disabled={ isDeleting }
           loadingPosition="start"
           startIcon={<DeleteIcon />}
           onClick={handleDelete}

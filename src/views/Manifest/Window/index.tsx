@@ -75,6 +75,7 @@ export default function ManifestWindow({
         ...[
           <LoadingButton
             loading={isLoading}
+            disabled={ isLoading }
             color="default"
             variant="outlined"
             onClick={(_) => reactToPrintFn()}

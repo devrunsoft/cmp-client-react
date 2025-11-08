@@ -100,6 +100,7 @@ const ShowInvoice: React.FC<InvoiceModalProps> = ({
                 }}
                 variant="contained"
                 loading={requestSend.loading}
+                disabled={ requestSend.loading }
                 color="primary"
                 startIcon={<MoneySharp />}
                 className="appButton"

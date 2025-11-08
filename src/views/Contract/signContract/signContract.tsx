@@ -77,6 +77,7 @@ export default function SignContract({
               onClick={handleSubmit}
               variant="contained"
               loading={false}
+              disabled={ false }
               endIcon={<GoPlusCircle size={20} />}
             >
               Sign
@@ -87,6 +88,7 @@ export default function SignContract({
           model.Status == CompanyContractEnum.Signed && [
             <LoadingButton
               loading={false}
+              disabled={ false }
               color="default"
               variant="outlined"
               onClick={(_) => reactToPrintFn()}
