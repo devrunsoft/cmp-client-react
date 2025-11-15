@@ -378,7 +378,6 @@ export default function SwitcherAndCompanyInfo({
           loading={isLoading}
           variant="contained"
           sx={{ mt: 3 }}
-          type="submit"
           onClick={handleSubmit(onSubmit)}
           isActive={isValid}
         >
