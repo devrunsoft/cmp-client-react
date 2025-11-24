@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 import { AddShoppingCardCommand } from "common/domain/command/shopping_card/add";
 
 import { getServiceAppointmentApi } from "data/api/service_appointment/get_service_appointment_api";
-import { APP_ROUTES } from "../../routes/app_route";
+import { APP_ROUTES, buildRoute } from "../../routes/app_route";
 // import { cancelServiceAppointmentApi } from "data/api/service_appointment/camcel_service_appointment_api";
 import ShowInvoice from "components/Invoice/invoice_modal";
 import ServicePriceDropDown from "components/dropDown/service_price_dropdown";
@@ -223,9 +223,12 @@ const EnrollServiceForm = (prop: EnrollServiceFormProps) => {
     });
   }
 
-  let closeDialog;
   const confirmDelete = (id: number) => {
-    navigate("/dashboard/requests");
+    navigate(
+      buildRoute(APP_ROUTES.Requests, {
+        oprAddress: selectedAddresses.Id?.toString() ?? "",
+      })
+    );
     // confirmAlert({
     //   title: "Confirm to cancel",
     //   message: "Are you sure you want to cancel this request?",

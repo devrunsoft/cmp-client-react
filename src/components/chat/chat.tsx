@@ -24,8 +24,20 @@ import { useAppSelector } from "state/index";
 import { ChatEnum } from "cmp-core/src/Enum/chat_enum";
 import { getToken } from "core/src/utils/auth";
 import { jwtDecode } from "jwt-decode";
+import { AttachmentButton } from "chat-ui-kit-react/components/Buttons/AttachmentButton";
 const receivedSound = new Audio("/sounds/message-received.mp3");
 const sentSound = new Audio("/sounds/message-sent.mp3");
+
+const formatFileSize = (bytes: number) => {
+  if (!bytes && bytes !== 0) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb.toFixed(kb >= 10 ? 0 : 1)} KB`;
+  const mb = kb / 1024;
+  if (mb < 1024) return `${mb.toFixed(mb >= 10 ? 1 : 2)} MB`;
+  const gb = mb / 1024;
+  return `${gb.toFixed(gb >= 10 ? 1 : 2)} GB`;
+};
 
 const FloatingChat = () => {
   const refreshAddress = useAppSelector((state) => state.addressSlice);
@@ -39,10 +51,13 @@ const FloatingChat = () => {
   const [hasMore, setHasMore] = useState(true);
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [open, setOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const loading = requestGet.loading;
   const refreshAddressRef = useRef<number>(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMessages([]);
@@ -50,6 +65,7 @@ const FloatingChat = () => {
     setHasMore(true);
     loadData(0, true);
     if (refreshAddress.Id) refreshAddressRef.current = refreshAddress.Id;
+    clearSelectedFile();
   }, [refreshAddress.Id]);
 
   const [connectionLost, setConnectionLost] = useState(false);
@@ -232,8 +248,10 @@ const FloatingChat = () => {
   };
 
   const send = (text: string, uniqueId: string) => {
+    const { data, headers } = buildPayload(text, selectedFile);
     requestSend.call({
-      data: { Message: text },
+      data: data as any,
+      headers,
       onSuccess(e) {
         console.log(`${text} ${uniqueId} A`);
         sentSound.play();
@@ -242,10 +260,11 @@ const FloatingChat = () => {
         setMessages((prev) =>
           prev.map((msg) =>
             msg.tempId === uniqueId
-              ? { ...msg, status: "sent", Id: e.data.Id }
+              ? { ...mapChatMessage(e.data), tempId: msg.tempId }
               : msg
           )
         );
+        clearSelectedFile();
       },
       onError() {
         // ✅ Optional: Mark as error if sending failed
@@ -257,29 +276,167 @@ const FloatingChat = () => {
       },
     });
   };
-
+  useEffect(() => {
+    if (selectedFile) {
+      handleSend("file");
+    }
+  }, [selectedFile]);
   const handleSend = (text: string) => {
     if (requestSend.loading) return;
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed && !selectedFile) return;
+    const previewUrl =
+      selectedFile && (filePreview || URL.createObjectURL(selectedFile));
+    if (selectedFile && previewUrl && !filePreview) setFilePreview(previewUrl);
     const id = crypto.randomUUID();
-    const newMessage: MessageModel = {
-      message: text,
-      sentTime: new Date().toLocaleTimeString(),
-      sender: "You",
-      direction: "outgoing",
-      position: "single",
-      tempId: id,
-      status: "sending",
-    };
-    console.log(`${text} ${id} B`);
+    const newMessage = buildOutgoingMessage(
+      trimmed,
+      selectedFile,
+      id,
+      previewUrl || undefined
+    );
+    console.log(`${trimmed} ${id} B`);
     flushSync(() => {
       setMessages((prev) => [...prev, newMessage]);
     });
 
-    send(text, id);
+    send(trimmed, id);
+  };
 
-    // Scroll to bottom after sending
-    // setTimeout(scrollToBottom, 100);
+  const buildPayload = (text: string, file?: File | null) => {
+    if (!file) return { data: { Message: text } };
+    const form = new FormData();
+    if (text) form.append("Message", text);
+    form.append("File", file);
+    return { data: form, headers: { "Content-Type": "multipart/form-data" } };
+  };
+
+  const buildOutgoingMessage = (
+    text: string,
+    file: File | null,
+    tempId: string,
+    previewUrl?: string
+  ): MessageModel => {
+    const base: MessageModel = {
+      message: text || file?.name || "",
+      sentTime: new Date().toLocaleTimeString(),
+      sender: "You",
+      direction: "outgoing",
+      position: "single",
+      tempId,
+      status: "sending",
+      type: "text",
+      operationalAddressId: refreshAddress.Id,
+    };
+
+    if (!file) return base;
+
+    const label = text || file.name;
+    const preview = previewUrl || URL.createObjectURL(file);
+    if (file.type.startsWith("image/")) {
+      return {
+        ...base,
+        message: label,
+        type: "image",
+        payload: { src: preview, alt: label, width: 260 },
+      };
+    }
+    if (file.type.startsWith("video/")) {
+      return {
+        ...base,
+        message: label,
+        type: "custom",
+        payload: (
+          <div style={{ maxWidth: 360 }}>
+            <video
+              src={preview}
+              controls
+              style={{ width: "100%", borderRadius: 12 }}
+            />
+            {text && (
+              <div style={{ marginTop: 6, fontSize: 13, color: "#444" }}>
+                {text}
+              </div>
+            )}
+          </div>
+        ),
+      };
+    }
+    if (file.type.startsWith("audio/")) {
+      return {
+        ...base,
+        message: label,
+        type: "custom",
+        payload: (
+          <div style={{ minWidth: 220 }}>
+            <div style={{ fontWeight: 600, marginBottom: 6 }}>{label}</div>
+            <audio controls src={preview} style={{ width: "100%" }} />
+          </div>
+        ),
+      };
+    }
+
+    return {
+      ...base,
+      message: label,
+      type: "custom",
+      payload: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "10px 12px",
+            borderRadius: 12,
+            border: "1px solid #e5e5e5",
+            background: "#f7f9fc",
+            maxWidth: 360,
+          }}
+        >
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 8,
+              background: "#0c4a87",
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 700,
+            }}
+          >
+            {file.name.split(".").pop()?.toUpperCase() || "FILE"}
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{file.name}</div>
+            <div style={{ fontSize: 12, color: "#666" }}>
+              {formatFileSize(file.size)}
+            </div>
+          </div>
+        </div>
+      ),
+    };
+  };
+
+  const handleFilePick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (filePreview) URL.revokeObjectURL(filePreview);
+    if (file) {
+      const preview = URL.createObjectURL(file);
+      setSelectedFile(file);
+      setFilePreview(preview);
+    } else {
+      setSelectedFile(null);
+      setFilePreview(null);
+    }
+    event.target.value = "";
+  };
+
+  const clearSelectedFile = () => {
+    if (filePreview) URL.revokeObjectURL(filePreview);
+    setSelectedFile(null);
+    setFilePreview(null);
   };
 
   if (refreshAddress.Id == 0) return;
@@ -372,7 +529,7 @@ const FloatingChat = () => {
               fontSize: 16,
             }}
           >
-            CMP Chat
+            Conversion
             <button
               onClick={() => setOpen(false)}
               style={{
@@ -416,10 +573,69 @@ const FloatingChat = () => {
                     </div>
                   ))}
                 </MessageList>
+                {selectedFile && (
+                  <div
+                    style={{
+                      padding: "8px 10px",
+                      background: "#f5f7fb",
+                      borderTop: "1px solid #e5e5e5",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "#0c4a87",
+                        color: "white",
+                        borderRadius: 6,
+                        padding: "4px 8px",
+                        fontSize: 12,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {selectedFile.type.startsWith("image/")
+                        ? "Image"
+                        : selectedFile.type.startsWith("video/")
+                        ? "Video"
+                        : selectedFile.type.startsWith("audio/")
+                        ? "Audio"
+                        : "File"}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>
+                        {selectedFile.name}
+                      </div>
+                      <div style={{ fontSize: 12, color: "#555" }}>
+                        {formatFileSize(selectedFile.size)}
+                      </div>
+                    </div>
+                    <button
+                      onClick={clearSelectedFile}
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        color: "#444",
+                        fontWeight: 700,
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
                 <MessageInput
                   placeholder="Type a message..."
                   onSend={handleSend}
                   onChange={isTyping}
+                  attachButton
+                  attachButtonComponent={
+                    <AttachmentButton
+                      child={
+                        <input type="file" hidden onChange={handleFilePick} />
+                      }
+                    ></AttachmentButton>
+                  }
                 />
               </ChatContainer>
             </MainContainer>

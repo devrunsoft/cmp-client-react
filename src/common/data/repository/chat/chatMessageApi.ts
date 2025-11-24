@@ -56,9 +56,9 @@ export function useChatMessageGetAll(
 
 export function useChatMessageSend(
   operationalAddressId?: number
-): UseApiOutputType<ChatMessageEntity, ChatMessageCommand> {
+): UseApiOutputType<ChatMessageEntity, ChatMessageCommand | FormData> {
   const config = getConfig(ApiType.send, operationalAddressId);
-  return useApi<ChatMessageEntity, ChatMessageCommand>({
+  return useApi<ChatMessageEntity, ChatMessageCommand | FormData>({
     ...config,
   });
 }

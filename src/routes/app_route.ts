@@ -16,3 +16,11 @@ export const APP_ROUTES = {
     ServiceItemEmergency: "/dashboard/serviceItemEmergency",
     Address: "/dashboard/newAddress",
 };
+
+export const buildRoute = (route: string, params: Record<string, string>) => {
+  let result = route;
+  Object.entries(params).forEach(([key, value]) => {
+    result = result.replace(`:${key}`, value);
+  });
+  return result;
+};

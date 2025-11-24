@@ -1,3 +1,4 @@
 export type ChatMessageCommand = {
-  Message: string;
+  Message?: string;
+  File?: File | null;
 };
