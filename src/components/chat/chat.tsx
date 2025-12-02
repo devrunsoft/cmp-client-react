@@ -278,7 +278,7 @@ const FloatingChat = () => {
   };
   useEffect(() => {
     if (selectedFile) {
-      handleSend("file");
+      handleSend("");
     }
   }, [selectedFile]);
   const handleSend = (text: string) => {

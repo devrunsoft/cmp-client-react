@@ -10,13 +10,11 @@ import { OperationalAddressEntity } from "common/domain/entity/operational_addre
 import { useAppDispatch } from "state/index";
 import { setAddress } from "state/slice/address";
 
-
 export default function Dashboard() {
-  const { addresses ,selectedAddresses } = useAddress();
+  const { addresses, selectedAddresses } = useAddress();
   const { setSelectedAddresses } = useAddress();
 
   const navigate = useNavigate();
-
 
   const handleClick = (model: OperationalAddressEntity) => {
     navigate(`${APP_ROUTES.Address}/${model.Id}`, undefined);
@@ -26,13 +24,17 @@ export default function Dashboard() {
   const selectService = (model: OperationalAddressEntity) => {
     setSelectedAddresses(model);
     dispatch(setAddress(model));
-    navigate(`${APP_ROUTES.Service.replace(":oprAddress", model.Id?.toString()??"") }`, undefined);
+    navigate(
+      `${APP_ROUTES.Service.replace(
+        ":oprAddress",
+        model.Id?.toString() ?? ""
+      )}`,
+      undefined
+    );
   };
   const addNewAdderss = () => {
     navigate(APP_ROUTES.Address, undefined);
   };
-
-
 
   return (
     <div className={styles.wrapper}>
@@ -58,7 +60,7 @@ export default function Dashboard() {
                 className="icon"
                 onClick={(event) => {
                   event.stopPropagation();
-                  handleClick(address)
+                  handleClick(address);
                 }}
                 size={26}
                 style={{ color: "rgba(76, 142, 59, 1)" }}
